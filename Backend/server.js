@@ -40,6 +40,7 @@ app.use(expressSession({
 
 // routes
 app.use('/user',require('./routes/user'));
+app.use('/common',require('./routes/siteinfo'));
 
 //app.use(errorHandler);
 

@@ -38,7 +38,7 @@ var find = {
         credentials: function(data, cb) {
             const log = require('../util/logger').log(component, ___filename);
             log.debug(component, 'searching for all users');
-            var query = { email: data.email, password: data.password};
+            var query = { userName: data.userName, password: data.password};
             model.find(query)
             .then(users => {
                 log.debug(component, `retrieved ${users.length} users`);

@@ -3,8 +3,8 @@
         "TOKEN": {
             "KEY": "907bd6208f2511e7bb31be2e44b06b34",
             "DATA": {
-                "iss": "DEANSYS",
-                "sub": "Transys access token"
+                "iss": "SMSTWILIO",
+                "sub": "Sms twilio access token"
             },
             "EXP": "30m"
         },
