@@ -24,14 +24,8 @@ export class DefaultLayoutComponent {
     this.changes.observe(<Element>this.element, {
       attributes: true
     });
-
-
-  //switch betweeen buttons
-  if (router.url.indexOf('clinic') > 0) {
-    this.navItems=new MenuItems().cAdminMenus;
-  }else if (router.url.indexOf('biller') > 0) {
-   this.navItems=new MenuItems().billerMenus;
- }
+   this.navItems=new MenuItems().menus;
+ 
 }
   logout()
   {

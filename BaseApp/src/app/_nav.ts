@@ -1,22 +1,24 @@
 export class MenuItems{
-public cAdminMenus = [
-  {
-    name: 'Create Bill',
-    url: 'create-bill',
-    icon: 'icon-docs'
-  },
-  {
-    name: 'Bills List',
-    url: 'bills-list',
-    icon: 'icon-list'
-  },
-  
-];
 
-public billerMenus = [
+public menus = [
   {
-    name:'Bills',
-    url:'bills-list',
+    name:'Contacts and Groups',
+    url:'contacts',
+    icon:'icon-list'
+  },
+  {
+    name:'send-sms',
+    url:'send-sms',
+    icon:'icon-list'
+  },
+  {
+    name:'templates',
+    url:'templates',
+    icon:'icon-list'
+  },
+  {
+    name:'settings',
+    url:'settings',
     icon:'icon-list'
   }
 ]

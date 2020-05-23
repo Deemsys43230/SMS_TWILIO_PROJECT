@@ -17,6 +17,11 @@ export const routes: Routes = [
     path:'auth',
     component:CommonLayoutComponent,
     loadChildren:'./views/auth/auth.module#AuthModule'
+  },
+  {
+    path:'user',
+    component:DefaultLayoutComponent,
+    loadChildren:'./views/sms/sms.module#SmsModule'
   }
 ];
 

@@ -73,7 +73,7 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   declarations: [
     AppComponent,
-    ...APP_CONTAINERS,
+    ...APP_CONTAINERS
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
