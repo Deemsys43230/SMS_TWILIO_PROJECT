@@ -1,0 +1,831 @@
+{
+    "left_1" : [ 
+        {
+            "cptCategory" : "Office Visits",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99201",
+                    "description" : "New P Problem Focus 10 min",
+                    "cost" : "$92.00"
+                }, 
+                {
+                    "cptCodes" : "99202",
+                    "description" : "New P Expanded Prob Focus 20 min",
+                    "cost" : "$155.00"
+                }, 
+                {
+                    "cptCodes" : "99203",
+                    "description" : "New P Detailed History 30 min",
+                    "cost" : "$223.00"
+                }, 
+                {
+                    "cptCodes" : "99204",
+                    "description" : "New P Comprehensive 45 min",
+                    "cost" : "$260.00"
+                }, 
+                {
+                    "cptCodes" : "99205",
+                    "description" : "New P Comp Complex Hist  60 min",
+                    "cost" : "$360.00"
+                }, 
+                {
+                    "cptCodes" : "99211",
+                    "description" : "Non-Provider Visit 5 min",
+                    "cost" : "$40.00"
+                }, 
+                {
+                    "cptCodes" : "99212",
+                    "description" : "F/U Problem Focused 10 min",
+                    "cost" : "$90.00"
+                }, 
+                {
+                    "cptCodes" : "99213",
+                    "description" : "F/U Expanded Prob Focus 15 min",
+                    "cost" : "$150.00"
+                }, 
+                {
+                    "cptCodes" : "99214",
+                    "description" : "F/U Detailed History 25 Min",
+                    "cost" : "$220.00"
+                }, 
+                {
+                    "cptCodes" : "99215",
+                    "description" : "F/U Comprehensve 40 min",
+                    "cost" : "$300.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Initial Comp Preventive Medicine Visits",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99385",
+                    "description" : "18-39 years old",
+                    "cost" : "$250.00"
+                }, 
+                {
+                    "cptCodes" : "99386",
+                    "description" : "40-64 years old",
+                    "cost" : "$250.00"
+                }, 
+                {
+                    "cptCodes" : "99387",
+                    "description" : "65 years and older",
+                    "cost" : "$250.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Periodic Comp Preventive Medicine",
+            "subCategory" : [ 
+                {
+                    "categoryName" : "Re-evaluation Established Patient",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99395",
+                            "description" : "18-39 years old",
+                            "cost" : "$160.00"
+                        }, 
+                        {
+                            "cptCodes" : "99396",
+                            "description" : "40-64 years old",
+                            "cost" : "$160.00"
+                        }, 
+                        {
+                            "cptCodes" : "99397",
+                            "description" : "65 years and older",
+                            "cost" : "$160.00"
+                        }
+                    ]
+                }, 
+                {
+                    "categoryName" : "Preventive Medicine Counseling",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99401",
+                            "description" : "provided to individual 15 min",
+                            "cost" : "$30.00"
+                        }, 
+                        {
+                            "cptCodes" : "99402",
+                            "description" : "provided to individual 30 min",
+                            "cost" : "$60.00"
+                        }, 
+                        {
+                            "cptCodes" : "99403",
+                            "description" : "provided to individual 45 min",
+                            "cost" : "$90.00"
+                        }, 
+                        {
+                            "cptCodes" : "99404",
+                            "description" : "provided to individual 60 min",
+                            "cost" : "$120.00"
+                        }, 
+                        {
+                            "cptCodes" : "99406",
+                            "description" : "Smoking/Tobacco cessation 3-10 m",
+                            "cost" : "$32.00"
+                        }, 
+                        {
+                            "cptCodes" : "99407",
+                            "description" : "intensive > 30 min",
+                            "cost" : "$50.00"
+                        }
+                    ]
+                }, 
+                {
+                    "categoryName" : "Alcohol/Substace Abuse Screening",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99408",
+                            "description" : "15-30 minutes",
+                            "cost" : "$45.00"
+                        }, 
+                        {
+                            "cptCodes" : "99409",
+                            "description" : "intensive > 30 min",
+                            "cost" : "$60.00"
+                        }
+                    ]
+                }, 
+                {
+                    "categoryName" : "Pediatrics",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99383",
+                            "description" : "5-11 Well Visit",
+                            "cost" : "$160.00"
+                        }, 
+                        {
+                            "cptCodes" : "99384",
+                            "description" : "12-17 Well Visit",
+                            "cost" : "$160.00"
+                        }, 
+                        {
+                            "cptCodes" : "99212",
+                            "description" : "F/U Problem Focused 10 min",
+                            "cost" : "$90.00"
+                        }, 
+                        {
+                            "cptCodes" : "99213",
+                            "description" : "F/U Expanded Prob Focus 15 min",
+                            "cost" : "$150.00"
+                        }, 
+                        {
+                            "cptCodes" : "99214",
+                            "description" : "F/U Detailed History 25 Min",
+                            "cost" : "$220.00"
+                        }
+                    ]
+                }, 
+                {
+                    "categoryName" : "Prolonged Serv Direct Contact",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99354",
+                            "description" : "after1st hour over 30 min",
+                            "cost" : "$200.00"
+                        }, 
+                        {
+                            "cptCodes" : "99355",
+                            "description" : "Each addtl 30 minutes",
+                            "cost" : "$198.00"
+                        }
+                    ]
+                }, 
+                {
+                    "categoryName" : "End of Life",
+                    "cptCodes" : [ 
+                        {
+                            "cptCodes" : "99497",
+                            "description" : "Advanced Directive Guidance 30min",
+                            "cost" : "$175.00"
+                        }, 
+                        {
+                            "cptCodes" : "99498",
+                            "description" : "additional 30 min",
+                            "cost" : "$150.00"
+                        }
+                    ]
+                }
+            ],
+            "cptCodes" : []
+        },
+        {
+            "cptCategory": "",
+            "subCategory": [],
+            "cptCodes": [
+                {
+                    "cptCodes": "G0101",
+                    "description": "Pelvic & Breast Exam",
+                    "cost": "$80.00"
+                }
+            ]
+        }
+    ],
+    "right_1" : [ 
+        {
+            "cptCategory" : "Transitional Care",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99496",
+                    "description" : "Visit within 7 days of discharge",
+                    "cost" : "$475.00"
+                }, 
+                {
+                    "cptCodes" : "99495",
+                    "description" : "Visit within 14 days of discharge",
+                    "cost" : "$340.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Medicare",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "G0008",
+                    "description" : "Admin Flu Vaccine",
+                    "cost" : "$30.00"
+                }, 
+                {
+                    "cptCodes" : "G0009",
+                    "description" : "Admin Pneuococcal Vaccine",
+                    "cost" : "$30.00"
+                }, 
+                {
+                    "cptCodes" : "G0402",
+                    "description" : "IPPE Welcome to Medicare Physical",
+                    "cost" : "$200.00"
+                }, 
+                {
+                    "cptCodes" : "G0403",
+                    "description" : "EKG Welcome to Medicare Physical",
+                    "cost" : "$90.00"
+                }, 
+                {
+                    "cptCodes" : "G0438",
+                    "description" : "Medicare Wellness visit, Initial",
+                    "cost" : "$220.00"
+                }, 
+                {
+                    "cptCodes" : "G0439",
+                    "description" : "Medicare Wellness visit, subseq",
+                    "cost" : "$140.00"
+                }, 
+                {
+                    "cptCodes" : "G0101",
+                    "description" : "Pelvic & Breast Exam (every 2 yrs)",
+                    "cost" : "$75.00"
+                }, 
+                {
+                    "cptCodes" : "G0248",
+                    "description" : "Demonstrate use of home INR testing",
+                    "cost" : "$130.00"
+                }, 
+                {
+                    "cptCodes" : "G0250",
+                    "description" : "Physician Review of home INR testing",
+                    "cost" : "$12.00"
+                }, 
+                {
+                    "cptCodes" : "G0102",
+                    "description" : "Digital Rectal Exam",
+                    "cost" : "$20.00"
+                }, 
+                {
+                    "cptCodes" : "G0108 ",
+                    "description" : "Diabetes outpatient Training",
+                    "cost" : "$20.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "",
+            "subCategory" : [],
+            "cptCodes" : []
+        }, 
+        {
+            "cptCategory" : "Home Care",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "G0180",
+                    "description" : "Home Health Plan of Care",
+                    "cost" : "$120.00"
+                }, 
+                {
+                    "cptCodes" : "G0179",
+                    "description" : "Home Health Recertification",
+                    "cost" : "$80.00"
+                }, 
+                {
+                    "cptCodes" : "G0181",
+                    "description" : "Care Plan Oversite",
+                    "cost" : "$150.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Modifiers",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "21",
+                    "description" : "Prolonged E & M Visit",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "22",
+                    "description" : "Unusual Procedural Service",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "25",
+                    "description" : "Separate E & M Same day",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "33",
+                    "description" : "Preventative Care",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "50",
+                    "description" : "Bilateral Procedure",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "51",
+                    "description" : "Multiple Procedures",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "53",
+                    "description" : "Discontinued Procedure",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "55",
+                    "description" : "Post Operative Management",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "56",
+                    "description" : "Pre-Operative Management",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "57",
+                    "description" : "Decision for Surgery",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "58",
+                    "description" : "Related Procedure during post-op",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "59",
+                    "description" : "Distinct Procedural Service",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "76",
+                    "description" : "Repeat Procedure by same Physician",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "77",
+                    "description" : "Repeat Procedure by another Phys",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "90",
+                    "description" : "Reference Lab",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "91",
+                    "description" : "Repeat Diagnostic Test",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "93",
+                    "description" : "Use of Interpereter (workcomp only)",
+                    "cost" : ""
+                }
+            ]
+        }
+    ],
+    "left_2" : [ 
+        {
+            "cptCategory" : "Procedures",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "93922",
+                    "description" : "Arterial Brachial Index",
+                    "cost" : "$180.00"
+                }, 
+                {
+                    "cptCodes" : "87880",
+                    "description" : "Strep Quick Test",
+                    "cost" : "$20.00"
+                }, 
+                {
+                    "cptCodes" : "87804",
+                    "description" : "Influenza A Test",
+                    "cost" : "$20.00"
+                }, 
+                {
+                    "cptCodes" : "87804",
+                    "description" : "Influenza B Test",
+                    "cost" : "$20.00"
+                }, 
+                {
+                    "cptCodes" : "82948",
+                    "description" : "Glucose check",
+                    "cost" : "$10.00"
+                }, 
+                {
+                    "cptCodes" : "81002",
+                    "description" : "Urine Dip",
+                    "cost" : "$15.00"
+                }, 
+                {
+                    "cptCodes" : "81025",
+                    "description" : "Urine Pregnancy",
+                    "cost" : "$15.00"
+                }, 
+                {
+                    "cptCodes" : "85610",
+                    "description" : "PT/INR",
+                    "cost" : "$15.00"
+                }, 
+                {
+                    "cptCodes" : "87081",
+                    "description" : "Throat culture",
+                    "cost" : "$20.00"
+                }, 
+                {
+                    "cptCodes" : "93000",
+                    "description" : "EKG ",
+                    "cost" : "$90.00"
+                }, 
+                {
+                    "cptCodes" : "10120",
+                    "description" : "Removal Foreign Body",
+                    "cost" : "$260.00"
+                }, 
+                {
+                    "cptCodes" : "69209",
+                    "description" : "Cerumen Removal/ Irrigation",
+                    "cost" : "$40.00"
+                }, 
+                {
+                    "cptCodes" : "69210",
+                    "description" : "Cerumen Removal/ Instruments",
+                    "cost" : "$110.00"
+                }, 
+                {
+                    "cptCodes" : "67820",
+                    "description" : "Removal Ingrown Eyelash",
+                    "cost" : "$105.00"
+                }, 
+                {
+                    "cptCodes" : "11000",
+                    "description" : "Debridement Skin Surface",
+                    "cost" : "$112.00"
+                }, 
+                {
+                    "cptCodes" : "11042",
+                    "description" : "Debridement-Sub Q 1st 20 sqcm",
+                    "cost" : "$250.00"
+                }, 
+                {
+                    "cptCodes" : "11045",
+                    "description" : "Debridement-Sub Q each 20 sqcm",
+                    "cost" : "$80.00"
+                }, 
+                {
+                    "cptCodes" : "11200",
+                    "description" : "Removal of Skin Tags 1-10",
+                    "cost" : "$140.00"
+                }, 
+                {
+                    "cptCodes" : "11300",
+                    "description" : "Punch Biopsy 0.5cm or Less",
+                    "cost" : "$140.00"
+                }, 
+                {
+                    "cptCodes" : "11301",
+                    "description" : "Punch Biospy 0.6 to 1.0 cm",
+                    "cost" : "$160.00"
+                }, 
+                {
+                    "cptCodes" : "20550",
+                    "description" : "Single Tendon Sheath or Ligament",
+                    "cost" : "$125.00"
+                }, 
+                {
+                    "cptCodes" : "20552",
+                    "description" : "Trigger Point inj 1 or 2 muscles",
+                    "cost" : "$110.00"
+                }, 
+                {
+                    "cptCodes" : "20553",
+                    "description" : "Trigger point 3 or more muscles",
+                    "cost" : "$130.00"
+                }, 
+                {
+                    "cptCodes" : "20600",
+                    "description" : "Small Joint Inj",
+                    "cost" : "$105.00"
+                }, 
+                {
+                    "cptCodes" : "20605",
+                    "description" : "Intermediate Joint Inj",
+                    "cost" : "$110.00"
+                }, 
+                {
+                    "cptCodes" : "20610",
+                    "description" : "Arthrocentesis Large Joint Inj",
+                    "cost" : "$130.00"
+                }, 
+                {
+                    "cptCodes" : "30901",
+                    "description" : "Control Nasal Hemmorrage",
+                    "cost" : "$115.00"
+                }, 
+                {
+                    "cptCodes" : "Q0091",
+                    "description" : "Pap Smear",
+                    "cost" : "$80.00"
+                }, 
+                {
+                    "cptCodes" : "86308",
+                    "description" : "Monospot",
+                    "cost" : "$15.00"
+                }, 
+                {
+                    "cptCodes" : "J1885",
+                    "description" : "Toradol per 15mg",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "J3301",
+                    "description" : "Kenalog per 10mg",
+                    "cost" : "$16.00"
+                }, 
+                {
+                    "cptCodes" : "J3420",
+                    "description" : "Vit B12 1000mcg",
+                    "cost" : "$25.00"
+                }, 
+                {
+                    "cptCodes" : "J1100",
+                    "description" : "Dexamethasone 1mg",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "J0735",
+                    "description" : "Clonidine Inj 1mg",
+                    "cost" : "$25.00"
+                }, 
+                {
+                    "cptCodes" : "J0696",
+                    "description" : "Ceftriaxone per 250 mg",
+                    "cost" : "$35.00"
+                }, 
+                {
+                    "cptCodes" : "J2550",
+                    "description" : "Phenegren up to 50mg",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "J1030",
+                    "description" : "Depomedrol 40 mg ",
+                    "cost" : "$11.25"
+                }, 
+                {
+                    "cptCodes" : "J0780",
+                    "description" : "Compazine",
+                    "cost" : "$10.00"
+                }
+            ]
+        }
+    ],
+    "right_2" : [ 
+        {
+            "cptCategory" : "Immunizations",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "90471",
+                    "description" : "Admin-Single W/O Counsel",
+                    "cost" : "$35.00"
+                }, 
+                {
+                    "cptCodes" : "90472",
+                    "description" : "Admin-S2+ W/O Counsel",
+                    "cost" : "$20.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Injections",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "96372",
+                    "description" : "IM/Sub Q Administration",
+                    "cost" : "$30.00"
+                }, 
+                {
+                    "cptCodes" : "86580",
+                    "description" : "PPD/TB Test",
+                    "cost" : "$10.00"
+                }, 
+                {
+                    "cptCodes" : "90670",
+                    "description" : "Pneumovax",
+                    "cost" : "$200.00"
+                }, 
+                {
+                    "cptCodes" : "90736",
+                    "description" : "Shingles",
+                    "cost" : "$250.00"
+                }, 
+                {
+                    "cptCodes" : "90674",
+                    "description" : "Flu Vaccine",
+                    "cost" : "$25.00"
+                }, 
+                {
+                    "cptCodes" : "90662",
+                    "description" : "Flu vaccine increased antigen",
+                    "cost" : "$40.00"
+                }, 
+                {
+                    "cptCodes" : "90715",
+                    "description" : "TDAP",
+                    "cost" : "$21.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Respiration Treatment",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "94010",
+                    "description" : "Spirometry & RFVL x 1",
+                    "cost" : "$100.00"
+                }, 
+                {
+                    "cptCodes" : "94060",
+                    "description" : "Spirometry & RFVL x 2",
+                    "cost" : "$200.00"
+                }, 
+                {
+                    "cptCodes" : "94640",
+                    "description" : "Inhalation Treatment",
+                    "cost" : "$50.00"
+                }, 
+                {
+                    "cptCodes" : "94667",
+                    "description" : "Chest Wall Manipulation",
+                    "cost" : "$30.00"
+                }, 
+                {
+                    "cptCodes" : "A7015",
+                    "description" : "Nebulizer Mask",
+                    "cost" : "$2.50"
+                }, 
+                {
+                    "cptCodes" : "A7003",
+                    "description" : "Nebulizer Set",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "94760",
+                    "description" : "Pulse OX 1st Read",
+                    "cost" : "$7.00"
+                }, 
+                {
+                    "cptCodes" : "94761",
+                    "description" : "Pulse Ox Multiple Read",
+                    "cost" : "$10.00"
+                }, 
+                {
+                    "cptCodes" : "J7609",
+                    "description" : "Albuterol Sulfate 1mg",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "J2930",
+                    "description" : "Solumedrol per 40mg",
+                    "cost" : "$5.00"
+                }, 
+                {
+                    "cptCodes" : "J0696",
+                    "description" : "Rocephine 250mg",
+                    "cost" : "$35.00"
+                }, 
+                {
+                    "cptCodes" : "J0170 ",
+                    "description" : "Epinephrine",
+                    "cost" : "$10.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Pre-Op Clearance",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99242",
+                    "description" : "Problem Focused Pre-Op visit",
+                    "cost" : "$90.00"
+                }, 
+                {
+                    "cptCodes" : "99243",
+                    "description" : "Expanded Problem Pre-Op visit",
+                    "cost" : "$150.00"
+                }, 
+                {
+                    "cptCodes" : "99244",
+                    "description" : "Detailed Pre-Op visit",
+                    "cost" : "$220.00"
+                }, 
+                {
+                    "cptCodes" : "99245",
+                    "description" : "Comprehensive Pre-Op Visit",
+                    "cost" : "$300.00"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "Allergy Testing and Injections",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "95004",
+                    "description" : "Allergy Testing  ",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "95165",
+                    "description" : "Allergen Immunotherapy serum",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "95115",
+                    "description" : "Allergy - Single  Injection",
+                    "cost" : ""
+                }, 
+                {
+                    "cptCodes" : "95117",
+                    "description" : "Allergy - 2 or more Injections",
+                    "cost" : ""
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99080",
+                    "description" : "Medical Forms/ FMLA",
+                    "cost" : "$50.00"
+                }, 
+                {
+                    "cptCodes" : "99081",
+                    "description" : "Medical Records per page",
+                    "cost" : "$0.65"
+                }
+            ]
+        }, 
+        {
+            "cptCategory" : "",
+            "subCategory" : [],
+            "cptCodes" : [ 
+                {
+                    "cptCodes" : "99999",
+                    "description" : "No Show Fee",
+                    "cost" : "$50.00"
+                }, 
+                {
+                    "cptCodes" : "",
+                    "description" : "DMV Form",
+                    "cost" : "$20.00"
+                }
+            ]
+        }
+    ]
+}

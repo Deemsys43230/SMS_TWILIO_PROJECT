@@ -1,0 +1,11 @@
+:host ::ng-deep .ngx-pagination
+{
+    padding: 0 !important;
+}
+:host ::ng-deep .ngx-pagination .current {
+    background-color: #597917;
+}
+:host ::ng-deep .ngx-pagination li
+{
+    border: 1px solid #eee;
+}

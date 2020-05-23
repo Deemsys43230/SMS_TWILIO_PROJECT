@@ -1,0 +1,145 @@
+// Here you can add other styles
+/* Header Styles */
+body
+{
+	background-color: #eee;
+}
+.navbar{
+ background-color:white !important;
+ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+ -moz-box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+ -webkit-box-shadow:0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	}
+#collapsibleNavbar .navbar-nav .nav-item .nav-link
+{
+	color: #006c3a;
+	text-decoration: none;
+	padding-right: 10px ;
+	padding-left: 10px ;
+	border-radius:0.25rem;
+}
+#collapsibleNavbar .navbar-nav .nav-item .nav-link.active
+{
+background-color: #006c3a;
+color: white;
+}
+
+#collapsibleNavbar .navbar-nav .dropdown-menu {
+	position: absolute;
+  }
+.btn-default:active,
+.btn-default:focus,
+.btn-primary:active,
+.btn-primary:focus
+{
+	outline:none !important;
+}
+#collapsibleNavbar .dropdown-menu .dropdown-item:active,
+#collapsibleNavbar .dropdown-menu .dropdown-item:focus
+{
+	outline: none !important;
+	background-color:transparent;
+	color:black;
+}
+
+.sidebar{
+    background-color: #455268;
+}
+.sidebar .nav-link:hover{
+    background: #3f4c63;
+}
+.sidebar .nav-link.active{
+    background:#669700;
+}
+.sidebar .nav-link.active .nav-icon{
+    color:white;
+}
+$navbar-default-bg:red;
+
+// Dashboard Card Link
+a.dashboard-card:hover{
+    text-decoration: none;
+}
+// Card Header Override
+.card-header{
+    background-color: #7d9c3a;
+    color: #fff;
+}
+/* Footer Styles */
+#footer{
+	background: #40053e;
+}
+#topFooter
+{
+	background-color: #f4f0f1;
+	padding: 30px;
+	font-weight: bold;
+}
+#bottomFooter
+{
+	color: white;
+	padding: 15px;
+}
+#bottomFooter .row a
+{
+	color: grey;
+	text-decoration: none;
+}
+.app-footer
+{
+	padding:0;
+	display:inline-block !important;
+}
+.app-footer span
+{
+	padding:10px;
+}
+
+//loader for login component
+.login-loader {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 3px solid #7d9c3a;
+	border-left:3px solid #7d9c3a;
+	width: 15px;
+	height: 15px;
+	-webkit-animation: spin 600ms linear infinite; /* Safari */
+	animation: spin 600ms linear infinite;
+  }
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+/*Responsive*/
+@media (max-width: 767.98px)
+{
+	.navbar .container
+	{
+		justify-content: center;
+	}
+}
+
+table.table_on_the_left, table.table_on_the_right 
+	{
+	float: left;
+	width: 50%;
+	border: none;
+    }
+   table.table_on_the_left tr td,
+   table.table_on_the_right tr td
+   {
+	padding: 3px !important;
+	margin: 3px !important;
+   }
+  table.table_on_the_left tbody,
+  table.table_on_the_right tbody
+  {
+    width: 100%;
+    display: table;
+  }

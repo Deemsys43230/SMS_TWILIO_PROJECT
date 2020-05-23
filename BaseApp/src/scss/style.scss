@@ -1,0 +1,54 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "node_modules/@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+
+.error-msg-area{
+	min-height: 20px;
+}
+.error-msg{
+	font-size: 12px;
+	color: red;
+	font-style: italic;
+	min-height: 12px;
+}
+
+/* Form Common Design */
+.main .heading
+{
+   padding: 15px;
+   font-size: 18px;
+   width: 500px;
+   background-color:#40053e;
+   color: white;
+   border-top-right-radius: 2px;
+   border-top-left-radius: 2px;
+}
+.heading a{
+   font-size: 14px;
+   text-decoration: underline;
+   color: white;
+}
+.main .main-wrapper{
+	background-color: #fff;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+   border-radius: 2px;
+   border-top-left-radius: 0;
+   border-top-right-radius:0;
+   -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+   padding: 30px 30px;
+    width: 500px;  
+    margin-bottom: 30px;
+}
+
+//Reducing container padding
+.main .container-fluid {
+    padding: 10px;
+}

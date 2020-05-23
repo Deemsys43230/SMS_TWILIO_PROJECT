@@ -1,0 +1,210 @@
+[
+    {
+        "_id": "5d03362289ce42f370eed3d3",
+        "updatedOn": "2019-06-14T05:52:34.328Z",
+        "createdOn": "2019-06-14T05:52:34.328Z",
+        "superBillId": "9b3622708e6811e9a229d31edc0322c6",
+        "encounterDate": "02/09/2019",
+        "billId": "1001",
+        "invoiceNo": "INV1001",
+        "patientInfo": {
+            "patientRefId": "1001",
+            "patientId": "4f050b308ce911e9b5a4c37db89824ec",
+            "firstName": "Mike",
+            "lastName": "George",
+            "middleName": "Hue",
+            "dateOfBirth": "03/02/1991",
+            "gender": "M",
+            "phone": "613-098-0291",
+            "emailId": "patient@gmail.com",
+            "addressLine1": "801 First Lane",
+            "addressLine2": "Near Post office",
+            "city": "Gahana",
+            "state": "Ohio",
+            "country": "Unites States",
+            "zipcode": "613029"
+        },
+        "providerName": "Dr. Hendry MS., MD",
+        "billAmount": 40.98,
+        "paidAmount": 0,
+        "tax": 2,
+        "payAmount": 67.98,
+        "discount": {
+            "type": 1,
+            "value": 2,
+            "amount": 2
+        },
+        "status": 2,
+        "paymentStatus": 0,
+        "cptCodes": [
+            {
+                "cptCode": "73000",
+                "description": "X-Ray Clavicle",
+                "feeSchedule": "10"
+            },
+            {
+                "cptCode": "73020",
+                "description": "X-Ray Shoulder 1 view",
+                "feeSchedule": "12"
+            },
+            {
+                "cptCode": "72050",
+                "description": "X-Ray Cervical Spine 4 Views",
+                "feeSchedule": "15"
+            }
+        ],
+        "icdCodes": [
+            {
+                "icdCode": "V43.31X",
+                "description": "Unspecified car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.32X",
+                "description": "Unspecifiede car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.33X",
+                "description": "Unspecified car occupant injured in collision with pick-up truck in non traffic accident"
+            }
+        ]
+    },
+    {
+        "_id": "5d03361d89ce42f370eed3d1",
+        "updatedOn": "2019-06-14T05:52:29.364Z",
+        "createdOn": "2019-06-14T05:52:29.364Z",
+        "superBillId": "984062108e6811e9a229d31edc0322c6",
+        "encounterDate": "02/09/2019",
+        "billId": "1002",
+        "invoiceNo": "INV1002",
+        "patientInfo": {
+            "patientRefId": "1001",
+            "patientId": "4f050b308ce911e9b5a4c37db89824ec",
+            "firstName": "Mike",
+            "lastName": "George",
+            "middleName": "Hue",
+            "dateOfBirth": "03/02/1991",
+            "gender": "M",
+            "phone": "613-098-0291",
+            "emailId": "patient@gmail.com",
+            "addressLine1": "801 First Lane",
+            "addressLine2": "Near Post office",
+            "city": "Gahana",
+            "state": "Ohio",
+            "country": "Unites States",
+            "zipcode": "613029"
+        },
+        "providerName": "Dr. Hendry MS., MD",
+        "billAmount": 40.98,
+        "paidAmount": 0,
+        "tax": 2,
+        "payAmount": 67.98,
+        "discount": {
+            "type": 1,
+            "value": 2,
+            "amount": 2
+        },
+        "status": 1,
+        "paymentStatus": 0,
+        "cptCodes": [
+            {
+                "cptCode": "73000",
+                "description": "X-Ray Clavicle",
+                "feeSchedule": "10"
+            },
+            {
+                "cptCode": "73020",
+                "description": "X-Ray Shoulder 1 view",
+                "feeSchedule": "12"
+            },
+            {
+                "cptCode": "72050",
+                "description": "X-Ray Cervical Spine 4 Views",
+                "feeSchedule": "15"
+            }
+        ],
+        "icdCodes": [
+            {
+                "icdCode": "V43.31X",
+                "description": "Unspecified car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.32X",
+                "description": "Unspecifiede car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.33X",
+                "description": "Unspecified car occupant injured in collision with pick-up truck in non traffic accident"
+            }
+        ]
+    },
+    {
+        "_id": "5d00defa74a4770e9d8a627c",
+        "updatedOn": "2019-06-12T11:16:10.837Z",
+        "createdOn": "2019-06-12T11:16:10.837Z",
+        "superBillId": "7b86c9408d0311e9b360392257c6a335",
+        "encounterDate": "02/09/2019",
+        "billId": "1003",
+        "invoiceNo": "INV1003",
+        "patientInfo": {
+            "patientRefId": "1001",
+            "patientId": "4f050b308ce911e9b5a4c37db89824ec",
+            "firstName": "Mike",
+            "lastName": "George",
+            "middleName": "Hue",
+            "dateOfBirth": "03/02/1991",
+            "gender": "M",
+            "phone": "613-098-0291",
+            "emailId": "patient@gmail.com",
+            "addressLine1": "801 First Lane",
+            "addressLine2": "Near Post office",
+            "city": "Gahana",
+            "state": "Ohio",
+            "country": "Unites States",
+            "zipcode": "613029"
+        },
+        "providerName": "Dr. Hendry MS., MD",
+        "billAmount": 37.98,
+        "paidAmount": 0,
+        "tax": 2,
+        "payAmount": 37.98,
+        "discount": {
+            "type": 1,
+            "value": 2,
+            "amount": 2
+        },
+        "status": 0,
+        "paymentStatus": 0,
+        "cptCodes": [
+            {
+                "cptCode": "73000",
+                "description": "X-Ray Clavicle",
+                "feeSchedule": "10"
+            },
+            {
+                "cptCode": "73020",
+                "description": "X-Ray Shoulder 1 view",
+                "feeSchedule": "12"
+            },
+            {
+                "cptCode": "72050",
+                "description": "X-Ray Cervical Spine 4 Views",
+                "feeSchedule": "15"
+            }
+        ],
+        "icdCodes": [
+            {
+                "icdCode": "V43.31X",
+                "description": "Unspecified car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.32X",
+                "description": "Unspecifiede car occupant injured in collision with other type car in non traffic accident"
+            },
+            {
+                "icdCode": "V43.33X",
+                "description": "Unspecified car occupant injured in collision with pick-up truck in non traffic accident"
+            }
+        ]
+    }
+
+]

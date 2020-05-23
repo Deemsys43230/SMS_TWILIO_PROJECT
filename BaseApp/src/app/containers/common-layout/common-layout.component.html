@@ -1,0 +1,51 @@
+<!--Navbar Starts-->
+<nav class="navbar navbar-light navbar-expand-md">
+    <a routerLink="/login" class="navbar-brand">
+      <img src="assets/img/brand/neva-clinic-logo.jpg" width="210"  alt="logo" />
+    </a>
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/auth/login">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="null">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="null">Contact</a>
+          </li>
+      </ul>
+          </div>     -->
+</nav><br>
+<!--Navbar Ends-->
+<div class="app-body">
+
+  <!-- Main content -->
+  <main class="main">
+    
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div><!-- /.container-fluid -->
+  </main>
+</div>
+<app-footer>
+  <!-- <div class="container-fluid" id="topFooter">
+    
+    <div class="row" >
+    <div class="col-md-4 col-12">
+      <hr>
+    </div>
+    <div class="col-md-4 col-12 text-center">Weather/Advertisement Area</div>
+    <div class="col-md-4 col-12"><hr></div>
+  </div>
+</div> -->
+
+<div class="text-center pt-2">
+  <span>© 2019<span class="text-primary">NEVADA HEALTH & WELLNESS.</span>All rights reserved.</span>
+  <!-- <span class="float-right">Powered by <a href="https://deemsysinc.com" target="_blank">Deemsys Inc</a>
+</span> -->
+</div>
+</app-footer>

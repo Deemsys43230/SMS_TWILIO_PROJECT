@@ -1,0 +1,21 @@
+<div class="row col-12 px-0" style="margin-left:0px;">
+  <div class="col-4 px-0">
+      <pagination-controls *ngIf="itemsPerPage!=''" [maxSize]="5" (pageChange)="setPageNo($event)" ></pagination-controls>
+    <input *ngIf="itemsPerPage!=''" type="text" class="col-md-6 form-control" [(ngModel)]="toPage" style="display: inline" placeholder="Enter Page No."/>
+    <button *ngIf="itemsPerPage!=''" type="button" class="btn btn-primary" style="margin: -5px 0px 0px 10px; " (click)="setPageNo(toPage)">Go</button><br/><br/>
+  </div>
+  <div class="col-4 text-center px-0">
+    <span *ngIf="itemsPerPage!=''" style="font-size:14px">Showing {{ (pageNo - 1) * itemsPerPage + 1 }} - {{ (pageNo * itemsPerPage>=totalRecords)?totalRecords:pageNo * itemsPerPage }} of {{ totalRecords }} Records</span>
+    </div>
+  <div class="col-4 px-0">
+    <select class="form-control paginationUtilSelect " (change)="changeItemsPerPage(itemsPerPage)" [(ngModel)]="itemsPerPage">
+      <option value="2">Show 2 Records Per Page</option>
+      <option value="5">Show 5 Records Per Page</option>
+      <option value="10">Show 10 Records Per Page</option>
+      <option value="20">Show 20 Records Per Page</option>
+      <option value="">Show All</option>
+    </select>
+  </div>
+  </div>
+
+

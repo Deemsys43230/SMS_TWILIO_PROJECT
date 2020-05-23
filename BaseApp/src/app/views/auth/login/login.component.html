@@ -1,0 +1,57 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+          <div class="col-md-3 mx-auto"></div>
+        <div class="col-md-6 mx-auto">
+          <div class="card-group">
+            <div class="card loginForm">
+              <div class="card-body">
+                
+                  <div class="text-center"><h1 class="text-primary text-center">Login
+                  </h1></div>
+                  <!-- <div class="col-md-6 align-items-end  createNewAccountSpan"><a class="float-right" routerLink="/auth/sign-up">Create new account</a>
+                  
+                </div> -->
+                
+                <hr/>
+                <!-- <app-flash-message></app-flash-message> -->
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()" class="form-horizontal" autocomplete="off">
+                  <label for="name">Username
+                  </label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="username" autocomplete="false"/>
+                  </div>
+                  <div class="error-msg-area">
+                    <div *ngIf="loginForm.controls['username'].errors && (!loginForm.controls['username'].pristine|| isFormSubmitted)" class="error-msg">
+                      <div [hidden]="!loginForm.controls['username'].errors.required">Please Enter username.</div>
+                    </div>
+                  </div>
+                  <label for="password">Password
+                  </label>
+                  <div class="input-group">
+                    <input type="password" class="form-control" formControlName="password" autocomplete="new-password"/>
+                  </div>
+                  <div class="error-msg-area">
+                    <div *ngIf="loginForm.controls['password'].errors && (!loginForm.controls['password'].pristine|| isFormSubmitted)" class="error-msg">
+                      <div [hidden]="!loginForm.controls['password'].errors.required">Please Enter Password.</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="d-inline-block">
+                          <button type="submit" class="btn btn-primary" [disabled]="!hideLoader">Login</button>
+                         <div class="d-inline-block"><div [hidden]="hideLoader" class="login-loader ml-2"></div></div></div>
+                   </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-3 mx-auto"></div>
+      </div><br>
+      
+    </div>
+  </main>
+</div>
+
