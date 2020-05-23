@@ -1,0 +1,17 @@
+{
+    "DEFAULT": {
+        "TOKEN": {
+            "KEY": "907bd6208f2511e7bb31be2e44b06b34",
+            "DATA": {
+                "iss": "DEANSYS",
+                "sub": "Transys access token"
+            },
+            "EXP": "30m"
+        },
+        "ENCRYPTION": {
+            "ALGORITHM": "aes-256-cbc",
+            "PASSWORD": "b5506f343a664fdfa7c7bee70c2f1769",
+            "IV": "4a348Cc6F9c0"
+        }
+    }
+}
