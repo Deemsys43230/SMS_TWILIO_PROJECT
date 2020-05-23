@@ -41,6 +41,8 @@ app.use(expressSession({
 // routes
 app.use('/user',require('./routes/user'));
 app.use('/common',require('./routes/siteinfo'));
+app.use('/user/contacts',require('./routes/contacts'));
+app.use('/user/groups',require('./routes/group'));
 
 //app.use(errorHandler);
 
