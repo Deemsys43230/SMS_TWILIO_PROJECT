@@ -184,6 +184,28 @@ router
                 });
             }
         });
+    })
+    .post('/sms/users', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'Send SMS t invidual Users', {attach:req.body});
+        log.close();
+        
+        var sendSMSData=req.body;
+        contactApi.sendSMS(sendSMSData, function (err, restaurants) {
+            if (err) {
+                log.error(component, 'Send SMS to Individual users error', { attach: err });
+                log.close();
+                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+            } else {
+                log.debug(component, `SMS to individuals users sent successfully!`);
+                log.close();
+                return res.json({
+                    status:true,
+                    message: "Message Sent Successfully!"
+                });
+            }
+        });
     });
 
 module.exports = router;

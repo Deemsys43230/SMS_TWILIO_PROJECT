@@ -10,7 +10,8 @@ var twilioSettingSchema=new mongoose.Schema({
     authToken:{type:String,required:true},
     messageingServiceId:{type:String, required:true},
     fromPhone:{type:String,required:true},
-    cellPhonePrefix:{type:String, required:true}
+    cellPhonePrefix:{type:String, required:true},
+    notifyServiceId: {type:String, required:true}
 },{
     collection:'twilioSettings',
     versionKey:false

@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const ERR = require('./errors.json');
 const  multer = require('multer');
-//const security=require('./util/security')
+const cors = require('cors');
 const expressSession = require('express-session');
 const errorHandler=require('./middleware/error-handler');
 
@@ -32,6 +32,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 app.use(helmet());
 app.use(expressSession({
     secret: process.env.COOKIE_SECRET
