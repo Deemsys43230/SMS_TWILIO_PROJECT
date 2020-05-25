@@ -1,3 +1,60 @@
-<p>
-  templates works!
-</p>
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-sticky-note mr-2" aria-hidden="true"></i>Templetes
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            Featured
+            <button class="btn btn-info btn-sm float-right" type="button">Add</button>
+          </div>
+          <div class="listContainer">
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">Cras justo odio<button
+                  type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Dapibus ac facilisis
+                in<button type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Vestibulum at eros<button
+                  type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Cras justo odio<button
+                  type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Dapibus ac facilisis
+                in<button type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Dapibus ac facilisis
+                in<button type="button" class="btn fa fa-pencil text-primary float-right"></button></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+      <div class="offset-2 col-6">
+        <div class="row">
+          <div class="col-3">
+            <p class="h6">Title<span class="float-right">:</span></p>
+          </div>
+          <div class="col-8">
+            <input class="form-control" type="text">
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-3">
+            <p class="h6">Templete<span class="float-right">:</span></p>
+          </div>
+          <div class="col-8">
+            <textarea name="Templete" id="Templete" [(ngModel)]="templete" cols="53" rows="10"></textarea>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="offset-3 col-8 d-flex">
+            <button type="button" class="btn btn-info mr-auto" id="GroupSms">Save</button>
+            <button type="button" class="btn btn-primary  mx-auto" id="GroupSms">Reset</button>
+            <button type="button" class="btn btn-danger ml-auto" id="GroupSms">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
