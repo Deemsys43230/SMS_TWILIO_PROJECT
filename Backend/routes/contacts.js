@@ -127,7 +127,6 @@ router
                 }
             }
         });
-
     })
     .post('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
@@ -161,6 +160,35 @@ router
                         }
                     });
                 }
+            }
+        });
+    })
+    .post('/importContacts', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+   
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'import contact');
+        // extract
+        var contactData = req.body;
+        contactData.userId=uuid.uid();
+
+        contactApi.create(contactData, (err, contact) => {
+            if (err) {
+                log.error(component, 'create new contact error', { attach: err });
+                log.close();
+                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING });
+            } else {
+                // extract into the sanitize method
+                var ret = {
+                    userId: contact.userId,
+                }
+                log.debug(component, 'new contact created');
+                log.trace(component, 'contact:', { attach: contact });
+                log.close();
+                return res.json({
+                    status:true,
+                    data: ret
+                });
             }
         });
     })
@@ -240,7 +268,6 @@ router
                 });
             }
         })
-        
     });
 
 module.exports = router;
