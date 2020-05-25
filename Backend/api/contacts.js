@@ -172,38 +172,18 @@ var search = function (searchData, cb) {
     // setup
     const log = require('../util/logger').log(component, ___filename);
     log.debug(component, 'searching restaurant', { attach: searchData });
-    if(searchData.name!=undefined&&searchData.name !="") {
+    
         var query = [
             {
                 $match: { 
-                    $and: [
-                        { name : new RegExp(searchData.name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
+                    $or: [
+                        { name : new RegExp(searchData.searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') },
+                        { phoneNumber:new RegExp(searchData.searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
                     ]
                 }
             }
         ];
-    } else if(searchData.name!=undefined&&searchData.name !=""&&searchData.phoneNumber!=undefined&&searchData.phoneNumber!="")  {
-        var query = [
-            {
-                $match: { 
-                    $and: [
-                        { name : new RegExp(searchData.name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') },
-                        { phoneNumber:new RegExp(searchData.phoneNumber.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
-                    ]
-                }
-            }
-        ];
-    } else if(searchData.phoneNumber!=undefined&&searchData.phoneNumber!="")  {
-        var query = [
-            {
-                $match: { 
-                    $and: [
-                        { phoneNumber:new RegExp(searchData.phoneNumber.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
-                    ]
-                }
-            }
-        ];
-    }
+    
     log.debug(component, 'Query is', { attach: query});
     log.close();
     model.aggregate(query).collation({locale: "en", strength: 2})
