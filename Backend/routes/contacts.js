@@ -7,6 +7,7 @@ const config = require('config');
 const router = require('express').Router();
 const ERR = require('../errors.json');
 const contactApi = require('../api/contacts');
+const groupApi = require('../api/group');
 const security=require('../util/security');
 const uuid=require('../util/misc');
 
@@ -206,6 +207,40 @@ router
                 });
             }
         });
+    })
+    .post('/sms/group', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'Send SMS t invidual Users', {attach:req.body});
+        log.close();
+        
+        var sendSMSData=req.body;
+        groupApi.find.by.groupId(sendSMSData, function(err, result) {
+            if (err) {
+                log.error(component, 'Fing group users error', { attach: err });
+                log.close();
+                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+            } else {
+                log.debug(component, `Found Group users!`);
+                log.close();
+                sendSMSData.smsSendIds = result;
+                contactApi.sendSMS(sendSMSData, function (err, restaurants) {
+                    if (err) {
+                        log.error(component, 'Send SMS to Individual users error', { attach: err });
+                        log.close();
+                        return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+                    } else {
+                        log.debug(component, `SMS to individuals users sent successfully!`);
+                        log.close();
+                        return res.json({
+                            status:true,
+                            message: "Message Sent Successfully!"
+                        });
+                    }
+                });
+            }
+        })
+        
     });
 
 module.exports = router;

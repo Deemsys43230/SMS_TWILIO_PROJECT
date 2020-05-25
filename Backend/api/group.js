@@ -4,6 +4,7 @@
 'use strict';
 const component = "USER";
 const model = require('../models/group');
+const _ = require("underscore");
 
 var create = function (data, cb) {
     // setup
@@ -80,7 +81,7 @@ var removeUserFromGroup = function(data, cb) {
     var updateQuery = {
         groupId: data.groupId
     }
-    model.update({  groupId: data.groupId },{"$pull":{"users":{"userId":data.userId}}})
+    model.update({  groupId: data.groupId },{"$pull":{"users":data.userId}})
     .then(group => {
         log.debug(component, 'user romved from group', { attach: group.result });
         log.close();
@@ -146,7 +147,7 @@ var find = {
               {
                 "$lookup": {
                   "from": "contacts",
-                  "localField": "users.userId",
+                  "localField": "users",
                   "foreignField": "userId",
                   "as": "users"
                 }
@@ -191,7 +192,7 @@ var find = {
               {
                 "$lookup": {
                   "from": "contacts",
-                  "localField": "users.userId",
+                  "localField": "users",
                   "foreignField": "userId",
                   "as": "users"
                 }
@@ -219,6 +220,44 @@ var find = {
                         log.close();
                     }
                     return cb(null, group);
+                })
+                .catch(err => {
+                    log.error(component, 'find all group error', { attach: err });
+                    log.close();
+                    return cb(err);
+                })
+        },
+        groupId: function (searchData, cb) {
+            const log = require('../util/logger').log(component, ___filename);
+            log.debug(component, 'searching for group id', { attach: searchData.groupIds });
+            var query = [
+                {
+                    $match: { 
+                        groupId : { $in : searchData.groupIds}
+                    }
+                },
+                { "$unwind": { "path": "$users", "preserveNullAndEmptyArrays": true }},
+                { "$group": {
+                    "_id":"$_id",
+                    "users": { "$push": "$users" }
+                } }
+            ]
+            log.debug(component, 'search group', { attach: query });
+            model.aggregate(query)
+                .then(group => {
+                    if (!group) log.debug(component, `no group found ${id}`);
+                    else {  
+                        log.debug(component, `${group.length} group found`);
+                        log.trace(component, 'group found');
+                        log.close();
+                    }
+                    var allUsers = []
+                    _.map(group, function(contact, index) {
+                        contact.users.forEach(user => {
+                            allUsers.push(user)
+                        });
+                    })
+                    return cb(null, allUsers);
                 })
                 .catch(err => {
                     log.error(component, 'find all group error', { attach: err });

@@ -243,29 +243,20 @@ async function sendSMS(smsSendData, cb) {
         log.close();
         var notifyUsers = [];
         _.map(users, function(contact, index) {
-            var bindingOpts = {
+            notifyUsers.push(JSON.stringify({
                 identity:contact.userId,
                 binding_type: 'sms',
                 address: twilioPrefix+contact.phoneNumber
-            }
-            notifyUsers.push(bindingOpts)
+            }))
         });
-        console.log(notifyUsers)
-        var santizedBindingOpts = JSON.stringify(notifyUsers);
-        // console.log(santizedBindingOpts);
-        // // const newData = [].concat.apply([],notifyUsers);
-        console.log(santizedBindingOpts.substring(1, santizedBindingOpts.length-1));
-        var santizedBindingDataOts = santizedBindingOpts.substring(1, santizedBindingOpts.length-1);
-        var newSantizedData = santizedBindingDataOts.replace(/[{}]/g, "");
-        // var newSantizedDataObj = {};
-        // var newSantizedDataObj = newSantizedData;
-        console.log(newSantizedData)
+    
+        const notificationOpts = { 
+            toBinding: notifyUsers, 
+            body: smsSendData.messageBody, 
+        }; 
         new Promise(resolve => {
             client.notify.services(notifyServiceId)
-            .notifications.create({
-                toBinding: JSON.stringify({newSantizedData}),
-                body: smsSendData.message
-            }).then(notification => {
+            .notifications.create(notificationOpts).then(notification => {
                 console.log(notification.sid);
                 cb(null, users);
                 resolve()
