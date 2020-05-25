@@ -145,7 +145,64 @@ router
             }
         })
     })
-    .put('/:groupId', (req, res) => {
+    .post('/addToGroup', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+   
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'User Add to Group');
+        // extract
+        var groupData = req.body;
+        // groupData.groupId =  uuid.uid();
+        groupApi.updateGroup(groupData, (err, group) => {
+            if (err) {
+                log.error(component, 'user updating to group error', { attach: err });
+                log.close();
+                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING
+                     });
+            } else {
+                // extract into the sanitize method
+                var ret = {
+                    id: group.id,
+                }
+                log.debug(component, 'user added to group');
+                log.trace(component, 'group:', { attach: group });
+                log.close();
+                return res.json({
+                    status:true,
+                    message: group
+                });
+            }
+        });
+    })
+    .post('/removeContactFromGroup', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+   
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'Remove Contact from group');
+        // extract
+        var groupData = req.body;
+        // groupData.groupId =  uuid.uid();
+        groupApi.removeUserFromGroup(groupData, (err, group) => {
+            if (err) {
+                log.error(component, 'remove Contcat group error', { attach: err });
+                log.close();
+                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING
+                     });
+            } else {
+                // extract into the sanitize method
+                var ret = {
+                    id: group.id,
+                }
+                log.debug(component, 'Remove Contact from group');
+                log.close();
+                return res.json({
+                    status:true,
+                    message: "User Removed from Group!"
+                });
+            }
+        });
+    })
+    .put('/:groupId',security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var groupData = req.body;
@@ -186,7 +243,7 @@ router
         });
 
     })
-    .post('/:groupId', (req, res) => {
+    .post('/:groupId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var groupId = req.params.groupId;
@@ -214,13 +271,34 @@ router
                             log.debug(component, 'group deleted');
                             log.close();
                             return res.json({ status:true,
-                            message:"group removed" });
+                            message:"Group Deleted Successfully!" });
                         }
                     });
                 }
             }
         });
-
     })
+    .post('/search/groups', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'searching for all users', {attach:req.body});
+        log.close();
+        
+        var searchData=req.body;
+        groupApi.search(searchData, function (err, restaurants) {
+            if (err) {
+                log.error(component, 'find all restaurants error', { attach: err });
+                log.close();
+                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+            } else {
+                log.debug(component, `found ${restaurants.length} restaurants`);
+                log.close();
+                return res.json({
+                    status:true,
+                    data: restaurants
+                });
+            }
+        });
+    });
 
 module.exports = router;

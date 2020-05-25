@@ -44,48 +44,6 @@ var update = function(data, cb) {
     });
 };
 
-var updateGroup = function(data, cb) {
-    const log = require('../util/logger').log(component, ___filename);
-    log.debug(component, 'updating contact', { attach: data.id });
-    var query = {
-        "userId": { $in:data.contactIds }
-    };
-    var updateQuery = {
-        groupId: data.groupId
-    }
-    model.updateMany(query, updateQuery,  (err, contact) => {
-        if (err) {
-            log.error(component, 'update contact error', { attach: err });
-            log.close();
-            return cb(err);
-        }
-        log.debug(component, 'contact updated', {attach: contact});
-        log.close();
-        return cb(null, contact);
-    });
-};
-
-var removeUserFromGroup = function(data, cb) {
-    const log = require('../util/logger').log(component, ___filename);
-    log.debug(component, 'updating contact', { attach: data.id });
-    var query = {
-        "userId": { $in:data.contactIds }
-    };
-    var updateQuery = {
-        groupId: data.groupId
-    }
-    model.updateMany(query, updateQuery,  (err, contact) => {
-        if (err) {
-            log.error(component, 'update contact error', { attach: err });
-            log.close();
-            return cb(err);
-        }
-        log.debug(component, 'contact updated', {attach: contact});
-        log.close();
-        return cb(null, contact);
-    });
-};
-
 
 var remove = function (contactId, cb) {
     // setup
@@ -175,6 +133,56 @@ var find = {
         },
     }
 };
+var search = function (searchData, cb) {
+    // setup
+    const log = require('../util/logger').log(component, ___filename);
+    log.debug(component, 'searching restaurant', { attach: searchData });
+    if(searchData.name!=undefined&&searchData.name !="") {
+        var query = [
+            {
+                $match: { 
+                    $and: [
+                        { name : new RegExp(searchData.name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
+                    ]
+                }
+            }
+        ];
+    } else if(searchData.name!=undefined&&searchData.name !=""&&searchData.phoneNumber!=undefined&&searchData.phoneNumber!="")  {
+        var query = [
+            {
+                $match: { 
+                    $and: [
+                        { name : new RegExp(searchData.name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') },
+                        { phoneNumber:new RegExp(searchData.phoneNumber.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
+                    ]
+                }
+            }
+        ];
+    } else if(searchData.phoneNumber!=undefined&&searchData.phoneNumber!="")  {
+        var query = [
+            {
+                $match: { 
+                    $and: [
+                        { phoneNumber:new RegExp(searchData.phoneNumber.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'gi') }
+                    ]
+                }
+            }
+        ];
+    }
+    log.debug(component, 'Query is', { attach: query});
+    log.close();
+    model.aggregate(query).collation({locale: "en", strength: 2})
+    .then(users => {
+        log.debug(component, `retrieved ${users.length} Search related Users`);
+        log.close();
+                return cb(null, users);
+    })
+    .catch(err => {
+        log.error(component, 'find all search users error', { attach: err });
+        log.close();
+        return cb(err);
+    })
+}
 
 
 module.exports = {
@@ -182,6 +190,5 @@ module.exports = {
     create: create,
     update: update,
     remove: remove,
-    updateGroup:updateGroup,
-    removeUserFromGroup:removeUserFromGroup
+    search: search
 };

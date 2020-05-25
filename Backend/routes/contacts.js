@@ -63,65 +63,7 @@ router
             }
         });
     })
-    .post('/addToGroup', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
-   
-        // setup
-        const log = require('../util/logger').log(component, ___filename);
-        log.debug(component, 'creating new group');
-        // extract
-        var groupData = req.body;
-        // groupData.groupId =  uuid.uid();
-        contactApi.updateGroup(groupData, (err, group) => {
-            if (err) {
-                log.error(component, 'create new group error', { attach: err });
-                log.close();
-                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING
-                     });
-            } else {
-                // extract into the sanitize method
-                var ret = {
-                    id: group.id,
-                }
-                log.debug(component, 'new group created');
-                log.trace(component, 'group:', { attach: group });
-                log.close();
-                return res.json({
-                    status:true,
-                    message: "Group Created Successfully!"
-                });
-            }
-        });
-    })
-    .post('/removeContactFromGroup', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
-   
-        // setup
-        const log = require('../util/logger').log(component, ___filename);
-        log.debug(component, 'creating new group');
-        // extract
-        var groupData = req.body;
-        // groupData.groupId =  uuid.uid();
-        contactApi.removeUserFromGroup(groupData, (err, group) => {
-            if (err) {
-                log.error(component, 'create new group error', { attach: err });
-                log.close();
-                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING
-                     });
-            } else {
-                // extract into the sanitize method
-                var ret = {
-                    id: group.id,
-                }
-                log.debug(component, 'new group created');
-                log.trace(component, 'group:', { attach: group });
-                log.close();
-                return res.json({
-                    status:true,
-                    message: "Group Created Successfully!"
-                });
-            }
-        });
-    })
-    .get('/:contactId', (req, res) => {
+    .get('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         contactApi.find.by.id(req.params.contactId, function (err, contact) {
             if (err) {
@@ -145,7 +87,7 @@ router
             }
         });
     })
-    .put('/:contactId', (req, res) => {
+    .put('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var contactData = req.body;
@@ -186,7 +128,7 @@ router
         });
 
     })
-    .post('/:contactId', (req, res) => {
+    .post('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var contactId = req.params.contactId;
@@ -220,7 +162,28 @@ router
                 }
             }
         });
-
     })
+    .post('/search/users', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+        // setup
+        const log = require('../util/logger').log(component, ___filename);
+        log.debug(component, 'searching for all users', {attach:req.body});
+        log.close();
+        
+        var searchData=req.body;
+        contactApi.search(searchData, function (err, restaurants) {
+            if (err) {
+                log.error(component, 'find all restaurants error', { attach: err });
+                log.close();
+                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+            } else {
+                log.debug(component, `found ${restaurants.length} restaurants`);
+                log.close();
+                return res.json({
+                    status:true,
+                    data: restaurants
+                });
+            }
+        });
+    });
 
 module.exports = router;

@@ -7,8 +7,8 @@ var contactSchema=new mongoose.Schema({
     userId:{type:String,required:true},
     name:{type:String, required:true},
     phoneNumber:{type:String,required:true},
-    email:{type:String},
-    groupId:{type:String}
+    email:{type:String}
+    // groupId:{type:String}
 },{
     collection:'contacts',
     versionKey:false
