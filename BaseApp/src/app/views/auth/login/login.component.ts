@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserApiService } from '../../../core/http/user-api-service';
 import { ToastrService } from '../../../../../node_modules/ngx-toastr';
 import { UserService } from '../../../core/services/user.service';
-//import { UserService } from '../../../services/user.service';
-//import { LoginModel } from '../../../models/login.model';
-//import { FlashMessageService } from '../../flash-message/flash-message.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +12,7 @@ import { UserService } from '../../../core/services/user.service';
 export class LoginComponent implements OnInit {
 
   createLoginForm = {
-    username: ["", Validators.required],
+    userName: ["", Validators.required],
     password: ["", Validators.required]
   }
   public isFormSubmitted = false;
