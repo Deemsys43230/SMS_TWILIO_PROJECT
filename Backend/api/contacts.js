@@ -11,6 +11,7 @@ var importCSV = require('../templates/importContacts');
 const config = require('config');
 const uuid=require('../util/misc');
 const async=require('async');
+const ERR = require('../errors.json');
 
 var accountSid;
 var authToken;
@@ -319,6 +320,8 @@ var importUploads = function(req, res, cb){
             if (!req.file) {
                 return cb("Please send file", null);
             } else {
+                var sanitaizedContats = [];
+                var promises = [];
                 async.waterfall([
                     function(cb) {
                         importCSV.processCSVFile(req.file.path, function(err, data){
@@ -327,12 +330,11 @@ var importUploads = function(req, res, cb){
                                 log.close();
                                 return cb(err)
                             } else {
-                                console.log(data);
-                                var sanitaizedContats = [];
-                                var promises = [];
-                                promises.push(new Promise(function(resolve, reject) {
-                                    data.contacts.forEach(async function(contact, index1){
-                                        await find.by.findDupliactePhoneNumber(contact , (err, result) => {
+                                console.log("data",data);
+                                
+                                data.contacts.forEach(async function(contact, index1){
+                                    promises.push(new Promise(function(resolve, reject) {
+                                        find.by.findDupliactePhoneNumber(contact , (err, result) => {
                                             if(err) {
                                                 // cb(err, null)
                                                 reject(err)
@@ -347,42 +349,52 @@ var importUploads = function(req, res, cb){
                                                 resolve();
                                             }
                                         })
-                                    })                                   
-                                }))
+                                    }))                                
+                                })
                                 Promise.all(promises).then(function() {
                                     cb(null, sanitaizedContats);
                                 })
                             }
                         })
-                    }, async function(sanitaizedContats, cb) {
-                        console.log(sanitaizedContats)
+                    }, async function(sanitaizedContats, callBack) {
+                        console.log(sanitaizedContats);
                         await new Promise(resolve => {
-                            sanitaizedContats.forEach(async function(contact, index1){
-                                await new Promise(resolve => {
-                                    contact.userId = uuid.uid();
-                                    cb(null, sa)
-                                    resolve()
+                            if(sanitaizedContats.length == 0) {
+                                resolve();
+                            } else {
+                                sanitaizedContats.forEach(async function(contact, index1){
+                                    // await new Promise(resolve => {
+                                        contact.userId = uuid.uid();
+                                    //     resolve()
+                                    // })
                                 })
-                            })
+                                // callBack(null, sanitaizedContats);
+                                resolve()
+                            }
                         })
-                    }
+                    }  
                 ],(err) => {
                     if (err) {
                         log.error(component, 'Import Contcats Error', { attach: err });
                         log.close();
                         return cb(err);
                     }
-                    // model.insertMany(sanitaizedContats)
-                    // .then(result => {
-                    //     log.debug(component, 'Bulk Data inserted in Contcats');
-                    //     log.close();
-                        return cb(null, sanitaizedContats)
-                    // })
-                    // .catch(err => {
-                    //     log.error(component,'Error while insert Bulk Data');
-                    //     log.close();
-                    //     return cb(err, null);
-                    // })
+                    if(sanitaizedContats.length == 0) {
+                        return cb(ERR.DUPLICATE_RECORD, null)
+                    } else {
+                        model.insertMany(sanitaizedContats)
+                        .then(result => {
+                            log.debug(component, 'Bulk Data inserted in Contcats');
+                            log.close();
+                            return cb(null, sanitaizedContats)
+                        })
+                        .catch(err => {
+                            log.error(component,'Error while insert Bulk Data');
+                            log.close();
+                            return cb(err, null);
+                        })
+                    }
+                    
                 })
             }
         }
