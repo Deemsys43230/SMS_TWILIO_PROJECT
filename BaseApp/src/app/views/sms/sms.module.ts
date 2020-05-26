@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TagInputModule } from 'ngx-chips';
 import { AddGroupComponent } from './add-group/add-group.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 
@@ -21,6 +22,7 @@ import { AddGroupComponent } from './add-group/add-group.component';
     PopoverModule.forRoot(),
     ReactiveFormsModule,
     TagInputModule,
+    NgxSpinnerModule
   ],
   declarations: [SettingsComponent,SendSmsComponent,TemplatesComponent,ContactsComponent, ChangePasswordComponent, AddGroupComponent]
 })

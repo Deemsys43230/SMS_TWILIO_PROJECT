@@ -7,27 +7,42 @@
       <div class="col-2">
         <p class="h6">Recipient Type<span class="float-right">:</span></p>
       </div>
-      <div class="col-4">
+      <div class="col-2">
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-outline-primary shadow-none" [ngClass]="{'active':searchType == 'Individual'}" id="Individual"
+          <button type="button" class="btn btn-outline-primary shadow-none"
+            [ngClass]="{'active':searchType == 'Individual'}" id="Individual"
             (click)="searchType = 'Individual';">Individual</button>
-          <button type="button" class="btn btn-outline-primary shadow-none" [ngClass]="{'active':searchType == 'Group'}" id="GroupSms"
-            (click)="searchType = 'Group';">Group</button>
+          <button type="button" class="btn btn-outline-primary shadow-none" [ngClass]="{'active':searchType == 'Group'}"
+            id="GroupSms" (click)="searchType = 'Group';">Group</button>
         </div>
       </div>
-      <div class="offset-3 col-3">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Choose
-          Template</button>
+      <div class="col-8">
+        <div class="row ">
+          <div class="col-3">
+            <p class="h6">Selected Template<span class="float-right">:</span></p>
+          </div>
+          <div class="col-9 ">
+            <div class="row">
+              <div class="col-8">
+                <p class="h6 text-info ">{{templateTitle}}</p>
+              </div>
+              <div class="col-4">
+                <button type="button" class="btn btn-primary float-left " (click)="getTempletes()" data-toggle="modal"
+                  data-target="#exampleModal">Choose&nbsp;Template</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-2">
         <p class="h6">Recipients<span class="float-right">:</span></p>
       </div>
-      <div class="col-8">
-        <tag-input *ngIf="searchType == 'Individual'" [placeholder]="'Add a new Individual'"
-          (onAdd)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
-          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals">
+      <div class="col-10">
+        <tag-input *ngIf="searchType == 'Individual'" [placeholder]="'Add a new Individual'" (onAdd)="onSelect($event)"
+          [onTextChangeDebounce]="500" [theme]="'dark'" [secondaryPlaceholder]="'Search Individual'"
+          [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals">
           <ng-template let-item="item">
             {{ item.name}}&lt;{{item.phoneNumber}}&gt;
             <span aria-hidden="true" (click)="removeIndividual(item);" class="font-weight-bold">X</span>
@@ -49,7 +64,7 @@
           <tag-input-dropdown [autocompleteObservable]="requestAutoCompleteGroup" [displayBy]="'groupName'"
             [identifyBy]="'groupId'">
             <ng-template let-item="item" let-index="index">
-              {{ item.groupName}}&nbsp;<i class="fa fa-users" aria-hidden="true"></i>&nbsp;{{item.users}}
+              {{ item.groupName}}&nbsp;<i class="fa fa-users" aria-hidden="true"></i>&nbsp;{{item.users.length}}
             </ng-template>
           </tag-input-dropdown>
         </tag-input>
@@ -59,8 +74,8 @@
       <div class="col-2">
         <p class="h6">Message<span class="float-right">:</span></p>
       </div>
-      <div class="col-6">
-        <textarea name="message" id="message" [(ngModel)]="message"  cols="85" rows="5"></textarea>
+      <div class="col-10">
+        <textarea name="message" id="message" [(ngModel)]="message" class="form-control" rows="5"></textarea>
       </div>
     </div>
     <div class="row mt-3">
@@ -72,6 +87,10 @@
   </div>
 </div>
 
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="small" color="#597917" type="square-jelly-box"></ngx-spinner>
+
+
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -82,27 +101,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body list-group list-group-flush p-0">
-        <div class=" text-center">
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal" (click)="patchTemplete();">
-            Cras justo odio
-          </button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Dapibus ac facilisis
-            in</button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Morbi leo
-            risus</button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Porta ac consectetur
-            ac</button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Vestibulum at
-            eros</button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">
-            Cras justo odio
-          </button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Dapibus ac facilisis
-            in</button>
-          <button type="button" class="list-group-item list-group-item-action" data-dismiss="modal">Morbi leo
-            risus</button>
-        </div>
+      <div class="modal-body list-group text-center list-group-flush p-0">
+        <button type="button" *ngFor="let template of templateData" class="list-group-item list-group-item-action"
+          data-dismiss="modal" (click)="patchTemplete(template);">
+          {{template.title}}
+        </button>
       </div>
     </div>
   </div>
