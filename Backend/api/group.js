@@ -297,7 +297,7 @@ var search = function (searchData, cb) {
         {
             "$lookup": {
               "from": "contacts",
-              "localField": "users.userId",
+              "localField": "users",
               "foreignField": "userId",
               "as": "users"
             }
@@ -308,6 +308,7 @@ var search = function (searchData, cb) {
                 preserveNullAndEmptyArrays: true
             }
         },
+        { $sort: { "users.name": 1} },
           { "$group": {
             "_id": "$_id",
             "groupName": { "$first": "$groupName" },    

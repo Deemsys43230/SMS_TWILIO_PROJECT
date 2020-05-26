@@ -217,7 +217,7 @@ var search = function (searchData, cb) {
     
     log.debug(component, 'Query is', { attach: query});
     log.close();
-    model.aggregate(query).collation({locale: "en", strength: 2})
+    model.aggregate(query).collation({locale: "en", strength: 2}).sort({name:1})
     .then(users => {
         log.debug(component, `retrieved ${users.length} Search related Users`);
         log.close();
