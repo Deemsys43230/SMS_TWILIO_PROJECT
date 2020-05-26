@@ -329,11 +329,13 @@ var importUploads = function(req, res, cb){
                             } else {
                                 console.log(data);
                                 var sanitaizedContats = [];
-                                data.contacts.forEach(async function(contact, index1){
-                                    await new Promise(resolve => {
-                                        find.by.findDupliactePhoneNumber(contact , (err, result) => {
+                                var promises = [];
+                                promises.push(new Promise(function(resolve, reject) {
+                                    data.contacts.forEach(async function(contact, index1){
+                                        await find.by.findDupliactePhoneNumber(contact , (err, result) => {
                                             if(err) {
-                                                cb(err, null)
+                                                // cb(err, null)
+                                                reject(err)
                                             } else {
                                                 if(result.length == 0) {
                                                     sanitaizedContats.push(contact)
@@ -341,18 +343,25 @@ var importUploads = function(req, res, cb){
                                                     log.debug(component, "Found Duplicate Phone Number", {attachInline: contact.phoneNumber});
                                                     log.close();
                                                 }
-                                                return cb(null, sanitaizedContats)
+                                                // cb(null, sanitaizedContats);
+                                                resolve();
                                             }
                                         })
                                     })                                   
+                                }))
+                                Promise.all(promises).then(function() {
+                                    cb(null, sanitaizedContats);
                                 })
                             }
                         })
                     }, async function(sanitaizedContats, cb) {
+                        console.log(sanitaizedContats)
                         await new Promise(resolve => {
                             sanitaizedContats.forEach(async function(contact, index1){
                                 await new Promise(resolve => {
                                     contact.userId = uuid.uid();
+                                    cb(null, sa)
+                                    resolve()
                                 })
                             })
                         })
