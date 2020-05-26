@@ -6,6 +6,11 @@ const component = "USER";
 const model = require('../models/contacts');
 const twilioModel = require('../models/twilioConfig');
 const _ = require("underscore");
+const multer = require("multer");
+var importCSV = require('../templates/importContacts');
+const config = require('config');
+const uuid=require('../util/misc');
+const async=require('async');
 
 var accountSid;
 var authToken;
@@ -149,6 +154,32 @@ var find = {
                     return cb(err);
                 })
         },
+        findDupliactePhoneNumber: function (data, cb) {
+            const log = require('../util/logger').log(component, ___filename);
+            log.debug(component, 'searching for Phone Number', { attach: data.phoneNumber });
+            if(data.id!=undefined&&data.id!="") {
+                query = { phoneNumber: data.phoneNumber, userId: { $ne: data.id} };
+            } else {
+                query = { phoneNumber: data.phoneNumber };
+            }
+            // var query = { phoneNumber: data.phoneNumber };
+            log.debug(component, 'search contact', { attach: query });
+            model.find(query)
+                .then(contact => {
+                    if (!contact) log.debug(component, `no contact found ${id}`);
+                    else {  
+                        log.debug(component, `${contact.length} contact found`);
+                        log.trace(component, 'contact found');
+                        log.close();
+                    }
+                    return cb(null, contact);
+                })
+                .catch(err => {
+                    log.error(component, 'find all contact error', { attach: err });
+                    log.close();
+                    return cb(err);
+                })
+        },
         status: function (status, cb) {
             const log = require('../util/logger').log(component, ___filename);
             var query = { 'active': status };
@@ -254,7 +285,100 @@ async function sendSMS(smsSendData, cb) {
         log.close();
         return cb(err);
     })
-}
+};
+
+//Importing Contact
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, config.batchFileSaveLocationPrefix)
+    },
+    filename: function (req, file, cb) {     
+      cb(null, "ImportingFile-"+Date.now()+".csv");
+    }
+});
+
+var upload = multer({ 
+    storage: storage,
+    fileFilter: function fileFilter(req, file, cb) {
+      if(['csv'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1){
+        cb({"message": "Invalid File Format - Supported Format: .csv"}, false);
+      } else{
+        cb(null, true);       
+      }     
+    }
+}).single('file');
+
+var request = require('request');
+
+var importUploads = function(req, res, cb){  
+    const log = require('../util/logger').log(component, ___filename);
+    upload(req, res, function(err){
+        if(err){
+            return cb(err, null);
+        }else {
+            if (!req.file) {
+                return cb("Please send file", null);
+            } else {
+                async.waterfall([
+                    function(cb) {
+                        importCSV.processCSVFile(req.file.path, function(err, data){
+                            if(err) {
+                                log.error(component, 'Process CSV file Error');
+                                log.close();
+                                return cb(err)
+                            } else {
+                                console.log(data);
+                                var sanitaizedContats = [];
+                                data.contacts.forEach(async function(contact, index1){
+                                    await new Promise(resolve => {
+                                        find.by.findDupliactePhoneNumber(contact , (err, result) => {
+                                            if(err) {
+                                                cb(err, null)
+                                            } else {
+                                                if(result.length == 0) {
+                                                    sanitaizedContats.push(contact)
+                                                } else {
+                                                    log.debug(component, "Found Duplicate Phone Number", {attachInline: contact.phoneNumber});
+                                                    log.close();
+                                                }
+                                                return cb(null, sanitaizedContats)
+                                            }
+                                        })
+                                    })                                   
+                                })
+                            }
+                        })
+                    }, async function(sanitaizedContats, cb) {
+                        await new Promise(resolve => {
+                            sanitaizedContats.forEach(async function(contact, index1){
+                                await new Promise(resolve => {
+                                    contact.userId = uuid.uid();
+                                })
+                            })
+                        })
+                    }
+                ],(err) => {
+                    if (err) {
+                        log.error(component, 'Import Contcats Error', { attach: err });
+                        log.close();
+                        return cb(err);
+                    }
+                    // model.insertMany(sanitaizedContats)
+                    // .then(result => {
+                    //     log.debug(component, 'Bulk Data inserted in Contcats');
+                    //     log.close();
+                        return cb(null, sanitaizedContats)
+                    // })
+                    // .catch(err => {
+                    //     log.error(component,'Error while insert Bulk Data');
+                    //     log.close();
+                    //     return cb(err, null);
+                    // })
+                })
+            }
+        }
+    })
+};
 
 module.exports = {
     find: find,
@@ -262,5 +386,6 @@ module.exports = {
     update: update,
     remove: remove,
     search: search,
-    sendSMS: sendSMS
+    sendSMS: sendSMS,
+    importUploads : importUploads
 };

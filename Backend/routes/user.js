@@ -48,4 +48,39 @@ router
                    
 })
 
+//Change password
+.post('/changePassword', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+    const log = require('../util/logger').log(component, ___filename);
+    log.debug(component, 'User change password');
+   
+    req.body.userId = req.user.userId;
+    if(req.body.newPassword==req.body.confirmNewPassword) {
+        userApi.changePassword(req.body, function (err) {
+            if (err) {
+                log.error(component, 'Change Password Error', { attach: err });
+                log.close();
+                return res.json({
+                    request_status: true,
+                    status: false,
+                    err: Object.assign(ERR.NO_SUCH_EMAIL, { message: ERR.INVALID_CREDENTIALS.message })
+                });
+            } else {
+                log.debug(component, 'Change Password Successfull');
+                log.close();
+                return res.json({
+                    request_status: true,
+                    status: true,
+                    message: "Password Changed Successfully"
+                });
+            }
+        });
+    } else {
+        return res.json({
+            request_status: true,
+            status: false,
+            message: "New Password not matched"
+        });
+    }
+})
+
 module.exports = router;

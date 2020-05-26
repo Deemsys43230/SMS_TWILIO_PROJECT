@@ -42,27 +42,38 @@ router
         log.debug(component, 'creating new contact');
         // extract
         var contactData = req.body;
-        contactData.userId=uuid.uid();
-
-        contactApi.create(contactData, (err, contact) => {
+        contactApi.find.by.findDupliactePhoneNumber(contactData, (err, result) => {
             if (err) {
-                log.error(component, 'create new contact error', { attach: err });
+                log.error(component, 'find phone number alered exsits error', { attach: err });
                 log.close();
                 res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING });
             } else {
-                // extract into the sanitize method
-                var ret = {
-                    userId: contact.userId,
-                }
-                log.debug(component, 'new contact created');
-                log.trace(component, 'contact:', { attach: contact });
+                log.debug(component, 'Found Phone Number Already Excist or Not', {attachInline:result.length});
                 log.close();
-                return res.json({
-                    status:true,
-                    data: ret
-                });
+                if(result.length >= 1) {
+                    res.json({status:false, err: ERR.DUPLICATE_PHONE_NUMBER });
+                } else {
+                    contactData.userId=uuid.uid();
+
+                    contactApi.create(contactData, (err, contact) => {
+                        if (err) {
+                            log.error(component, 'create new contact error', { attach: err });
+                            log.close();
+                            res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING });
+                        } else {
+                            log.debug(component, 'new contact created');
+                            log.trace(component, 'contact:', { attach: contact });
+                            log.close();
+                            return res.json({
+                                status:true,
+                                message: 'Contact Created Successfully!'
+                            });
+                        }
+                    });
+                }
             }
-        });
+        })
+        
     })
     .get('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
@@ -94,39 +105,52 @@ router
         var contactData = req.body;
         contactData.id = req.params.contactId;
         log.debug(component, 'updating contact', { attach: contactData.id });
-        log.trace(component, 'contact data:', { attach: contactData });
-
-        contactApi.find.by.id(req.params.contactId, function (err, contact) {
+        log.close();
+        contactApi.find.by.findDupliactePhoneNumber(contactData, (err, result) => {
             if (err) {
-                log.error(component, 'find contact by id error', { attach: err });
+                log.error(component, 'find phone number alered exsits error', { attach: err });
                 log.close();
-                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
-            } 
-            else {
-                if(!contact) {
-                    log.debug(component, 'no contact found', { attachInline: ERR.NO_SUCH_ID });
-                    log.close();
-                    res.json({status:false, err: ERR.NO_SUCH_ID });
-                }
-                else{
-                    contactApi.update(contactData, function (err, contact) {
+                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING });
+            } else {
+                log.debug(component, 'Found Phone Number Already Excist or Not', {attachInline:result.length});
+                log.close();
+                if(result.length >= 1) {
+                    res.json({status:false, err: ERR.DUPLICATE_PHONE_NUMBER });
+                } else {
+                    contactApi.find.by.id(req.params.contactId, function (err, contact) {
                         if (err) {
-                            log.error(component, 'update contact error', { attach: err });
+                            log.error(component, 'find contact by id error', { attach: err });
                             log.close();
                             return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
-                        } else {
-                            log.debug(component, 'contact updated');
-                            log.trace(component, 'contact:', { attach: contact });
-                            log.close();
-                            return res.json({
-                                status:true,
-                                message: "Contact Updated Successfully!"
-                            });
+                        } 
+                        else {
+                            if(!contact) {
+                                log.debug(component, 'no contact found', { attachInline: ERR.NO_SUCH_ID });
+                                log.close();
+                                res.json({status:false, err: ERR.NO_SUCH_ID });
+                            }
+                            else{
+                                contactApi.update(contactData, function (err, contact) {
+                                    if (err) {
+                                        log.error(component, 'update contact error', { attach: err });
+                                        log.close();
+                                        return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+                                    } else {
+                                        log.debug(component, 'contact updated');
+                                        log.trace(component, 'contact:', { attach: contact });
+                                        log.close();
+                                        return res.json({
+                                            status:true,
+                                            message: "Contact Updated Successfully!"
+                                        });
+                                    }
+                                });
+                            }
                         }
                     });
                 }
             }
-        });
+        })
     })
     .post('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
@@ -163,33 +187,23 @@ router
             }
         });
     })
-    .post('/importContacts', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+    .post('/upload/importContacts', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
    
         // setup
         const log = require('../util/logger').log(component, ___filename);
         log.debug(component, 'import contact');
-        // extract
-        var contactData = req.body;
-        contactData.userId=uuid.uid();
+        log.close();
 
-        contactApi.create(contactData, (err, contact) => {
-            if (err) {
-                log.error(component, 'create new contact error', { attach: err });
-                log.close();
-                res.json({status:false, err: ERR.MANDATORY_FIELD_MISSING });
-            } else {
-                // extract into the sanitize method
-                var ret = {
-                    userId: contact.userId,
-                }
-                log.debug(component, 'new contact created');
-                log.trace(component, 'contact:', { attach: contact });
-                log.close();
-                return res.json({
-                    status:true,
-                    data: ret
+        contactApi.importUploads(req, res, function (err, data) {
+            if (!err) {
+                return res.json({ 
+                    "status": false, 
+                    "message": "Contact Imported Successfully!" 
                 });
             }
+
+            else
+                return res.json({ "status": false, "err": err });
         });
     })
     .post('/search/users', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {

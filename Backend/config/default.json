@@ -16,5 +16,6 @@
         "password": "webteam@#321",
         "bcc": ""
     },
-    "sessionTimeOut": 30000
+    "sessionTimeOut": 30000,
+    "batchFileSaveLocationPrefix":"./public/doc/"
 }
