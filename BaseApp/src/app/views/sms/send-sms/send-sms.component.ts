@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, observable } from 'rxjs';
-import { ContactsService } from '../../../core/services/contacts/contacts.service';
+import { ContactsService } from '../../../core/services/contacts.service';
 import { of } from 'rxjs';
 
 @Component({
@@ -35,7 +35,7 @@ export class SendSmsComponent implements OnInit {
   };
 
   public requestAutoCompleteIndividual = (text: string): Observable<any> => {
-    return this.contactsService.searchIndividualContact({ "name": text })
+    return this.contactsService.searchIndividualContact({ "searchText": text })
       .map((res: any) => res.data);
   };
 

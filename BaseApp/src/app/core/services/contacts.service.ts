@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ContactsDataService } from './contacts.data.service';
+import { ContactsDataService } from '../http/contacts-api-service';
 
 @Injectable({
   providedIn: 'root'

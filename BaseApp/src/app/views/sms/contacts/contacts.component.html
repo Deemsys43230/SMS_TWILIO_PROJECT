@@ -1,3 +1,183 @@
-<p>
-  contacts works!
-</p>
+<div class="card">
+  <div class="card-header">
+    <span class="h5">Contacts and Groups</span>
+    <div class="float-right">
+      <button class="btn btn-info btn-sm"><i class="fa fa-arrow-left">&nbsp;</i>Back</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <span class="h6">Contacts</span>
+        <div class="float-right">
+          <div *ngIf="selectedContacts.length==0">
+          <button class="btn btn-sm btn-primary" (click)="addContactModal()">Add Contact</button>&nbsp;
+          <button class="btn btn-sm btn-info">Import Contact</button></div>
+          <div *ngIf="selectedContacts.length>0">
+            <button class="btn btn-sm btn-primary">Send Sms</button>&nbsp;
+            <button class="btn btn-sm btn-info">Add to Group</button>
+          </div>
+        </div><br><br>
+        <div class="border">
+          <div class="searchDiv p-2 bg-light">
+            <input class="form-control" type="text" placeholder="Search Contacts" (keyup)="searchContacts($event.target.value)">
+          </div>
+          <div class="listDiv accordion">
+          <div class="row no-gutters border" *ngFor="let contact of contacts ; let i=index">
+              <div class="bg-info w-100 p-3 accordian-header">
+                <span class="h6">{{contact.group}}</span>
+                <span class="pull-right" data-toggle="collapse" [attr.data-target]="'#collapse' +i " aria-expanded="false" [attr.aria-controls]="'#collapse' +i ">
+                <i class="fa fa-chevron-right"></i>
+                <i class="fa fa-chevron-down"></i></span>
+              </div>
+              <div id="collapse{{i}}" class="w-100 collapse">
+                <div class="row border-bottom bg-light no-gutters" *ngFor="let children of contact.children">
+                  <div class="col-1 p-2">
+                    <input type="checkbox" [(ngModel)]="children.checked" class="option-input checkbox" (change)="selectContact(children)">
+                  </div>
+                  <div class="col-10 p-1">
+                    <span>
+                      <h6>{{children.name}}</h6>
+                      {{children.mobile}}
+                    </span>
+                  </div>
+                  <div class="col-1 p-3">
+                    <a class="text-info" [routerLink]="null" tabindex="-1" [popover]="popContent" [popoverContext]="context"
+                    triggers="focus" placement="auto" container="body">
+                      <i class="icon-options"></i>
+                  </a>
+                  <ng-template #popContent>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Delete</h6></a>
+                  </ng-template>
+                  </div>
+              </div>
+              </div>
+              
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-6">
+        <span class="h6">Groups</span>
+        <div class="float-right">
+          <button class="btn btn-sm btn-primary" routerLink="add-group">Add Group</button>&nbsp;
+        </div><br><br>
+        <div class="border">
+          <div class="searchDiv bg-light p-2">
+            <input class="form-control" type="text" placeholder="Search Groups" (keyup)="searchGroups($event.target.value)">
+          </div>
+          <div class="listDiv">
+          <div class="row bg-white no-gutters border" *ngFor="let group of groups ; let i=index">
+              <div class="col-11 p-2">
+                <span class="font-weight-bold text-info">{{group.groupName}}</span><br>
+               <span class="text-muted"> {{group.users?.length}} Contacts
+              </span></div>
+              <div class="col-1 p-3">
+                <a class="text-info" [routerLink]="null" tabindex="-1" [popover]="popContent" [popoverContext]="context"
+                    triggers="focus" placement="auto" container="body">
+                      <i class="icon-options"></i>
+                  </a>
+                  <ng-template #popContent>
+                   <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Send Sms</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Delete</h6></a>
+                  </ng-template>
+              </div>
+          </div></div>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+
+<!-- Add contact modal -->
+<div class="modal fade" id="addContactModal" tabindex="-1" role="dialog" aria-labelledby="addContactModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="text-white">Add Contact</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="contactForm">
+          <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" formControlName="name" class="form-control">
+            <div class="error-msg-area">
+              <div *ngIf="contactForm.controls['name'].errors && (!contactForm.controls['name'].pristine|| isContactFormSubmitted)"
+                class="error-msg">
+                <div [hidden]="!contactForm.controls['name'].errors.required">Please Enter Name.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="text" formControlName="mobile" class="form-control">
+            <div class="error-msg-area">
+              <div *ngIf="contactForm.controls['mobile'].errors && (!contactForm.controls['mobile'].pristine|| isContactFormSubmitted)"
+                class="error-msg">
+                <div [hidden]="!contactForm.controls['mobile'].errors.required">Please Enter Mobile Number.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email <small class="text-muted">(optional)</small></label>
+            <input type="text" formControlName="email" class="form-control">
+            <div class="error-msg-area">
+              <div *ngIf="contactForm.controls['email'].errors && (!contactForm.controls['email'].pristine|| isContactFormSubmitted)"
+                class="error-msg">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="isContactFormSubmitted=true;addContact()">Add</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Group Modal -->
+<!-- <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="text-white">Add Group</h5>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="Name">Group Name</label>
+            <input type="text" formControlName="groupName" class="form-control">
+            <div class="error-msg-area">
+              <div *ngIf="groupForm.controls['groupName'].errors && (!groupForm.controls['groupName'].pristine|| isContactFormSubmitted)"
+                class="error-msg">
+                <div [hidden]="!groupForm.controls['groupName'].errors.required">Please Enter Group Name.</div>
+              </div>
+            </div>
+          </div>
+            <tag-input [placeholder]="'Add a new Individual'"
+          (onSelect)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
+          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals"
+          [displayBy]="'name'" [identifyBy]="'userId'">
+          <ng-template let-item="item">
+            {{ item.name}}&lt;{{item.phoneNumber}}&gt;
+          </ng-template>
+          <tag-input-dropdown [autocompleteObservable]="requestAutoCompleteIndividual" [displayBy]="'name'"
+            [identifyBy]="'userId'">
+            <ng-template let-item="item" let-index="index">
+              {{ item.name}}-{{item.phoneNumber}}
+            </ng-template>
+          </tag-input-dropdown>
+        </tag-input>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm">Add</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div> -->

@@ -6,6 +6,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { SendSmsComponent } from './send-sms/send-sms.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TemplatesComponent } from './templates/templates.component';
+import { AddGroupComponent } from './add-group/add-group.component';
 
 
 
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path:'contacts',
     component:ContactsComponent,
+  },
+  {
+    path:'contacts/add-group',
+    component:AddGroupComponent,
   },
   {
     path:'send-sms',
