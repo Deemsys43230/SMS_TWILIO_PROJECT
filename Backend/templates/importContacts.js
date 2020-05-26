@@ -13,7 +13,6 @@ function processCSVFile(filePath, cb) {
     csv(filePath, headers)
     .then(data => {
         csvparser(filePath).then((result)=>{ 
-            // console.log(result)
             var scheme = {
                 "$mirror[contacts](Name)": {
                     "name": "Name",
@@ -22,15 +21,12 @@ function processCSVFile(filePath, cb) {
                 }
             }
             var data = shapetojson.parse(result.slice(0), scheme);
-            // console.log(result.slice(0))
             return cb(null, data)
         }).catch(err=>{
-            console.log(err);
             return cb(err, null);  
         });
     })
     .catch(err => {
-        console.log(err);
         return cb(err, null);  
     })
     

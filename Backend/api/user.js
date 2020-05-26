@@ -51,6 +51,22 @@ var find = {
                 log.close();
                 return cb(err);
             })
+        },
+        validateSuperPassword: function(data, cb) {
+            const log = require('../util/logger').log(component, ___filename);
+            log.debug(component, 'searching for all users');
+            var query = { userId: data.userId, superPassword: data.superPassword};
+            model.find(query)
+            .then(users => {
+                log.debug(component, `retrieved ${users.length} users`);
+                log.close();
+                return cb(null, users);
+            })
+            .catch(err => {
+                log.error(component, 'find all users error', { attach: err });
+                log.close();
+                return cb(err);
+            })
         }
     }
 };
@@ -65,8 +81,6 @@ var changePassword = function (data, cb) {
             if (data.currentPassword) data.currentPassword = require('../util/security').hash(data.currentPassword);
             //Hash New Password
             if (data.newPassword) data.newPassword = require('../util/security').hash(data.newPassword);
-            console.log(data.newPassword);
-            console.log(data.currentPassword)
             var query = {
                 "userId":data.userId, "password": data.currentPassword
             }

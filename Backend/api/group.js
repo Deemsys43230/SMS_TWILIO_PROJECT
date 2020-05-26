@@ -56,7 +56,6 @@ var updateGroup = function(data, cb) {
                 return cb(err);
             })
     //     } else {
-    //         console.log(groupList)
     //         if(data.contactIds == 1) {
     //             log.debug(component, 'user already exsits in group');
     //             log.close();

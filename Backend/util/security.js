@@ -18,10 +18,8 @@ function verifySecurity(roles=[]){
         var token = req.headers['authorization'];
         
         if(token!=undefined){
-            console.log("Token is therer");
             token=token.replace(/^Bearer\s/, '');
             jwt.verify(token, CONSTANTS.DEFAULT.TOKEN.KEY, function(err, decoded) {
-                console.log(decoded)
                 if (err) {
                     res.status(403).send({"request_status":false,"status":false,"auth":false, "error": 'Failed to authenticate token.' });
                 }else{
@@ -35,11 +33,10 @@ function verifySecurity(roles=[]){
                         next();
                 }             
             });
-    }else{
-        console.log("Token Missing");
+        }else{
             res.status(403).json({"request_status":false,"status":false,"auth":false,"error":"Unauthorized"});
-    }
-     }    
+        }
+    }    
 }
 
 //Parse Token
@@ -51,7 +48,6 @@ function isLogged(req, res, roles=[]){
     return function(req,res,next){
         var token = req.headers['authorization'];        
         if(token!=undefined){
-            console.log("Token is therer");
             token=token.replace(/^Bearer\s/, '');
             jwt.verify(token, CONSTANTS.DEFAULT.TOKEN.KEY, function(err, decoded) {
                 if (err) {
@@ -66,16 +62,16 @@ function isLogged(req, res, roles=[]){
                     next();
                 }             
             });
-    }else{
-        req.user={
-            "userId":null,
-            //"institutionId":decoded.data.institutionId,
-            "role":null,
-            "restId": null
+        }else{
+            req.user={
+                "userId":null,
+                //"institutionId":decoded.data.institutionId,
+                "role":null,
+                "restId": null
+            }
+            next();
         }
-        next();
     }
-}
 }   
 
 

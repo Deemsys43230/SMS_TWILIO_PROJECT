@@ -16,8 +16,6 @@ const ERR = require('../errors.json');
 var accountSid;
 var authToken;
 var twilioPrefix;
-var twilioFromNumber;
-var messageingServiceId;
 var notifyServiceId;
 
 const log = require('../util/logger').log(component, ___filename);
@@ -34,8 +32,6 @@ twilioModel.find(query)
         log.close();
         accountSid = twilio[0].accountSid;
         authToken = twilio[0].authToken;
-        messageingServiceId = twilio[0].messageingServiceId;
-        twilioFromNumber = twilio[0].fromPhone;
         twilioPrefix = twilio[0].cellPhonePrefix;
         notifyServiceId = twilio[0].notifyServiceId;
     }
@@ -235,8 +231,6 @@ async function sendSMS(smsSendData, cb) {
     const log = require('../util/logger').log(component, ___filename);
     log.debug(component, 'searching restaurant', { attach: smsSendData });
     log.close();
-    console.log(accountSid);
-    console.log(authToken)
     const client = require('twilio')(accountSid, authToken);
 
     var query = [
@@ -269,7 +263,6 @@ async function sendSMS(smsSendData, cb) {
         new Promise(resolve => {
             client.notify.services(notifyServiceId)
             .notifications.create(notificationOpts).then(notification => {
-                console.log(notification.sid);
                 cb(null, users);
                 resolve()
             })
@@ -330,8 +323,6 @@ var importUploads = function(req, res, cb){
                                 log.close();
                                 return cb(err)
                             } else {
-                                console.log("data",data);
-                                
                                 data.contacts.forEach(async function(contact, index1){
                                     promises.push(new Promise(function(resolve, reject) {
                                         find.by.findDupliactePhoneNumber(contact , (err, result) => {
@@ -357,7 +348,6 @@ var importUploads = function(req, res, cb){
                             }
                         })
                     }, async function(sanitaizedContats, callBack) {
-                        console.log(sanitaizedContats);
                         await new Promise(resolve => {
                             if(sanitaizedContats.length == 0) {
                                 resolve();

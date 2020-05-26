@@ -44,8 +44,7 @@ router
             }
             
         }           
-    })
-                   
+    })        
 })
 
 //Change password
@@ -81,6 +80,37 @@ router
             message: "New Password not matched"
         });
     }
+})
+.post('/validateUserForStttings', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+    // setup
+    const log = require('../util/logger').log(component, ___filename);
+    log.debug(component, 'User Logging');
+    log.close();
+
+    var data=req.body;
+    data.userId = req.user.userId;
+    data.role = req.user.role;
+    if (data.superPassword) data.superPassword = require('../util/security').hash(data.superPassword);
+    userApi.find.by.validateSuperPassword(data,function(err, user){
+        if(err){
+            return res.json({
+                "status": false,
+                "err": err
+            })
+        }else{
+            if(user.length == 0) {
+                return res.json({
+                    "status": false,
+                    "message":"User Not Allowed to Access this Page!"
+                })
+            } else {
+                return res.json({
+                    "status": true,
+                    "message": "Valid User!"
+                })
+            }           
+        }           
+    })        
 })
 
 module.exports = router;

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {type:String, required: true},
     email: { type: String, required: true },
     password:{type:String, required: true},
+    superPassword:{type:String, required:true},
     role: { type: String, required: true },
     createdDate: { type: Date, default: Date.now }
 }, {
