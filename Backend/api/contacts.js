@@ -115,7 +115,7 @@ var find = {
         const log = require('../util/logger').log(component, ___filename);
         log.debug(component, 'searching for all contacts');
         var query = {};
-        model.find(query)
+        model.find(query).sort({name:1})
             .then(contacts => {
                 log.debug(component, `retrieved ${contacts.length} contacts`);
                 log.close();

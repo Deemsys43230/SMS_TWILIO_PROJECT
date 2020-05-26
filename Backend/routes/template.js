@@ -186,7 +186,7 @@ router
         });
 
     })
-    .post('/:templateId', (req, res) => {
+    .delete('/:templateId', (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var templateId = req.params.templateId;

@@ -152,7 +152,7 @@ router
             }
         })
     })
-    .post('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+    .delete('/:contactId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var contactId = req.params.contactId;

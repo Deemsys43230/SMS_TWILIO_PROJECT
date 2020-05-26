@@ -243,7 +243,7 @@ router
         });
 
     })
-    .post('/:groupId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
+    .delete('/:groupId', security.verifySecurity(["SMS_GENERATOR"]), (req, res) => {
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var groupId = req.params.groupId;
