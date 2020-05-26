@@ -6,7 +6,8 @@ import { TemplatesComponent } from './templates/templates.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { SmsRoutingModule } from './sms-routing.module';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TagInputModule } from 'ngx-chips';
 import { AddGroupComponent } from './add-group/add-group.component';
 
@@ -16,12 +17,11 @@ import { AddGroupComponent } from './add-group/add-group.component';
   imports: [
     CommonModule,
     SmsRoutingModule,
-    PopoverModule.forRoot(),
     FormsModule,
+    PopoverModule.forRoot(),
     ReactiveFormsModule,
-    SmsRoutingModule,
     TagInputModule,
   ],
-  declarations: [SettingsComponent,SendSmsComponent,TemplatesComponent,ContactsComponent, AddGroupComponent]
+  declarations: [SettingsComponent,SendSmsComponent,TemplatesComponent,ContactsComponent, ChangePasswordComponent, AddGroupComponent]
 })
 export class SmsModule { }

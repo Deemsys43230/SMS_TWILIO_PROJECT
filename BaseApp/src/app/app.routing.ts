@@ -5,8 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { DefaultLayoutComponent, CommonLayoutComponent } from './containers';
 import { SecurityService } from './core/services/security-service';
 
-
-
 export const routes: Routes = [
   {
     path: '',
@@ -21,7 +19,8 @@ export const routes: Routes = [
   {
     path:'user',
     component:DefaultLayoutComponent,
-    loadChildren:'./views/sms/sms.module#SmsModule'
+    loadChildren:'./views/sms/sms.module#SmsModule',
+    canActivate:[SecurityService]
   }
 ];
 

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserApiService } from '../../../core/http/user-api-service';
 import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { UserService } from '../../../core/services/user.service';
 //import { UserService } from '../../../services/user.service';
 //import { LoginModel } from '../../../models/login.model';
 //import { FlashMessageService } from '../../flash-message/flash-message.service';
@@ -28,14 +29,14 @@ export class LoginComponent implements OnInit {
 
 
   //public login: LoginModel;
-  constructor(fb: FormBuilder, router: Router, private userService: UserApiService, private toastr: ToastrService) {
+  constructor(fb: FormBuilder, router: Router, private userService: UserService, private toastr: ToastrService) {
     //Inject Router
     this.router = router;
     //InitializeForm
     this.initializeLoginForm(fb);
   }
   ngOnInit() {
-
+    localStorage.clear();
   }
   //Initialize Form
   initializeLoginForm(fb) {
@@ -49,25 +50,19 @@ export class LoginComponent implements OnInit {
       var self = this;
       self.hideLoader = false;
       this.userService.login(this.loginForm.value).then(function (res) {
-        if (res.err) {
-          self.hideLoader = true;
-          self.toastr.error(res.err.message);
-        }
-        else if (res.data) {
-          localStorage.setItem('isLogin','true');
-          localStorage.setItem('Authorization-Token', res.data.token);
-          self.toastr.success("Successfully Logged In");
-          if (res.data.role == "ROLE_BILLER") {
-            self.router.navigate(['biller']);
+          if (res.status) {
+            localStorage.setItem('isLogin','true');
+            localStorage.setItem('Authorization-Token', res.token);
+            self.toastr.success("Successfully Logged In");
+            self.router.navigate(["user"]);
           }
-          else if (res.data.role == "ROLE_CADMIN") {
-            self.router.navigate(['clinic']);
+          else{
+            self.hideLoader = true;
+            self.toastr.error(res.message);
           }
-        }
-
       }, function (err) {
         self.hideLoader = true;
-        self.toastr.error("Invalid Credentials");
+        self.toastr.error("Something went Wrong! Try again");
       })
     }
   }

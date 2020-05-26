@@ -1,3 +1,54 @@
-<p>
-  settings works!
-</p>
+<div class="card w-75 mx-auto">
+  <div class="card-header">
+    <i class="fa fa-cog"></i>
+    <strong>Settings</strong>
+  </div>
+  <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
+  <div class="card-body">     
+      <div class="row">
+        <div class="col-md-8 col-12 mx-auto">
+          <label for="currentPassword" class="control-label">Phone Number
+            <span class="required">*</span>
+          </label>
+            <input type="tel" class="form-control" placeholder="Enter Mobile Number" formControlName="phoneNumber" />
+          <div class="error-msg-area">
+            <div *ngIf="settingsForm.controls['phoneNumber'].errors && (!settingsForm.controls['phoneNumber'].pristine|| isFormSubmitted)"
+              class="error-msg">
+              <div [hidden]="!settingsForm.controls['phoneNumber'].errors.required">Please Enter Mobile Number.</div>
+              <div [hidden]="!settingsForm.controls['phoneNumber'].errors.checkMobilePattern">Please Enter Valid Mobile Number.</div>
+            </div>
+          </div>
+          <label for="password" class="w-100">Account Sid
+            <span class="required">*</span>
+            <span class="float-right">
+            </span>
+          </label>
+            <input class="form-control w-100" type="text" placeholder="Enter Account Sid" formControlName="accountSid"
+              id="pass">
+          <div class="error-msg-area">
+            <div *ngIf="settingsForm.controls['accountSid'].errors && (!settingsForm.controls['accountSid'].pristine|| isFormSubmitted)"
+              class="error-msg">
+              <div [hidden]="!settingsForm.controls['accountSid'].errors.required">Please Enter Account Sid.</div>
+            </div>
+          </div>
+          <label for="confirmPassword" class="control-label">Account Token
+            <span class="required">*</span>
+          </label>
+            <input type="password" class="form-control" placeholder="Enter Account token" formControlName="accountToken" />
+          <div class="error-msg-area">
+            <div *ngIf="settingsForm.controls['accountToken'].errors && (!settingsForm.controls['accountToken'].pristine|| isFormSubmitted)"
+              class="error-msg">
+              <div [hidden]="!settingsForm.controls['accountToken'].errors.required">Please Enter Account token.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="card-footer text-right">
+        <button type="button" (click)="resetForm()" class="btn btn-default btn-sm">
+          <i class="fa fa-refresh"></i>&nbsp;Clear</button>&nbsp;
+        <button type="submit" class="btn btn-primary btn-sm">
+          <i class="fa fa-save"></i>&nbsp;Save</button>
+      </div>
+    </form>
+</div>
