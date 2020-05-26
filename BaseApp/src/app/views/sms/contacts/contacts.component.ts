@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import $ from 'jquery';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ContactsService } from '../../../core/services/contacts.service';
+import { ContactsService } from '../../../core/services/contacts-service';
 declare var $:$;
 
 @Component({

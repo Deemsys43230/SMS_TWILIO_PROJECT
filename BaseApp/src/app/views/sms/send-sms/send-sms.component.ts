@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, observable } from 'rxjs';
-import { ContactsService } from '../../../core/services/contacts.service';
-import { of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { ContactsService } from '../../../core/services/contacts-service';
+import { SmsService } from '../../../core/services/sms.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-send-sms',
@@ -12,21 +14,11 @@ export class SendSmsComponent implements OnInit {
   searchType: any = 'Individual';
   selectedIndividuals: any = [];
   selectedGroups: any = [];
+  message: string = '';
 
-  constructor(private contactsService: ContactsService) { }
+  constructor(private contactsService: ContactsService, private smsService: SmsService, private toastr: ToastrService) { }
 
   ngOnInit() {
-  }
-
-  changeClass(event, type) {
-    var element;
-    type == "Individual" ? element = document.getElementById('GroupSms') : element = document.getElementById('Individual')
-    this.searchType = type;
-    event.target.classList.toggle('btn-outline-primary');
-    event.target.classList.toggle('btn-primary');
-    console.log(element);
-    element.classList.remove('btn-primary');
-    element.classList.add('btn-outline-primary');
   }
 
   public requestAutoCompleteGroup = (text: string): Observable<any> => {
@@ -40,6 +32,58 @@ export class SendSmsComponent implements OnInit {
   };
 
   onSelect(event: any) {
-    console.log(this.selectedIndividuals, 'this.selected', event,this.selectedGroups);
+    console.log(this.selectedIndividuals, 'this.selected', event, this.selectedGroups);
   }
+
+  removeIndividual(item) {
+    this.selectedIndividuals.splice(this.selectedIndividuals.indexOf(item), 1);
+  }
+
+  removeGroup(item) {
+    this.selectedGroups.splice(this.selectedIndividuals.indexOf(item), 1);
+  }
+
+  patchTemplete() {
+    this.message = 'hi this is a sample message';
+  }
+
+  sendSMS() {
+    var self = this;
+    var data;
+    if (this.message.trim() == '') return this.toastr.error('Please select a template', 'Send SMS');
+
+    if (this.searchType == 'Individual') {
+      var userIdArray = this.selectedIndividuals.map(eachindv => eachindv.userId)
+      if (userIdArray.length == 0) return this.toastr.error('Please select a contact', 'Send SMS');
+      data = {
+        "messageBody": this.message,
+        "smsSendIds": userIdArray
+      }
+      this.smsService.sendIndividualSMS(data).then(function (res) {
+        if (res.status) {
+          self.reset();
+        }
+      })
+    }
+
+    if (this.searchType == 'Group') {
+      var groupIdArray = this.selectedGroups.map(eachindv => eachindv.groupId)
+      if (groupIdArray.length == 0) return this.toastr.error('Please select a group', 'Send SMS');
+      data = {
+        "messageBody": this.message,
+        "groupIds": groupIdArray
+      }
+      this.smsService.sendGroupSMS(data).then(function (res) {
+        if (res.status) {
+          self.reset()
+        }
+      })
+    }
+  }
+
+  reset() {
+    this.message = '';
+    this.searchType == 'Individual' ? this.selectedIndividuals = [] : this.selectedGroups = [];
+  }
+
 }
