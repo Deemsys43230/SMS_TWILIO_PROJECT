@@ -210,7 +210,7 @@ router
         log.debug(component, 'updating group', { attach: groupData.groupId });
         log.close();
 
-        groupApi.find.by.groupId(groupData, function (err, group) {
+        groupApi.find.by.id(req.params.groupId, function (err, group) {
             if (err) {
                 log.error(component, 'find group by id error', { attach: err });
                 log.close();
@@ -223,7 +223,7 @@ router
                     res.json({status:false, err: ERR.NO_SUCH_ID });
                 }
                 else{
-                    if(group.length ==0) {
+                    if(!group) {
                         log.debug(component, 'no group found', { attachInline: ERR.NO_SUCH_ID });
                         log.close();
                         res.json({status:false, err: ERR.NO_SUCH_ID });
