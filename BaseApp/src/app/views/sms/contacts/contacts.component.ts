@@ -270,6 +270,6 @@ export class ContactsComponent implements OnInit {
       recipients = [recipients];
       this.dataSharingService.nextData({ recipientType: 'Group', recipients: recipients })
     }
-    this.router.navigate(['/user/send-sms/', 2]);
+    this.router.navigate(['/user/send-sms']);
   }
 }

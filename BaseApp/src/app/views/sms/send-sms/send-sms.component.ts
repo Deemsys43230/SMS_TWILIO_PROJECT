@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContactsService } from '../../../core/services/contacts-service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,7 @@ import { GroupsService } from '../../../core/services/groups-service';
   templateUrl: './send-sms.component.html',
   styleUrls: ['./send-sms.component.scss']
 })
-export class SendSmsComponent implements OnInit {
+export class SendSmsComponent implements OnInit, OnDestroy {
   searchType: any = 'Individual';
   selectedIndividuals: any = [];
   selectedGroups: any = [];
@@ -23,29 +23,37 @@ export class SendSmsComponent implements OnInit {
   public routingType;
   templateData: any = [];
   templateTitle: string = '';
+  sharedData: any;
 
   constructor(private contactsService: ContactsService, private smsService: SmsService, private toastr: ToastrService
-    ,private router:Router,private ActivatedRoute:ActivatedRoute,private dataSharingService:DataSharingService
-    ,private spinner:NgxSpinnerService,private templeteService:TemplateService,private groupsService:GroupsService) { 
+    , private router: Router, private ActivatedRoute: ActivatedRoute, private dataSharingService: DataSharingService
+    , private spinner: NgxSpinnerService, private templeteService: TemplateService, private groupsService: GroupsService) {
 
-      this.ActivatedRoute.params.subscribe(params => {
-        this.routingType=params['routeType'];
-    });
+    // this.ActivatedRoute.params.subscribe(params => {
+    //   this.routingType = params['routeType'];
+    // });
 
-    if(this.routingType==1){
-      this.selectedIndividuals=[]; this.selectedGroups=[];
-    }
-    else
-    {
-      this.dataSharingService.sharedData.subscribe((data)=>{        
-        this.searchType=(data.recipientType == null) ? 'Individual' : data.recipientType;
-        data.recipientType=='Individual'?this.selectedIndividuals=data.recipients:this.selectedGroups=data.recipients;
+    // if (this.routingType == 1) {
+    //   this.selectedIndividuals = []; this.selectedGroups = [];
+    // }
+    // else {
+      this.sharedData = this.dataSharingService.sharedData.subscribe((data) => {
+        this.searchType = (data.recipientType == null) ? 'Individual' : data.recipientType;
+        data.recipientType == 'Individual' ? this.selectedIndividuals = data.recipients : this.selectedGroups = data.recipients;
+        if (data.template != undefined) {
+          this.message = data.template.template;
+          this.templateTitle = data.template.title;
+        }
       })
-    }
+    // }
 
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(){
+    this.sharedData.unsubscribe()
   }
 
   public requestAutoCompleteGroup = (text: string): Observable<any> => {
@@ -127,7 +135,7 @@ export class SendSmsComponent implements OnInit {
       })
     }
 
-    
+
   }
 
   reset() {
@@ -136,10 +144,10 @@ export class SendSmsComponent implements OnInit {
     this.searchType == 'Individual' ? this.selectedIndividuals = [] : this.selectedGroups = [];
   }
 
-  getTempletes(){
-    var self =this;
-    this.templeteService.getAllTemplates().then(function(res){
-      if(res.status){
+  getTempletes() {
+    var self = this;
+    this.templeteService.getAllTemplates().then(function (res) {
+      if (res.status) {
         self.templateData = res.data;
       }
     })

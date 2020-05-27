@@ -7,11 +7,17 @@ import { BehaviorSubject } from "rxjs";
 export class DataSharingService {
     constructor() { }
 
-    private subject = new BehaviorSubject({ recipientType: null, recipients: [] });
+    private subject = new BehaviorSubject({
+        recipientType: null, recipients: [], template: {
+            "_id": "",
+            "title": "",
+            "template": "",
+            "templateId": ""
+        }
+    });
     sharedData = this.subject.asObservable();
 
     nextData(data: any) {
-        console.log(data);
         this.subject.next(data);
     }
 

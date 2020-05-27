@@ -12,17 +12,19 @@
           <div class="listContainer">
             <ul class="list-group">
               <li class="p-2 bg-light">
-                <input class="form-control" type="text" placeholder="Search Template" (keyup)="searchTempletes($event.target.value)">
+                <input class="form-control" type="text" placeholder="Search Template"
+                  (keyup)="searchTempletes($event.target.value)">
               </li>
-              <li class="d-flex p-1 border-bottom align-items-center" *ngFor="let templates of templateData;">
+              <li class="d-flex border-bottom p-2 align-items-center"
+                *ngFor="let templates of templateData;">
 
-                <span class="mr-auto pl-2">{{templates.title}}</span>
+                <span class="mr-auto">{{templates.title}}</span>
 
                 <span class="ml-auto">
-                  <button type="button" (click)="editTemplate(templates)"
-                    class="btn fa fa-pencil text-primary "></button><button type="button"
-                    class="btn fa fa-trash text-danger " (click)="templateDeleteId = templates.templateId;" data-toggle="modal"
-                    data-target="#exampleModal"></button>
+                  <a type="button" (click)="useTemplate(templates)" class=" fa fa-send text-primary mr-2"></a>
+                  <a type="button" (click)="editTemplate(templates)" class=" fa fa-pencil text-primary mr-2"></a>
+                  <a type="button" class=" fa fa-trash text-danger " (click)="templateDeleteId = templates.templateId;"
+                    data-toggle="modal" data-target="#exampleModal"></a>
                 </span>
 
               </li>
@@ -64,7 +66,7 @@
 
   </div>
 </div>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)"  color = "#6c757d" type = "square-jelly-box" ></ngx-spinner>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" color="#6c757d" type="square-jelly-box"></ngx-spinner>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -72,7 +74,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" >Delete Confirmation</h5>
+        <h5 class="modal-title text-white">Delete Confirmation</h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

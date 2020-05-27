@@ -3,6 +3,8 @@ import { TemplateService } from '../../../core/services/template-service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
 import $ from "jquery";
+import { DataSharingService } from '../../../core/services/data-sharing-service';
+import { Router } from '@angular/router';
 declare var $: $;
 
 @Component({
@@ -19,7 +21,7 @@ export class TemplatesComponent implements OnInit {
   templateDeleteId: any;
   searchData: any = [];
 
-  constructor(private templeteService: TemplateService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  constructor(private templeteService: TemplateService, private toastr: ToastrService, private spinner: NgxSpinnerService, private dataSharingService: DataSharingService, private router: Router) { }
 
   ngOnInit() {
     this.getTempletes();
@@ -118,6 +120,11 @@ export class TemplatesComponent implements OnInit {
             return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1;
         });
     });
+  }
+
+  useTemplate(selectedTemplate) {
+    this.dataSharingService.nextData({  recipientType: 'Individual', recipients: [], template: selectedTemplate });
+    this.router.navigate(['/user/send-sms']);
   }
 
 }
