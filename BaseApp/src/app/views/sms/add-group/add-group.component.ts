@@ -67,13 +67,13 @@ export class AddGroupComponent implements OnInit {
       var self = this;
       this.groupsService.addGroup(this.groupDetails).then(function (res) {
         if (res.status) {
-          self.toastr.success(res.message, self.headerText + 'Group')
+          self.toastr.success(res.message, self.headerText + ' Group')
           self.reset();
           self.router.navigate(['/user/contacts']);
         }
       })
     } else {
-      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + 'Group')
+      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + ' Group')
     }
 
   }
@@ -85,13 +85,13 @@ export class AddGroupComponent implements OnInit {
       var self = this;
       this.groupsService.updateGroupById(this.groupDetails,this.groupId).then(function (res) {
         if (res.status) {
-          self.toastr.success(res.message, self.headerText + 'Group')
+          self.toastr.success(res.message, self.headerText + ' Group')
           self.reset();
           self.router.navigate(['/user/contacts']);
         }
       })
     } else {
-      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + 'Group')
+      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + ' Group')
     }
 
   }

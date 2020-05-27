@@ -54,7 +54,7 @@
     </div>
     <div class="row mt-3">
       <div class="col-2">
-        <p class="h6">Selected Template<span class="float-right">:</span></p>
+        <p class="h6">Template<span class="float-right">:</span></p>
       </div>
       <div class="col-10">
         <div class="row">
@@ -101,7 +101,7 @@
         </button>
       </div>
       <div class="modal-body list-group text-center list-group-flush p-0">
-        <button type="button" *ngFor="let template of templateData" class="list-group-item list-group-item-action"
+        <button type="button" *ngFor="let template of templateData" class="bg-light list-group-item list-group-item-action"
           data-dismiss="modal" (click)="patchTemplete(template);">
           {{template.title}}
         </button>

@@ -65,6 +65,8 @@ export class ImportContactsComponent implements OnInit {
         if(!res.status){
           if(res.err && res.err.code)
           {
+            self.showErrorDiv=false;
+            self.uploadErrors=[];
             self.toaster.error(res.err.message);
           }
           else

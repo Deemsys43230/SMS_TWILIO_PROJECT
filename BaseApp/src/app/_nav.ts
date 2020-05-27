@@ -4,7 +4,7 @@ public menus = [
   {
     name:'Contacts and Groups',
     url:'contacts',
-    icon:'icon-list'
+    icon:'fa fa-address-book-o'
   },
   {
     name:'Send SMS',
