@@ -157,7 +157,8 @@ var find = {
                 "groupName": { "$first": "$groupName" },    
                 "groupId": { "$first": "$groupId" },
                 "users": { "$push": "$users" }
-              }}
+              }},
+              { $sort: { "groupName": 1} },
         ];
         model.aggregate(query)
             .then(contacts => {
@@ -303,7 +304,8 @@ var search = function (searchData, cb) {
             "groupName": { "$first": "$groupName" },    
             "groupId": { "$first": "$groupId" },
             "users": { "$push": "$users" }
-          }}
+          }},
+          { $sort: { "groupName": 1} },
     ];
     log.debug(component, 'Query is', { attach: query});
     log.close();
