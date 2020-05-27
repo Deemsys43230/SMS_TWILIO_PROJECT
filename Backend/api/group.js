@@ -31,19 +31,20 @@ var updateGroup = function(data, cb) {
     const log = require('../util/logger').log(component, ___filename);
     log.debug(component, 'Add User to Group', { attach: data.groupId });
     log.close();
-    // var query = { 
-    //     groupId:data.groupId,
-    //     users:  {$elemMatch: { $in:data.contactIds }}
-    // };
-    // model.find(query, (err, groupList) => {
-    //     if (err) {
-    //         log.error(component, 'contact exsits find error', { attach: err });
-    //         log.close();
-    //         return cb(err);
-    //     }
-    //     log.debug(component, 'contact excist list found', {attach: groupList});
-    //     log.close();
-    //     if(groupList.length == 0) {
+    var query = { 
+        groupId:data.groupId
+    };
+    model.find(query, (err, groupList) => {
+        if (err) {
+            log.error(component, 'contact exsits find error', { attach: err });
+            log.close();
+            return cb(err);
+        }
+        log.debug(component, 'contact excist list found');
+        log.close();
+        console.log(groupList[0].users);
+        data.contactIds = data.contactIds.filter(val => !groupList[0].users.includes(val));
+        if(data.contactIds.length != 0) {
             model.findOneAndUpdate({groupId: data.groupId},{"$push": {"users":  data.contactIds } } )
             .then(users => {
                 log.debug(component, `retrieved ${users} group of users`);
@@ -55,19 +56,12 @@ var updateGroup = function(data, cb) {
                 log.close();
                 return cb(err);
             })
-    //     } else {
-    //         if(data.contactIds == 1) {
-    //             log.debug(component, 'user already exsits in group');
-    //             log.close();
-    //             return cb(null, 'User Already Excist in this Group')
-    //         } else {
-    //             groupList.filter(singleData => {
-    //                 singleData.users.includes('oli')
-    //             })
-    //         }
-            
-    //     }
-    // })
+        } else {
+            log.debug(component, 'user already exsits in group');
+            log.close();
+            return cb(null, 'User Already Excist in this Group')           
+        }
+    })
     
 };
 
@@ -97,7 +91,7 @@ var update = function(data, cb) {
     const log = require('../util/logger').log(component, ___filename);
     log.debug(component, 'updating group', { attach: data.id });
     
-    model.findOneAndUpdate({ groupId: data.id }, data,  (err, group) => {
+    model.findOneAndUpdate({ groupId: data.groupId }, data,  (err, group) => {
         if (err) {
             log.error(component, 'update group error', { attach: err });
             log.close();
@@ -157,6 +151,7 @@ var find = {
                     preserveNullAndEmptyArrays: true
                 }
             },
+            { $sort: { "users.name": 1} },
               { "$group": {
                 "_id": "$_id",
                 "groupName": { "$first": "$groupName" },    
@@ -202,6 +197,7 @@ var find = {
                     preserveNullAndEmptyArrays: true
                 }
             },
+            { $sort: { "users.name": 1} },
               { "$group": {
                 "_id": "$_id",
                 "groupName": { "$first": "$groupName" },    
@@ -232,31 +228,25 @@ var find = {
             var query = [
                 {
                     $match: { 
-                        groupId : { $in : searchData.groupIds}
+                        groupId : searchData.groupId
                     }
-                },
-                { "$unwind": { "path": "$users", "preserveNullAndEmptyArrays": true }},
-                { "$group": {
-                    "_id":"$_id",
-                    "users": { "$push": "$users" }
-                } }
+                }
             ]
             log.debug(component, 'search group', { attach: query });
             model.aggregate(query)
                 .then(group => {
-                    if (!group) log.debug(component, `no group found ${id}`);
+                    if (!group) log.debug(component, `no group found ${searchData.groupId}`);
                     else {  
                         log.debug(component, `${group.length} group found`);
-                        log.trace(component, 'group found');
                         log.close();
                     }
-                    var allUsers = []
-                    _.map(group, function(contact, index) {
-                        contact.users.forEach(user => {
-                            allUsers.push(user)
-                        });
-                    })
-                    return cb(null, allUsers);
+                    // var allUsers = []
+                    // _.map(group, function(contact, index) {
+                    //     contact.users.forEach(user => {
+                    //         allUsers.push(user)
+                    //     });
+                    // })
+                    return cb(null, group);
                 })
                 .catch(err => {
                     log.error(component, 'find all group error', { attach: err });

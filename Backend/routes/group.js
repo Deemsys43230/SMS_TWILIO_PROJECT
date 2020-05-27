@@ -206,11 +206,11 @@ router
         const log = require('../util/logger').log(component, ___filename);
         // extract
         var groupData = req.body;
-        groupData.id = req.params.groupId;
-        log.debug(component, 'updating group', { attach: groupData.id });
-        log.trace(component, 'group data:', { attach: groupData });
+        groupData.groupId = req.params.groupId;
+        log.debug(component, 'updating group', { attach: groupData.groupId });
+        log.close();
 
-        groupApi.find.by.id(req.params.groupId, function (err, group) {
+        groupApi.find.by.groupId(groupData, function (err, group) {
             if (err) {
                 log.error(component, 'find group by id error', { attach: err });
                 log.close();
@@ -223,21 +223,34 @@ router
                     res.json({status:false, err: ERR.NO_SUCH_ID });
                 }
                 else{
-                    groupApi.update(groupData, function (err, group) {
-                        if (err) {
-                            log.error(component, 'update group error', { attach: err });
-                            log.close();
-                            return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
-                        } else {
-                            log.debug(component, 'group updated');
-                            log.trace(component, 'group:', { attach: group });
-                            log.close();
-                            return res.json({
-                                status:true,
-                                message: "Group Updated Successfully!"
-                            });
-                        }
-                    });
+                    console.log(group)
+                    if(group.length ==0) {
+                        log.debug(component, 'no group found', { attachInline: ERR.NO_SUCH_ID });
+                        log.close();
+                        res.json({status:false, err: ERR.NO_SUCH_ID });
+                    } else {
+                        // groupData.users = groupData.users.concat(group[0].users).unique()
+                        var mergeGroups = [];
+                        groupData.users.concat(group[0].users).forEach(userId =>{
+                            if (mergeGroups.indexOf(userId) == -1) 
+                            mergeGroups.push(userId); 
+                         });
+                         groupData.users = mergeGroups;
+                        groupApi.update(groupData, function (err, group) {
+                            if (err) {
+                                log.error(component, 'update group error', { attach: err });
+                                log.close();
+                                return res.json({status:false, err: Object.assign(ERR.UNKNOWN, { message: err.message }) });
+                            } else {
+                                log.debug(component, 'group updated');
+                                log.close();
+                                return res.json({
+                                    status:true,
+                                    message: "Group Updated Successfully!"
+                                });
+                            }
+                        });
+                    }
                 }
             }
         });
