@@ -28,7 +28,7 @@ export class ContactsComponent implements OnInit {
   public contactForm: FormGroup;
   public isContactFormSubmitted;
   public selectedContacts = [];
-  public singlecontactToGroup=null;
+  public singlecontactToGroup = null;
 
   constructor(private fb: FormBuilder, private contactsService: ContactsService, private groupsService: GroupsService,
     private dataSharingService: DataSharingService, private router: Router, private ngxToaster: ToastrService, private spinner: NgxSpinnerService) {
@@ -141,11 +141,12 @@ export class ContactsComponent implements OnInit {
     })
   }
 
+  /*   Navigate to add-edit group page */
   editGroup(group) {
     this.router.navigate(['/user/contacts/add-edit-group', group.groupId])
   }
 
-  //Checkbox multiple select contacts for sending sms
+  //Checkbox multiple select contacts for sending sms and add to groups
   selectContact(contact) {
     if (contact.checked)
       this.selectedContacts.push(contact);
@@ -193,6 +194,7 @@ export class ContactsComponent implements OnInit {
     }, {})
   };
 
+  /* open contact modal on add */
   addContactModal() {
     this.updateUserId = null;
     this.initializeContactForm();
@@ -200,6 +202,7 @@ export class ContactsComponent implements OnInit {
     $('#addContactModal').modal('show');
   }
 
+  /* open contact modal on edit */
   editContactModal(record) {
     this.updateUserId = record.userId;
     this.initializeContactForm();
@@ -218,25 +221,27 @@ export class ContactsComponent implements OnInit {
     $('#deleteModal').modal('show');
   }
 
-  AddMultipleUsersToGroupModal(){
-    this.singlecontactToGroup=null;
+  AddMultipleUsersToGroupModal() {
+    this.singlecontactToGroup = null;
     $('#AddUsersToGroupModal').modal('show');
   }
 
-  AddSingleUserToGroupModal(userId){
-    this.singlecontactToGroup=userId;
+  AddSingleUserToGroupModal(userId) {
+    this.singlecontactToGroup = userId;
     $('#AddUsersToGroupModal').modal('show');
   }
 
-  addContactToGroup(groupId){
+  /*   Add Contacts to Group*/
+  addContactToGroup(groupId) {
     let filteredIds
-    if(this.singlecontactToGroup!=null)
-      filteredIds=[this.singlecontactToGroup];
-      else
-      filteredIds= this.selectedContacts.reduce((array,currenValue)=>{
-      array.push(currenValue.userId);
-      return array;
-    }, []);
+    //pushing id alone for backend
+    if (this.singlecontactToGroup != null)
+      filteredIds = [this.singlecontactToGroup];
+    else
+      filteredIds = this.selectedContacts.reduce((array, currenValue) => {
+        array.push(currenValue.userId);
+        return array;
+      }, []);
 
     var self = this;
     this.groupsService.addContactsToGroup(groupId, filteredIds).then(function (res) {
@@ -248,11 +253,13 @@ export class ContactsComponent implements OnInit {
         $('#AddUsersToGroupModal').modal('hide');
         self.ngxToaster.success(res.message.msg);
         self.selectedContacts = [];
+        self.singlecontactToGroup = null;
         self.getContacts(); self.getGroups();
       }
     })
   }
 
+  /* Navigate to send sms page with data */
   sendSms(recipients_type: Number, recipients) {
     if (recipients_type == 1) /* SingleContact */ {
       if (!Array.isArray(recipients))
