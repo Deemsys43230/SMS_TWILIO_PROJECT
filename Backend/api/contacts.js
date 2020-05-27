@@ -315,6 +315,7 @@ var importUploads = function(req, res, cb){
             } else {
                 var sanitaizedContats = [];
                 var promises = [];
+                var noData = false;
                 async.waterfall([
                     function(cb) {
                         importCSV.processCSVFile(req.file.path, function(err, data){
@@ -323,28 +324,33 @@ var importUploads = function(req, res, cb){
                                 log.close();
                                 return cb(err)
                             } else {
-                                data.contacts.forEach(async function(contact, index1){
-                                    promises.push(new Promise(function(resolve, reject) {
-                                        find.by.findDupliactePhoneNumber(contact , (err, result) => {
-                                            if(err) {
-                                                // cb(err, null)
-                                                reject(err)
-                                            } else {
-                                                if(result.length == 0) {
-                                                    sanitaizedContats.push(contact)
+                                if(data.contacts.length == 0) {
+                                    noData = true;
+                                    cb(null, data.contacts)
+                                } else {
+                                    data.contacts.forEach(async function(contact, index1){
+                                        promises.push(new Promise(function(resolve, reject) {
+                                            find.by.findDupliactePhoneNumber(contact , (err, result) => {
+                                                if(err) {
+                                                    // cb(err, null)
+                                                    reject(err)
                                                 } else {
-                                                    log.debug(component, "Found Duplicate Phone Number", {attachInline: contact.phoneNumber});
-                                                    log.close();
+                                                    if(result.length == 0) {
+                                                        sanitaizedContats.push(contact)
+                                                    } else {
+                                                        log.debug(component, "Found Duplicate Phone Number", {attachInline: contact.phoneNumber});
+                                                        log.close();
+                                                    }
+                                                    // cb(null, sanitaizedContats);
+                                                    resolve();
                                                 }
-                                                // cb(null, sanitaizedContats);
-                                                resolve();
-                                            }
-                                        })
-                                    }))                                
-                                })
-                                Promise.all(promises).then(function() {
-                                    cb(null, sanitaizedContats);
-                                })
+                                            })
+                                        }))                                
+                                    })
+                                    Promise.all(promises).then(function() {
+                                        cb(null, sanitaizedContats);
+                                    })
+                                }
                             }
                         })
                     }, async function(sanitaizedContats, callBack) {
@@ -369,21 +375,26 @@ var importUploads = function(req, res, cb){
                         log.close();
                         return cb(err);
                     }
-                    if(sanitaizedContats.length == 0) {
-                        return cb(ERR.DUPLICATE_RECORD, null)
+                    if(noData == true) {
+                        return cb(ERR.EMPTY_ROWS, null)
                     } else {
-                        model.insertMany(sanitaizedContats)
-                        .then(result => {
-                            log.debug(component, 'Bulk Data inserted in Contcats');
-                            log.close();
-                            return cb(null, sanitaizedContats)
-                        })
-                        .catch(err => {
-                            log.error(component,'Error while insert Bulk Data');
-                            log.close();
-                            return cb(err, null);
-                        })
+                        if(sanitaizedContats.length == 0) {
+                            return cb(ERR.DUPLICATE_RECORD, null)
+                        } else {
+                            model.insertMany(sanitaizedContats)
+                            .then(result => {
+                                log.debug(component, 'Bulk Data inserted in Contcats');
+                                log.close();
+                                return cb(null, sanitaizedContats)
+                            })
+                            .catch(err => {
+                                log.error(component,'Error while insert Bulk Data');
+                                log.close();
+                                return cb(err, null);
+                            })
+                        }
                     }
+                    
                     
                 })
             }
