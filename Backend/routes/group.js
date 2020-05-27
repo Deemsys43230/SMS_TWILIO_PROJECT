@@ -223,19 +223,18 @@ router
                     res.json({status:false, err: ERR.NO_SUCH_ID });
                 }
                 else{
-                    console.log(group)
                     if(group.length ==0) {
                         log.debug(component, 'no group found', { attachInline: ERR.NO_SUCH_ID });
                         log.close();
                         res.json({status:false, err: ERR.NO_SUCH_ID });
                     } else {
                         // groupData.users = groupData.users.concat(group[0].users).unique()
-                        var mergeGroups = [];
-                        groupData.users.concat(group[0].users).forEach(userId =>{
-                            if (mergeGroups.indexOf(userId) == -1) 
-                            mergeGroups.push(userId); 
-                         });
-                         groupData.users = mergeGroups;
+                        // var mergeGroups = [];
+                        // groupData.users.concat(group[0].users).forEach(userId =>{
+                        //     if (mergeGroups.indexOf(userId) == -1) 
+                        //     mergeGroups.push(userId); 
+                        //  });
+                        //  groupData.users = mergeGroups;
                         groupApi.update(groupData, function (err, group) {
                             if (err) {
                                 log.error(component, 'update group error', { attach: err });
