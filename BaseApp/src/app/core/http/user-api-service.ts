@@ -41,7 +41,26 @@ export class UserApiService{
     }
 
     public changeSettings(data:any):Promise<any>{
-        return this.httpClient.post("users/changeSettings",data).toPromise()
+        return this.httpClient.post("/common/updateTwilioConfig",data).toPromise()
+        .then(function(res){
+            return res;
+        },function(err){
+            return err;
+        })
+    }
+
+    public getTwilioSetting():Promise<any>{
+        return this.httpClient.get("/common/getTwilioConfig").toPromise()
+        .then(function(res){
+            console.log(res)
+            return res;
+        },function(err){
+            return err;
+        })
+    }
+
+    public validateUserForSettings(data:any):Promise<any>{
+        return this.httpClient.post("/user/validateUserForStttings",data).toPromise()
         .then(function(res){
             return res;
         },function(err){

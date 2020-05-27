@@ -17,6 +17,24 @@ export class UserService {
     })
   }
 
+  public getTwilioSetting() {
+    return this.userApiService.getTwilioSetting().then(function(res){
+      return res;
+    },
+    function(err){
+      return err;
+    })
+  }
+
+  public validateUserForSettings(data) {
+    return this.userApiService.validateUserForSettings(data).then(function(res){
+      return res.status;
+    },
+    function(err){
+      return err;
+    })
+  }
+
   //Change Password
 public changePassword(data){
   return this.userApiService.changePassword(data).then(function(res){

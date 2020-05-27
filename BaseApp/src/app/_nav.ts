@@ -7,19 +7,19 @@ public menus = [
     icon:'icon-list'
   },
   {
-    name:'send-sms',
+    name:'Send SMS',
     url:'send-sms/1',
-    icon:'icon-list'
+    icon:'fa fa-comments'
   },
   {
-    name:'templates',
+    name:'Templates',
     url:'templates',
-    icon:'icon-list'
+    icon:'fa fa-sticky-note'
   },
   {
-    name:'settings',
+    name:'Settings',
     url:'settings',
-    icon:'icon-list'
+    icon:'fa fa-cog'
   }
 ]
 }
