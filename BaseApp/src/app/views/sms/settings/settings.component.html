@@ -71,14 +71,17 @@
       <div class="form-group">
         <div class="col-12 row">
           <label class="col-4" for="Name">Super Password</label>
-          <input type="text" formControlName="superPassword" class="form-control col-8">
-        </div>
-        <div class="error-msg-area col-12">
-          <div *ngIf="validateUserFrom.controls['superPassword'].errors && (!validateUserFrom.controls['superPassword'].pristine|| isvalidateSuperUserFromSubmitted)"
-            class="error-msg">
-            <div [hidden]="!validateUserFrom.controls['superPassword'].errors.required">Please Super Password.</div>
+          <div class="col-8">
+            <input type="text" formControlName="superPassword" class="form-control">
+            <div class="error-msg-area">
+              <div *ngIf="validateUserFrom.controls['superPassword'].errors && (!validateUserFrom.controls['superPassword'].pristine|| isvalidateSuperUserFromSubmitted)"
+                class="error-msg">
+                <div [hidden]="!validateUserFrom.controls['superPassword'].errors.required">Please Enter Super Password.</div>
+              </div>
+            </div>
           </div>
         </div>
+        
       </div>
     </form>
   </div>

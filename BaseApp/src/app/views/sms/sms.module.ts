@@ -11,6 +11,7 @@ import { AddGroupComponent } from './add-group/add-group.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ImportContactsComponent } from './import-contacts/import-contacts.component';
 
 
 @NgModule({
@@ -24,6 +25,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
     NgxSpinnerModule,
     NgbModule.forRoot()
   ],
-  declarations: [SettingsComponent,SendSmsComponent,TemplatesComponent,ContactsComponent, AddGroupComponent,ChangePasswordComponent]
+  declarations: [SettingsComponent,SendSmsComponent,TemplatesComponent,ContactsComponent, AddGroupComponent,ChangePasswordComponent, ImportContactsComponent]
 })
 export class SmsModule { }

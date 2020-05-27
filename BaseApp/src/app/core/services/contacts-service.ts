@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ContactsDataService } from '../http/contacts-api-service';
+import { GroupDataService } from '../http/groups-api-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService {
 
-  constructor(private contactsDataService: ContactsDataService) { }
+  constructor(private contactsDataService: ContactsDataService,private groupDataService:GroupDataService) { }
 
     //search Individual contatct based on name and phonenumber policy
     searchIndividualContact(data:any): any {
@@ -56,20 +57,31 @@ export class ContactsService {
         }) 
     }
 
-    deleteContact(recordType,userId):any{
-      console.log(recordType,userId);
-      if(recordType==1){
-        return this.contactsDataService.deleteContact(userId).then(function(res){
+    deleteContact(recordType,id):any{
+      if(recordType==1){ /* contact delete */
+        return this.contactsDataService.deleteContact(id).then(function(res){
           return res;
           },function(err){
             return err;
           }) 
       }
       else
-      {
-
+      { /* Group Delete */
+        return this.groupDataService.deleteGroup(id).then(function(res){
+          return res;
+          },function(err){
+            return err;
+          }) 
       }
       
+    }
+
+    uploadContacts(data){
+      return this.contactsDataService.uploadContact(data).then(function(res){
+        return res;
+        },function(err){
+          return err;
+        }) 
     }
 
 }

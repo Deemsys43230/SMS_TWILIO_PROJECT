@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit {
   public showSuperPasswordFrom: Boolean = true;
   public isvalidateSuperUserFromSubmitted: Boolean = false;
 
-  constructor(router: Router,private fb: FormBuilder, private userService: UserService, private toastr: ToastrService) { 
+  constructor(private router: Router,private fb: FormBuilder, private userService: UserService, private toastr: ToastrService) { 
     // this.initializeTwilioConfigForm(fb);
   }
 
@@ -92,7 +92,8 @@ export class SettingsComponent implements OnInit {
         let self=this;
         self.userService.changeSettings(this.settingsForm.value).then(function(status){
           if(status == true){
-            self.toastr.success("Settings have been updated Successfully!");      
+            self.toastr.success("Settings have been updated Successfully!"); 
+            self.router.navigate(['/user/contacts']);
           }else{
              self.toastr.error("Sorry! Settings cannot be saved.");      
           }

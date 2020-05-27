@@ -104,6 +104,7 @@ export class ContactsComponent implements OnInit {
     var self = this;
     this.contactsService.deleteContact(this.deleteRecordType, this.deleteRecordId).then(function (res) {
       self.getContacts();
+      self.getGroups();
       $('#deleteModal').modal('hide');
       self.ngxToaster.success('Record Deleted Successfully')
     }, function (err) {
@@ -200,12 +201,29 @@ export class ContactsComponent implements OnInit {
     $('#deleteModal').modal('show');
   }
 
-  AddUsersToGroupModal(contacts){
+  AddUsersToGroupModal(){
     $('#AddUsersToGroupModal').modal('show');
   }
 
   addContactToGroup(groupId){
-    console.log(groupId)
+    let filteredIds=this.selectedContacts.reduce((array,currenValue)=>{
+      array.push(currenValue.userId);
+      return array;
+    },[]);
+
+    var self=this;
+    this.groupsService.addContactsToGroup(groupId,filteredIds).then(function(res){
+      if(res.message.code==103){
+        self.ngxToaster.error(res.message.msg);
+      }
+      else
+      {
+        $('#AddUsersToGroupModal').modal('hide');
+        self.ngxToaster.success(res.message.msg);
+        self.selectedContacts=[];
+        self.getContacts();self.getGroups();
+      }
+    })
   }
 
   sendSms(recipients_type: Number, recipients) {

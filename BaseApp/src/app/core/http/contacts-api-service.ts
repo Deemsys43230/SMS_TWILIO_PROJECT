@@ -87,4 +87,17 @@ export class ContactsDataService {
         }
       })
     }
+
+    //upload contact
+    uploadContact(data):Promise<any> {
+      return this.httpClient.post("/user/contacts/upload/importContacts",data).toPromise()
+      .then(function (res) {
+        return res
+      }, function (err) {
+        return {
+          "Error Message": "Something went to wrong",
+          "Error": err
+        }
+      })
+    }
 }

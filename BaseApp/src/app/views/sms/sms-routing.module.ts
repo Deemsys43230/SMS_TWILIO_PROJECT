@@ -8,6 +8,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ImportContactsComponent } from './import-contacts/import-contacts.component';
 
 
 
@@ -36,6 +37,10 @@ export const routes: Routes = [
   {
     path:'templates',
     component:TemplatesComponent
+  },
+  {
+    path:'contacts/import-contacts',
+    component:ImportContactsComponent,
   },
   {
     path:'change-password',

@@ -1,0 +1,43 @@
+<div class="card">
+  <div class="card-header">
+    <span class="h5">Import Contacts</span>
+    <button class="btn btn-sm btn-info float-right" routerLink="/user/contacts"><i class="fa fa-arrow-left"></i>&nbsp;Back</button>
+  </div>
+  <div class="card-body">
+    <span class="col-9 offset-3"><b class="badge badge-info">Please Note</b>&nbsp;</span> <span class="text-muted">Supported File formats are <b>.csv</b></span>
+    <br><br>
+    <form [formGroup]="fileForm">
+    <div class="form-group row">
+      <label class="col-3 text-sm-left">Choose File
+      <span class="required">*</span>&nbsp;&nbsp;
+      <span class="float-right">:</span></label>
+      <div class="col-9">
+        <div class="custom-file">
+          <input type="file" id="file" class="custom-file-input" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"  (change)="handleFileInput($event.target.files);" formControlName="file">
+          <label class="custom-file-label">
+            {{fileUploadLabelText}}
+         </label></div>
+          <div class="error-msg-area">
+          <div *ngIf="fileForm.controls['file'].errors && (!fileForm.controls['file'].pristine|| isFormSubmitted)" class="error-msg">
+            <div [hidden]="!fileForm.controls['file'].errors.required">Please Select File.</div>
+           </div>
+           <div [hidden]="fileForm.controls['file'].errors || isValidFileFormat" class="error-msg">Please Select Valid Format.</div>
+        </div>
+      </div>
+    </div></form>
+    <div class="float-right">
+      <button class="btn btn-sm btn-info" type="reset" (click)="onResetForm()">Reset</button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="UploadContacts()">Upload</button>&nbsp;
+    </div><br>
+    <div *ngIf="showErrorDiv"><hr>
+      <h5 class="text-muted text-center"><i class="icon-exclamation"></i>&nbsp;Upload Error!</h5><br>
+      <div class="col-8 mx-auto p-0"><b class="text-dark">Document Contains Some Empty Cells.</b></div><br>
+      <ul class="list-group col-8 mx-auto">
+        <li class="list-group-item text-danger h6" *ngFor="let error of uploadErrors">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

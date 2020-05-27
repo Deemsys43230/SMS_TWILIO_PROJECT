@@ -61,7 +61,7 @@ export class GroupDataService {
       })
   }
 
-  //search Groups based on name  policy
+  //update group by id
   updateGroupById(data: any, id: any): Promise<any> {
     return this.httpClient.put("/user/groups/" + id, data).toPromise()
       .then(function (res) {
@@ -73,5 +73,29 @@ export class GroupDataService {
         }
       })
   }
+
+  deleteGroup(groupId): Promise<any> {
+    return this.httpClient.delete("/user/groups/"+groupId).toPromise()
+      .then(function (res) {
+        return res
+      }, function (err) {
+        return {
+          "Error Message": "Something went to wrong",
+          "Error": err
+        }
+      })
+  }
+
+      addContactsToGroup(groupId,users):Promise<any>{
+        return this.httpClient.post("/user/groups/addToGroup",{"groupId":groupId,"contactIds":users}).toPromise()
+        .then(function (res) {
+          return res
+        }, function (err) {
+          return {
+            "Error Message": "Something went to wrong",
+            "Error": err
+          }
+        })  
+      }
 
 }

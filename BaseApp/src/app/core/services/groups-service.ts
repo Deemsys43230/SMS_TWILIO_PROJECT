@@ -54,4 +54,12 @@ export class GroupsService {
       return err;
     })
   }
+
+    addContactsToGroup(groupId,users):any{
+        return this.groupDataService.addContactsToGroup(groupId,users).then(function(res){
+            return res;
+          },function(err){
+            return err;
+          })
+    }
 }
