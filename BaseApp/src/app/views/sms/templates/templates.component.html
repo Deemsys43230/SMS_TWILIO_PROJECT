@@ -26,6 +26,9 @@
                 </span>
 
               </li>
+              <li *ngIf="templateData.length==0">
+                <div class="bg-light p-3 text-center font-weight-bold text-info">No Templates Found</div>
+              </li>
             </ul>
           </div>
 
@@ -61,7 +64,7 @@
 
   </div>
 </div>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#597917" type = "square-jelly-box" ></ngx-spinner>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)"  color = "#6c757d" type = "square-jelly-box" ></ngx-spinner>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -69,8 +72,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title text-white" >Delete Confirmation</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

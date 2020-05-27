@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ValidationUtil } from '../../../util/validation.util';
 import { ToastrService } from 'ngx-toastr';
 import { GroupsService } from '../../../core/services/groups-service';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: $;
 
 @Component({
@@ -28,8 +29,8 @@ export class ContactsComponent implements OnInit {
   public isContactFormSubmitted;
   public selectedContacts = [];
 
-  constructor(private fb: FormBuilder, private contactsService: ContactsService,private groupsService:GroupsService,
-    private dataSharingService: DataSharingService, private router: Router, private ngxToaster: ToastrService) {
+  constructor(private fb: FormBuilder, private contactsService: ContactsService, private groupsService: GroupsService,
+    private dataSharingService: DataSharingService, private router: Router, private ngxToaster: ToastrService, private spinner: NgxSpinnerService) {
     this.getContacts(); this.initializeContactForm(); this.getGroups();
   }
 
@@ -47,12 +48,15 @@ export class ContactsComponent implements OnInit {
 
   //Get Contacts from backend
   getContacts() {
-    var self=this;
+    this.spinner.show()
+    var self = this;
     this.contactsService.getAllContacts().then((res) => {
       self.contacts = res.data;
       self.contactsCopy = JSON.parse(JSON.stringify(this.contacts));
       self.contacts = Object.values(this.groupBy(this.contacts, 'name'));
+      self.spinner.hide()
     }, (err) => {
+      self.spinner.hide()
       self.ngxToaster.error("Unknown Error Occured")
     })
   };
@@ -61,8 +65,10 @@ export class ContactsComponent implements OnInit {
   addContact() {
     this.isContactFormSubmitted = true;
     if (this.contactForm.valid) {
+      this.spinner.show()
       var self = this;
       this.contactsService.addContact(this.contactForm.value).then(function (res) {
+        self.spinner.hide()
         if (res.status) {
           self.getContacts();
           self.initializeContactForm();
@@ -73,6 +79,7 @@ export class ContactsComponent implements OnInit {
           self.ngxToaster.error(res.err.message);
         }
       }, function (err) {
+        self.spinner.hide()
         self.ngxToaster.error("Unknown Error Occured")
       })
     }
@@ -82,8 +89,10 @@ export class ContactsComponent implements OnInit {
   updateContact() {
     this.isContactFormSubmitted = true;
     if (this.contactForm.valid) {
+      this.spinner.show()
       var self = this;
       this.contactsService.updateContact(this.updateUserId, this.contactForm.value).then(function (res) {
+        self.spinner.hide()
         if (res.status) {
           self.getContacts();
           self.initializeContactForm();
@@ -95,6 +104,7 @@ export class ContactsComponent implements OnInit {
           self.ngxToaster.error(res.err.message);
         }
       }, function (err) {
+        self.spinner.hide()
         self.ngxToaster.error("Unknown Error Occured")
       })
     }
@@ -102,12 +112,15 @@ export class ContactsComponent implements OnInit {
 
   doDeleteRecord() {
     var self = this;
+    this.spinner.show()
     this.contactsService.deleteContact(this.deleteRecordType, this.deleteRecordId).then(function (res) {
+      self.spinner.hide()
       self.getContacts();
       self.getGroups();
       $('#deleteModal').modal('hide');
       self.ngxToaster.success('Record Deleted Successfully')
     }, function (err) {
+      self.spinner.hide()
       self.ngxToaster.error("Unknown Error Occured")
     })
 
@@ -116,16 +129,19 @@ export class ContactsComponent implements OnInit {
   //Get groups list from backend
   getGroups() {
     var self = this;
+    this.spinner.show()
     this.groupsService.getAllGroups().then(function (res) {
+      self.spinner.hide()
       self.groups = res.data;
       self.groupsCopy = JSON.parse(JSON.stringify(self.groups));
     }, function (err) {
+      self.spinner.hide()
       self.ngxToaster.error("Unknown Error Occured")
     })
   }
 
-  editGroup(group){
-    this.router.navigate(['/user/contacts/add-edit-group',group.groupId])
+  editGroup(group) {
+    this.router.navigate(['/user/contacts/add-edit-group', group.groupId])
   }
 
   //Checkbox multiple select contacts for sending sms
@@ -201,27 +217,28 @@ export class ContactsComponent implements OnInit {
     $('#deleteModal').modal('show');
   }
 
-  AddUsersToGroupModal(){
+  AddUsersToGroupModal() {
     $('#AddUsersToGroupModal').modal('show');
   }
 
-  addContactToGroup(groupId){
-    let filteredIds=this.selectedContacts.reduce((array,currenValue)=>{
+  addContactToGroup(groupId) {
+    this.spinner.show()
+    let filteredIds = this.selectedContacts.reduce((array, currenValue) => {
       array.push(currenValue.userId);
       return array;
-    },[]);
+    }, []);
 
-    var self=this;
-    this.groupsService.addContactsToGroup(groupId,filteredIds).then(function(res){
-      if(res.message.code==103){
+    var self = this;
+    this.groupsService.addContactsToGroup(groupId, filteredIds).then(function (res) {
+      self.spinner.hide()
+      if (res.message.code == 103) {
         self.ngxToaster.error(res.message.msg);
       }
-      else
-      {
+      else {
         $('#AddUsersToGroupModal').modal('hide');
         self.ngxToaster.success(res.message.msg);
-        self.selectedContacts=[];
-        self.getContacts();self.getGroups();
+        self.selectedContacts = [];
+        self.getContacts(); self.getGroups();
       }
     })
   }
@@ -236,6 +253,6 @@ export class ContactsComponent implements OnInit {
       recipients = [recipients];
       this.dataSharingService.nextData({ recipientType: 'Group', recipients: recipients })
     }
-    this.router.navigate(['/user/send-sms/',2]);
+    this.router.navigate(['/user/send-sms/', 2]);
   }
 }

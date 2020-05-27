@@ -7,7 +7,7 @@ span[aria-expanded=true] .fa-chevron-right {
  }
  .card-body .listDiv{
     height: 400px; 
-    overflow-x: scroll;
+    overflow-y: scroll;
  }
  .option-input {
     -webkit-appearance: none;
@@ -58,3 +58,18 @@ span[aria-expanded=true] .fa-chevron-right {
   .border-danger .option-input{
     cursor: not-allowed !important;
   }
+
+  .modal-body::-webkit-scrollbar, .listDiv::-webkit-scrollbar {
+    width: 0.3em;
+  }
+   
+  .modal-body::-webkit-scrollbar-track, .listDiv::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  .modal-body::-webkit-scrollbar-thumb, .listDiv::-webkit-scrollbar-thumb {
+    background-color:#455268;
+    outline: 1px solid slategrey;
+  }
+
+  

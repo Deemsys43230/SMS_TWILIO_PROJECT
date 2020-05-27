@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ContactsService } from '../../../core/services/contacts-service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-import-contacts',
@@ -19,7 +20,7 @@ export class ImportContactsComponent implements OnInit {
   uploadErrors=[];
   public fileUploadLabelText = "Select File...";
   constructor(private fb:FormBuilder,private contactService:ContactsService,private toaster:ToastrService,
-    private router:Router) {
+    private router:Router,private spinner: NgxSpinnerService) {
     this.initializeFileForm();
    }
 
@@ -55,10 +56,12 @@ export class ImportContactsComponent implements OnInit {
   UploadContacts(){
     this.isFormSubmitted=true;
     if(this.fileForm.valid && this.isValidFileFormat){
+      this.spinner.show();
       const uploadData = new FormData();
       uploadData.append('file', this.fileToUpload, this.fileToUpload.name);
       var self=this;
       this.contactService.uploadContacts(uploadData).then(function(res){
+        self.spinner.hide()
         if(!res.status){
           if(res.err && res.err.code)
           {
@@ -74,6 +77,7 @@ export class ImportContactsComponent implements OnInit {
           self.router.navigate(['/user/contacts']);
         }
       },function(err){
+        self.spinner.hide()
         console.log(err);
       })
     }
