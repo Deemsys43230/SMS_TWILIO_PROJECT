@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { SmsService } from '../../../core/services/sms-service';
 import { TemplateService } from '../../../core/services/template-service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { DataSharingService } from '../../../core/services/data-sharing-service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GroupsService } from '../../../core/services/groups-service';
 
 
 @Component({
@@ -17,16 +20,36 @@ export class SendSmsComponent implements OnInit {
   selectedIndividuals: any = [];
   selectedGroups: any = [];
   message: string = '';
+  public routingType;
   templateData: any = [];
   templateTitle: string = '';
 
-  constructor(private contactsService: ContactsService, private smsService: SmsService, private toastr: ToastrService, private templeteService: TemplateService, private spinner: NgxSpinnerService) { }
+  constructor(private contactsService: ContactsService, private smsService: SmsService, private toastr: ToastrService
+    ,private router:Router,private ActivatedRoute:ActivatedRoute,private dataSharingService:DataSharingService
+    ,private spinner:NgxSpinnerService,private templeteService:TemplateService,private groupsService:GroupsService) { 
+
+      this.ActivatedRoute.params.subscribe(params => {
+        this.routingType=params['routeType'];
+    });
+
+    if(this.routingType==1){
+      this.selectedIndividuals=[]; this.selectedGroups=[];
+    }
+    else
+    {
+      this.dataSharingService.sharedData.subscribe((data)=>{
+        this.searchType=data.recipientType;
+        data.recipientType=='Individual'?this.selectedIndividuals=data.recipients:this.selectedGroups=data.recipients;
+      })
+    }
+
+  }
 
   ngOnInit() {
   }
 
   public requestAutoCompleteGroup = (text: string): Observable<any> => {
-    return this.contactsService.searchGroups({ "name": text })
+    return this.groupsService.searchGroups({ "name": text })
       .map((res: any) => res.data);
   };
 

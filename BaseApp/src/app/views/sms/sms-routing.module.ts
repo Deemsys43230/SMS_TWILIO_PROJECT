@@ -22,11 +22,11 @@ export const routes: Routes = [
     component:ContactsComponent,
   },
   {
-    path:'contacts/add-group',
+    path:'contacts/add-edit-group/:groupId',
     component:AddGroupComponent,
   },
   {
-    path:'send-sms',
+    path:'send-sms/:routeType',
     component:SendSmsComponent,
   },
   {

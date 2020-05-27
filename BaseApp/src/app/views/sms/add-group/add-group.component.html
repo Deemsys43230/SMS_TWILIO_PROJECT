@@ -9,7 +9,7 @@
         <span for="Name" class="h6">Group Name<span class="float-right">:</span></span>
       </div>
       <div class="col-9">
-        <input type="text" ([ngModel])="groupDetails.groupName"  class="form-control">
+        <input type="text" [(ngModel)]="groupDetails.groupName"  class="form-control">
         <div class="error-msg-area">
           <div *ngIf=""
             class="error-msg">
@@ -19,18 +19,18 @@
     </div>
     <div class="row">
       <div class="col-3">
-        <span for="Name" class="h6">Recipients <span class="float-right">:</span></span>
+        <span for="Name" class="h6">Contacts <span class="float-right">:</span></span>
       </div>
       <div class="col-9">
-        <tag-input [placeholder]="'Add a new Individual'"
-          (onSelect)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
-          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="groupDetails.selectedIndividuals"
-          [displayBy]="'name'" [identifyBy]="'userId'">
+        <tag-input  [placeholder]="'Add a new Individual'"
+          (onAdd)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
+          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="groupDetails.selectedIndividuals">
           <ng-template let-item="item">
             {{ item.name}}&lt;{{item.phoneNumber}}&gt;
+            <span aria-hidden="true" (click)="removeIndividual(item);" class="font-weight-bold">X</span>
           </ng-template>
-          <tag-input-dropdown [autocompleteObservable]="requestAutoCompleteIndividual" [displayBy]="'name'"
-            [identifyBy]="'userId'">
+          <tag-input-dropdown [autocompleteObservable]="requestAutoCompleteIndividual"
+            [displayBy]="'nameAndPhoneNumber'" [identifyBy]="'userId'">
             <ng-template let-item="item" let-index="index">
               {{ item.name}}-{{item.phoneNumber}}
             </ng-template>

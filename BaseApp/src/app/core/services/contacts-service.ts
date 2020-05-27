@@ -21,12 +21,55 @@ export class ContactsService {
       })
     }
 
-    //search Groups based on name  policy
-    searchGroups(data:any): any {
-      return this.contactsDataService.searchGroups(data).map(function (res) {
+    
+
+    //Get All contact List
+    getAllContacts():any{
+      return this.contactsDataService.getAllContacts().then(function(res){
         return res;
-      }, function (err) {
+      },function(err){
         return err;
       })
     }
+
+    getContactById(userId):any {
+      return this.contactsDataService.getContactById(userId).then(function(res){
+      return res;
+      },function(err){
+        return err;
+      })
+    }
+
+    addContact(data):any {
+      return this.contactsDataService.addContact(data).then(function(res){
+        return res;
+        },function(err){
+          return err;
+        }) 
+    }
+
+    updateContact(userId,data):any{
+      return this.contactsDataService.updateContact(userId,data).then(function(res){
+        return res;
+        },function(err){
+          return err;
+        }) 
+    }
+
+    deleteContact(recordType,userId):any{
+      console.log(recordType,userId);
+      if(recordType==1){
+        return this.contactsDataService.deleteContact(userId).then(function(res){
+          return res;
+          },function(err){
+            return err;
+          }) 
+      }
+      else
+      {
+
+      }
+      
+    }
+
 }

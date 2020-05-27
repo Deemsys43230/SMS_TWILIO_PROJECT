@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import $ from 'jquery';
-import { FormBuilder,FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ContactsService } from '../../../core/services/contacts-service';
-declare var $:$;
+import { DataSharingService } from '../../../core/services/data-sharing-service';
+import { Router } from '@angular/router';
+import { ValidationUtil } from '../../../util/validation.util';
+import { ToastrService } from 'ngx-toastr';
+import { GroupsService } from '../../../core/services/groups-service';
+declare var $: $;
 
 @Component({
   selector: 'app-contacts',
@@ -12,143 +17,207 @@ declare var $:$;
 })
 export class ContactsComponent implements OnInit {
 
-  public contacts;
-  public contactsCopy;
-  public groups;
-  public groupsCopy;
-  public contactForm:FormGroup;
-  public groupForm:FormGroup;
+  public contacts = [];
+  public contactsCopy = [];
+  public groups = [];
+  public groupsCopy = [];
+  public deleteRecordType;
+  public deleteRecordId;
+  public updateUserId = null;
+  public contactForm: FormGroup;
   public isContactFormSubmitted;
-  public isGroupFormSubmitted;
-  public selectedContacts=[];
+  public selectedContacts = [];
 
-  constructor(private fb:FormBuilder,private contactsService:ContactsService) {
-    this.getContacts();this.initializeContactForm();this.initializeGroupForm();this.getGroups();
-   }
+  constructor(private fb: FormBuilder, private contactsService: ContactsService,private groupsService:GroupsService,
+    private dataSharingService: DataSharingService, private router: Router, private ngxToaster: ToastrService) {
+    this.getContacts(); this.initializeContactForm(); this.getGroups();
+  }
 
-  ngOnInit() {}
-  initializeContactForm(){
-    this.contactForm=this.fb.group(
+  ngOnInit() { }
+
+  //initialize contact form
+  initializeContactForm() {
+    this.contactForm = this.fb.group(
       {
-        name:['',Validators.required],
-        mobile:['',Validators.required],
-        email:['',Validators.required]
+        name: ['', Validators.required],
+        phoneNumber: ['', [Validators.required], ValidationUtil.validateMobile],
+        email: ['', Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]
       })
   }
-  initializeGroupForm(){
-    this.groupForm=this.fb.group(
-      {
-        groupName:['',Validators.required],
-        users:[[],Validators.required],
 
-      }
-    )
-  }
-
-  getContacts(){
-      this.contacts=
-      [{"name":"Aravinth","mobile":"982827262","email":"aravinth@gmail.com","userId":"128129"},
-      {"name":"Aravinth","mobile":"982827262","email":"aravinth@gmail.com","userId":"12813"},
-      {"name":"Aravinth","mobile":"982827262","email":"aravinth@gmail.com","userId":"128131"},
-      {"name":"Aravinth","mobile":"982827262","email":"aravinth@gmail.com","userId":"128132"},
-      {"name":"Balaji","mobile":"982827262","email":"aravinth@gmail.com","userId":"128133"},
-      {"name":"Cavin","mobile":"982827262","email":"aravinth@gmail.com","userId":"128134"},
-      {"name":"Dravid","mobile":"982827262","email":"aravinth@gmail.com","userId":"128145"},
-      {"name":"Elias","mobile":"982827262","email":"aravinth@gmail.com","userId":"128154"},
-      {"name":"Lavas","mobile":"982827262","email":"aravinth@gmail.com","userId":"128100"},
-      {"name":"Kreates","mobile":"982827262","email":"aravinth@gmail.com","userId":"128123"},
-      {"name":"Mano","mobile":"982827262","email":"aravinth@gmail.com","userId":"128142"},
-      {"name":"Susi","mobile":"982827262","email":"aravinth@gmail.com","userId":"128110"},
-      {"name":"Treat","mobile":"982827262","email":"aravinth@gmail.com","userId":"128100"},
-      {"name":"Urvas","mobile":"982827262","email":"aravinth@gmail.com","userId":"121929"},
-      {"name":"zeath","mobile":"982827262","email":"aravinth@gmail.com","userId":"018129"},
-      {"name":"zeth","mobile":"982827262","email":"aravinth@gmail.com","userId":"110129"}]
-      this.contactsCopy=JSON.parse(JSON.stringify(this.contacts));
-      this.contacts=Object.values(this.groupBy(this.contacts,'name'));
+  //Get Contacts from backend
+  getContacts() {
+    var self=this;
+    this.contactsService.getAllContacts().then((res) => {
+      self.contacts = res.data;
+      self.contactsCopy = JSON.parse(JSON.stringify(this.contacts));
+      self.contacts = Object.values(this.groupBy(this.contacts, 'name'));
+    }, (err) => {
+      self.ngxToaster.error("Unknown Error Occured")
+    })
   };
-  getGroups(){
-    this.groups=[{
-      "groupName":"Group 1",
-      "groupId":"182719",
-      "users":[
-        "152162","1721","178271"]
-    },{
-      "groupName":"Group 2",
-      "groupId":"002719",
-      "users":[
-        "2162","1721","178271",,"7188901","091100"]
-    },{
-      "groupName":"Group 3",
-      "groupId":"89755",
-      "users":[
-        "2162","1721","178271",,"7188901","091100","91819","182190"]
-    },{
-      "groupName":"Group 4",
-      "groupId":"023120",
-      "users":[
-        ,"91819","182190"]
-    },{
-      "groupName":"Group 5",
-      "groupId":"02120",
-      "users":[
-        "2571","91819","182190"]
-    }]
-    this.groupsCopy=JSON.parse(JSON.stringify(this.groups));
+
+  //Add New Contact
+  addContact() {
+    this.isContactFormSubmitted = true;
+    if (this.contactForm.valid) {
+      var self = this;
+      this.contactsService.addContact(this.contactForm.value).then(function (res) {
+        if (res.status) {
+          self.getContacts();
+          self.initializeContactForm();
+          $('#addContactModal').modal('hide');
+          self.ngxToaster.success('Contact added Successfully');
+        }
+        else {
+          self.ngxToaster.error(res.err.message);
+        }
+      }, function (err) {
+        self.ngxToaster.error("Unknown Error Occured")
+      })
+    }
   }
 
-  selectContact(contact){
-    if(contact.checked)
-    {
-      this.selectedContacts.push(contact);
+  //Add New Contact
+  updateContact() {
+    this.isContactFormSubmitted = true;
+    if (this.contactForm.valid) {
+      var self = this;
+      this.contactsService.updateContact(this.updateUserId, this.contactForm.value).then(function (res) {
+        if (res.status) {
+          self.getContacts();
+          self.initializeContactForm();
+          self.updateUserId = null;
+          $('#addContactModal').modal('hide');
+          self.ngxToaster.success('Contact updated Successfully');
+        }
+        else {
+          self.ngxToaster.error(res.err.message);
+        }
+      }, function (err) {
+        self.ngxToaster.error("Unknown Error Occured")
+      })
     }
-    else
-    {
-      this.selectedContacts = this.selectedContacts.filter(function(e){
+  }
+
+  doDeleteRecord() {
+    var self = this;
+    this.contactsService.deleteContact(this.deleteRecordType, this.deleteRecordId).then(function (res) {
+      self.getContacts();
+      $('#deleteModal').modal('hide');
+      self.ngxToaster.success('Record Deleted Successfully')
+    }, function (err) {
+      self.ngxToaster.error("Unknown Error Occured")
+    })
+
+  }
+
+  //Get groups list from backend
+  getGroups() {
+    var self = this;
+    this.groupsService.getAllGroups().then(function (res) {
+      self.groups = res.data;
+      self.groupsCopy = JSON.parse(JSON.stringify(self.groups));
+    }, function (err) {
+      self.ngxToaster.error("Unknown Error Occured")
+    })
+  }
+
+  editGroup(group){
+    this.router.navigate(['/user/contacts/add-edit-group',group.groupId])
+  }
+
+  //Checkbox multiple select contacts for sending sms
+  selectContact(contact) {
+    if (contact.checked)
+      this.selectedContacts.push(contact);
+    else {
+      this.selectedContacts = this.selectedContacts.filter(function (e) {
         return e.userId !== contact.userId;
       });
     }
   }
-  searchContacts(value){
-    this.contacts=this.contactsCopy.filter(function(obj) {
+
+  //Search through contacts (Local search)
+  searchContacts(value) {
+    this.contacts = this.contactsCopy.filter(function (obj) {
       return Object.keys(obj)
-                   .some(function(k) {
-                          if(k=="name" || k=="mobile")
-                             return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1; 
-                         });
-  });   
- this.contacts=Object.values(this.groupBy(this.contacts,'name'));
-}
+        .some(function (k) {
+          if (k == "name" || k == "phoneNumber")
+            return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1;
+        });
+    });
+    this.contacts = Object.values(this.groupBy(this.contacts, 'name'));
+  }
 
-searchGroups(value){
-  this.groups=this.groupsCopy.filter(function(obj) {
-    return Object.keys(obj)
-                 .some(function(k) {
-                        if(k=="groupName")
-                           return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1; 
-                       });
-});   
-}
-groupBy = function(array, key) {
- return array.reduce((r, e) => {
-    // get first letter of name of current element
-    let group = e[key][0];
-    // if there is no property in accumulator with this letter create it
-    if(!r[group]) r[group] = {group, children: [e]}
-    // if there is push current element to children array for that letter
-    else r[group].children.push(e);
-    // return accumulator
-    return r;
-  }, {})
-};
+  //Search through groups (Local Search)
+  searchGroups(value) {
+    this.groups = this.groupsCopy.filter(function (obj) {
+      return Object.keys(obj)
+        .some(function (k) {
+          if (k == "groupName")
+            return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1;
+        });
+    });
+  }
 
-addContactModal(){
-  this.initializeContactForm();
-  this.isContactFormSubmitted=false;
-  $('#addContactModal').modal('show');
-}
-addGroupModal(){
-  this.initializeContactForm();
-  this.isGroupFormSubmitted=false;
-  $('#addGroupModal').modal('show');
-}
+  //Group by alphabets functionality for contacts
+  groupBy = function (array, key) {
+    return array.reduce((r, e) => {
+      // get first letter of name of current element
+      let group = e[key][0].toUpperCase();
+      // if there is no property in accumulator with this letter create it
+      if (!r[group]) r[group] = { group, children: [e] }
+      // if there is push current element to children array for that letter
+      else r[group].children.push(e);
+      // return accumulator
+      return r;
+    }, {})
+  };
+
+  addContactModal() {
+    this.updateUserId = null;
+    this.initializeContactForm();
+    this.isContactFormSubmitted = false;
+    $('#addContactModal').modal('show');
+  }
+
+  editContactModal(record) {
+    this.updateUserId = record.userId;
+    this.initializeContactForm();
+    this.contactForm.patchValue({
+      name: record.name,
+      phoneNumber: record.phoneNumber,
+      email: record.email
+    })
+    this.isContactFormSubmitted = false;
+    $('#addContactModal').modal('show');
+  }
+
+  openDeleteModal(recordType, userId) {  /* recordType = 1->(contact) , 2->(group) */
+    this.deleteRecordType = recordType,
+      this.deleteRecordId = userId;
+    $('#deleteModal').modal('show');
+  }
+
+  AddUsersToGroupModal(contacts){
+    $('#AddUsersToGroupModal').modal('show');
+  }
+
+  addContactToGroup(groupId){
+    console.log(groupId)
+  }
+
+  sendSms(recipients_type: Number, recipients) {
+    if (recipients_type == 1) /* SingleContact */ {
+      if (!Array.isArray(recipients))
+        recipients = [recipients];
+      this.dataSharingService.nextData({ recipientType: 'Individual', recipients: recipients })
+    }
+    else {
+      recipients = [recipients];
+      this.dataSharingService.nextData({ recipientType: 'Group', recipients: recipients })
+    }
+    this.router.navigate(['/user/send-sms/',2]);
+  }
 }

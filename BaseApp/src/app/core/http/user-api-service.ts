@@ -13,7 +13,6 @@ export class UserApiService{
     constructor(private httpClient:HttpClient){
     }
 
-
     public login(loginData:any):Promise<any>{
         return this.httpClient.post('/user/login',loginData).toPromise()
         .then(function(res){

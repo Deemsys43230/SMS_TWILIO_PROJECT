@@ -8,7 +8,7 @@ public menus = [
   },
   {
     name:'send-sms',
-    url:'send-sms',
+    url:'send-sms/1',
     icon:'icon-list'
   },
   {

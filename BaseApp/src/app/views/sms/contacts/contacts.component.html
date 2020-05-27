@@ -1,21 +1,18 @@
 <div class="card">
   <div class="card-header">
     <span class="h5">Contacts and Groups</span>
-    <div class="float-right">
-      <button class="btn btn-info btn-sm"><i class="fa fa-arrow-left">&nbsp;</i>Back</button>
-    </div>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-6">
         <span class="h6">Contacts</span>
         <div class="float-right">
-          <div *ngIf="selectedContacts.length==0">
+          <div *ngIf="selectedContacts.length<2">
           <button class="btn btn-sm btn-primary" (click)="addContactModal()">Add Contact</button>&nbsp;
           <button class="btn btn-sm btn-info">Import Contact</button></div>
-          <div *ngIf="selectedContacts.length>0">
-            <button class="btn btn-sm btn-primary">Send Sms</button>&nbsp;
-            <button class="btn btn-sm btn-info">Add to Group</button>
+          <div *ngIf="selectedContacts.length>1">
+            <button class="btn btn-sm btn-primary" (click)="sendSms(1,selectedContacts)">Send Sms</button>&nbsp;
+            <button class="btn btn-sm btn-info" (click)="AddUsersToGroupModal(selectedContacts)">Add to Group</button>
           </div>
         </div><br><br>
         <div class="border">
@@ -38,22 +35,26 @@
                   <div class="col-10 p-1">
                     <span>
                       <h6>{{children.name}}</h6>
-                      {{children.mobile}}
+                      {{children.phoneNumber}}
                     </span>
                   </div>
                   <div class="col-1 p-3">
-                    <a class="text-info" [routerLink]="null" tabindex="-1" [popover]="popContent" [popoverContext]="context"
-                    triggers="focus" placement="auto" container="body">
+                    <a class="text-info" [ngbPopover]="popContent" [routerLink]="null" tabindex="-1"
+                    [autoClose]="true" placement="left" container="body">
                       <i class="icon-options"></i>
                   </a>
                   <ng-template #popContent>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Edit</h6></a><br>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Delete</h6></a>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="sendSms(1,children)"><h6>Send Sms</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="editContactModal(children)"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="openDeleteModal(1,children.userId)"><h6>Delete</h6></a>
                   </ng-template>
                   </div>
               </div>
               </div>
               
+          </div>
+          <div *ngIf="contacts.length==0">
+            <div class="bg-light p-3 text-center font-weight-bold text-info">No Contacts Found</div>
           </div>
         </div>
       </div>
@@ -62,7 +63,7 @@
     <div class="col-6">
         <span class="h6">Groups</span>
         <div class="float-right">
-          <button class="btn btn-sm btn-primary" routerLink="add-group">Add Group</button>&nbsp;
+          <button class="btn btn-sm btn-primary" [routerLink]="['add-edit-group', 1]">Add Group</button>&nbsp;
         </div><br><br>
         <div class="border">
           <div class="searchDiv bg-light p-2">
@@ -75,17 +76,21 @@
                <span class="text-muted"> {{group.users?.length}} Contacts
               </span></div>
               <div class="col-1 p-3">
-                <a class="text-info" [routerLink]="null" tabindex="-1" [popover]="popContent" [popoverContext]="context"
-                    triggers="focus" placement="auto" container="body">
+                <a class="text-info" [routerLink]="null" tabindex="-1" [ngbPopover]="popContent"
+                [autoClose]="true" placement="auto" container="body">
                       <i class="icon-options"></i>
                   </a>
                   <ng-template #popContent>
-                   <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Send Sms</h6></a><br>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Edit</h6></a><br>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="sample()"><h6>Delete</h6></a>
+                   <a class="btn btn-sm" [routerLink]="null" (click)="sendSms(2,group)"><h6>Send Sms</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="editGroup(group)"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm" [routerLink]="null" (click)="openDeleteModal(2,group.groupId)"><h6>Delete</h6></a>
                   </ng-template>
               </div>
-          </div></div>
+          </div>
+          <div *ngIf="groups.length==0">
+            <div class="bg-light p-3 text-center font-weight-bold text-info">No Groups Found</div>
+          </div>
+        </div>
         </div>
       </div>
   </div>
@@ -113,12 +118,13 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="mobile">Mobile Number</label>
-            <input type="text" formControlName="mobile" class="form-control">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" formControlName="phoneNumber" class="form-control">
             <div class="error-msg-area">
-              <div *ngIf="contactForm.controls['mobile'].errors && (!contactForm.controls['mobile'].pristine|| isContactFormSubmitted)"
+              <div *ngIf="contactForm.controls['phoneNumber'].errors && (!contactForm.controls['phoneNumber'].pristine|| isContactFormSubmitted)"
                 class="error-msg">
-                <div [hidden]="!contactForm.controls['mobile'].errors.required">Please Enter Mobile Number.</div>
+                <div [hidden]="!contactForm.controls['phoneNumber'].errors.required">Please Enter Phone Number.</div>
+                <div [hidden]="!contactForm.controls['phoneNumber'].errors.checkMobilePattern">Invalid Phone Number.</div>
               </div>
             </div>
           </div>
@@ -128,56 +134,62 @@
             <div class="error-msg-area">
               <div *ngIf="contactForm.controls['email'].errors && (!contactForm.controls['email'].pristine|| isContactFormSubmitted)"
                 class="error-msg">
+                <div [hidden]="!contactForm.controls['email'].errors.pattern">Please Enter Valid Email ID.</div>
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" (click)="isContactFormSubmitted=true;addContact()">Add</button>
+        <button *ngIf="updateUserId==null" class="btn btn-primary btn-sm" (click)="addContact()">Add</button>
+        <button *ngIf="updateUserId!=null" class="btn btn-primary btn-sm" (click)="isContactFormSubmitted=true;updateContact()">Update</button>
         <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Add Group Modal -->
-<!-- <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
+
+<div class="modal fade" id="AddUsersToGroupModal" tabindex="-1" role="dialog" aria-labelledby="AddUsersToGroupModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
-        <h5 class="text-white">Add Group</h5>
+        <h5 class="text-white">Add To Groups</h5>
       </div>
       <div class="modal-body">
-          <div class="form-group">
-            <label for="Name">Group Name</label>
-            <input type="text" formControlName="groupName" class="form-control">
-            <div class="error-msg-area">
-              <div *ngIf="groupForm.controls['groupName'].errors && (!groupForm.controls['groupName'].pristine|| isContactFormSubmitted)"
-                class="error-msg">
-                <div [hidden]="!groupForm.controls['groupName'].errors.required">Please Enter Group Name.</div>
+          <span class="font-weight-bold">{{selectedContacts.length}} Contacts Selected</span><br><br>
+          <div class="listDiv">
+          <div class="row bg-white no-gutters border" *ngFor="let group of groups ; let i=index">
+              <div class="col-8 p-1">
+                <span class="h6 text-muted">{{group.groupName}}</span><br></div>
+              <div class="col-4 p-1">
+                <a class=" btn btn-sm btn-success text-white" (click)="addContactToGroup(group.groupId)">
+                      <i class="icon-plus"></i>&nbsp;Add to this Group
+                  </a>
               </div>
-            </div>
           </div>
-            <tag-input [placeholder]="'Add a new Individual'"
-          (onSelect)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
-          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals"
-          [displayBy]="'name'" [identifyBy]="'userId'">
-          <ng-template let-item="item">
-            {{ item.name}}&lt;{{item.phoneNumber}}&gt;
-          </ng-template>
-          <tag-input-dropdown [autocompleteObservable]="requestAutoCompleteIndividual" [displayBy]="'name'"
-            [identifyBy]="'userId'">
-            <ng-template let-item="item" let-index="index">
-              {{ item.name}}-{{item.phoneNumber}}
-            </ng-template>
-          </tag-input-dropdown>
-        </tag-input>
+        </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary btn-sm">Add</button>
         <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="text-white">Confirmation</h5>
+      </div>
+      <div class="modal-body">
+          Do you want to delete this record?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" (click)="doDeleteRecord()">Delete</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
