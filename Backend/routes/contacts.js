@@ -197,7 +197,7 @@ router
         contactApi.importUploads(req, res, function (err, data) {
             if (!err) {
                 return res.json({ 
-                    "status": false, 
+                    "status": true, 
                     "message": "Contact Imported Successfully!" 
                 });
             }

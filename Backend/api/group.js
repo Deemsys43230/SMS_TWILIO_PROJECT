@@ -49,7 +49,7 @@ var updateGroup = function(data, cb) {
             .then(users => {
                 log.debug(component, `retrieved ${users} group of users`);
                 log.close();  
-                return cb(null, 'User Added to Group Successfully!');
+                return cb(null, {code:102,msg:'User Added to Group Successfully!'});
             })
             .catch(err => {
                 log.error(component, 'update users to group error', { attach: err });
@@ -59,7 +59,7 @@ var updateGroup = function(data, cb) {
         } else {
             log.debug(component, 'user already exsits in group');
             log.close();
-            return cb(null, 'User Already Excist in this Group')           
+            return cb(null,{code:103,msg:'User Already Exist in this Group'} )           
         }
     })
     
