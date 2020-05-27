@@ -14,7 +14,7 @@
       </a>
       <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" routerLink="change-password"><i class="fa fa-key"></i> Change Password</a>
-        <a class="dropdown-item" (click)="logout()"><i class="icon-logout"></i> Logout</a>
+        <a class="dropdown-item" [routerLink]="null" (click)="logout()"><i class="icon-logout"></i> Logout</a>
       </div>
     </li>
   </ul>

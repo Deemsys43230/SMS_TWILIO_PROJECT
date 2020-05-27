@@ -28,6 +28,7 @@ export class ContactsComponent implements OnInit {
   public contactForm: FormGroup;
   public isContactFormSubmitted;
   public selectedContacts = [];
+  public singlecontactToGroup=null;
 
   constructor(private fb: FormBuilder, private contactsService: ContactsService, private groupsService: GroupsService,
     private dataSharingService: DataSharingService, private router: Router, private ngxToaster: ToastrService, private spinner: NgxSpinnerService) {
@@ -217,13 +218,22 @@ export class ContactsComponent implements OnInit {
     $('#deleteModal').modal('show');
   }
 
-  AddUsersToGroupModal() {
+  AddMultipleUsersToGroupModal(){
+    this.singlecontactToGroup=null;
     $('#AddUsersToGroupModal').modal('show');
   }
 
-  addContactToGroup(groupId) {
-    this.spinner.show()
-    let filteredIds = this.selectedContacts.reduce((array, currenValue) => {
+  AddSingleUserToGroupModal(userId){
+    this.singlecontactToGroup=userId;
+    $('#AddUsersToGroupModal').modal('show');
+  }
+
+  addContactToGroup(groupId){
+    let filteredIds
+    if(this.singlecontactToGroup!=null)
+      filteredIds=[this.singlecontactToGroup];
+      else
+      filteredIds= this.selectedContacts.reduce((array,currenValue)=>{
       array.push(currenValue.userId);
       return array;
     }, []);

@@ -12,7 +12,7 @@
           <button class="btn btn-sm btn-info" routerLink="import-contacts">Import Contact</button></div>
           <div *ngIf="selectedContacts.length>1">
             <button class="btn btn-sm btn-primary" (click)="sendSms(1,selectedContacts)">Send Sms</button>&nbsp;
-            <button class="btn btn-sm btn-info" (click)="AddUsersToGroupModal(selectedContacts)">Add to Group</button>
+            <button class="btn btn-sm btn-info" (click)="AddMultipleUsersToGroupModal(selectedContacts)">Add to Group</button>
           </div>
         </div><br><br>
         <div class="border">
@@ -44,9 +44,10 @@
                       <i class="icon-options"></i>
                   </a>
                   <ng-template #popContent>
-                    <a class="btn btn-sm text-primary" [routerLink]="null" (click)="sendSms(1,children)"><h6>Send Sms</h6></a><br>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="editContactModal(children)"><h6>Edit</h6></a><br>
-                    <a class="btn btn-sm text-danger" [routerLink]="null" (click)="openDeleteModal(1,children.userId)"><h6>Delete</h6></a>
+                    <a class="btn btn-sm text-primary w-100 text-left" [routerLink]="null" (click)="sendSms(1,children)"><h6>Send Sms</h6></a><br>
+                    <a class="btn btn-sm text-info w-100 text-left" [routerLink]="null" (click)="AddSingleUserToGroupModal(children.userId)"><h6>Add To Group</h6></a><br>
+                    <a class="btn btn-sm w-100 text-left" [routerLink]="null" (click)="editContactModal(children)"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm text-danger w-100 text-left" [routerLink]="null" (click)="openDeleteModal(1,children.userId)"><h6>Delete</h6></a>
                   </ng-template>
                   </div>
               </div>
@@ -81,9 +82,9 @@
                       <i class="icon-options"></i>
                   </a>
                   <ng-template #popContent>
-                   <a class="btn btn-sm text-primary" [routerLink]="null" (click)="sendSms(2,group)"><h6>Send Sms</h6></a><br>
-                    <a class="btn btn-sm" [routerLink]="null" (click)="editGroup(group)"><h6>Edit</h6></a><br>
-                    <a class="btn btn-sm text-danger" [routerLink]="null" (click)="openDeleteModal(2,group.groupId)"><h6>Delete</h6></a>
+                   <a class="btn btn-sm text-primary w-100 text-left" [routerLink]="null" (click)="sendSms(2,group)"><h6>Send Sms</h6></a><br>
+                    <a class="btn btn-sm w-100 text-left" [routerLink]="null" (click)="editGroup(group)"><h6>Edit</h6></a><br>
+                    <a class="btn btn-sm text-danger w-100 text-left" [routerLink]="null" (click)="openDeleteModal(2,group.groupId)"><h6>Delete</h6></a>
                   </ng-template>
               </div>
           </div>
@@ -164,7 +165,8 @@
         </button>
       </div>
       <div class="modal-body">
-          <span class="font-weight-bold text-muted">{{selectedContacts.length}} Contacts Selected</span><br><br>
+        <span *ngIf="singlecontactToGroup!=null" class="font-weight-bold text-muted">1 Contact Selected</span>
+          <span *ngIf="singlecontactToGroup==null" class="font-weight-bold text-muted">{{selectedContacts.length}} Contacts Selected</span><br><br>
           <!-- <div class="listDiv"> -->
             <ul class="list-group">
               <li *ngFor="let group of groupsCopy ; let i=index" class="list-group-item">
