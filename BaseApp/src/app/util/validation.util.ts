@@ -25,14 +25,14 @@ export class ValidationUtil {
 
 //checks whether password matches with confirm password
 static comparePasswords(AC: AbstractControl) {
-  let password = AC.get('password').value; // to get value in input tag
-     let confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
-      if(password != confirmPassword) {
-          AC.get('confirmPassword').setErrors( {passwordMisMatches: true} )
-      } else {
-          AC.get('confirmPassword').setErrors(null)
-          return null
-      }
+  let password = AC.get('newPassword').value; // to get value in input tag
+  let confirmNewPassword = AC.get('confirmNewPassword').value; // to get value in input tag
+  if(password != confirmNewPassword) {
+      AC.get('confirmNewPassword').setErrors( {passwordMisMatches: true} )
+  } else {
+      AC.get('confirmNewPassword').setErrors(null)
+      return null
+  }
 }
 
   //check password with Regex pattern

@@ -32,7 +32,7 @@ export class UserApiService{
     }
 
     public changePassword(data:any):Promise<any>{
-        return this.httpClient.post("users/changePassword",data).toPromise()
+        return this.httpClient.post("/user/changePassword",data).toPromise()
         .then(function(res){
             return res;
         },function(err){

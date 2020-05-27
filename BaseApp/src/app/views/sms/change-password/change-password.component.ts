@@ -18,8 +18,8 @@ export class ChangePasswordComponent implements OnInit {
   public status = false;
   public changePasswordFormFields = {
     currentPassword: ['', Validators.required],
-    password: ['', [Validators.required],ValidationUtil.validatePasswordPattern],
-    confirmPassword: ['', [Validators.required]]
+    newPassword: ['', [Validators.required,Validators.minLength(5)]],
+    confirmNewPassword: ['', [Validators.required]]
   }
 
   constructor(router: Router, fb: FormBuilder, private userService: UserService, private toastr: ToastrService) { 
@@ -38,19 +38,14 @@ export class ChangePasswordComponent implements OnInit {
   submitForm() {
     this.isFormSubmitted = true;
       if(this.changePasswordForm.valid){
-        let currentPassword=this.changePasswordForm.value.currentPassword;
-        let password= this.changePasswordForm.value.password;
         let self=this;
-        // self.authService.changePassword(currentPassword, password).then(function(status){
-          if(this.status == true){
-            // Scroll to Top
+        self.userService.changePassword(self.changePasswordForm.value).then(function(res){
+          if(res.status == true){
             self.toastr.success("Password Changed Successfully!");      
           }else{
              self.toastr.error("Incorrect Current Password!");      
           }
-          //Reset the form
-          self.resetForm();
-        // });
+        });
       }
   }
   resetForm() {
