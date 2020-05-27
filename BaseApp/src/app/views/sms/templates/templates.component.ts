@@ -17,6 +17,7 @@ export class TemplatesComponent implements OnInit {
   templateData: any = [];
   templateUpdateId: any;
   templateDeleteId: any;
+  searchData: any = [];
 
   constructor(private templeteService: TemplateService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -30,6 +31,8 @@ export class TemplatesComponent implements OnInit {
     this.templeteService.getAllTemplates().then(function (res) {
       if (res.status) {
         self.templateData = res.data;
+        self.searchData = JSON.parse(JSON.stringify(self.templateData));
+
       }
     })
   }
@@ -83,7 +86,7 @@ export class TemplatesComponent implements OnInit {
         if (res.status) {
           self.reset()
           self.getTempletes()
-          self.toastr.success(res.message,'Templete');
+          self.toastr.success(res.message, 'Templete');
         }
       })
     } else {
@@ -101,9 +104,20 @@ export class TemplatesComponent implements OnInit {
       if (res.status) {
         self.reset()
         self.getTempletes()
-        self.toastr.success(res.message,'Templete');
+        self.toastr.success(res.message, 'Templete');
       }
     })
+  }
+
+
+  searchTempletes(value) {
+    this.templateData = this.searchData.filter(function (obj) {
+      return Object.keys(obj)
+        .some(function (k) {
+          if (k == "title")
+            return obj[k].toLowerCase().indexOf(value.toLowerCase()) !== -1;
+        });
+    });
   }
 
 }

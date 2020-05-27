@@ -7,31 +7,13 @@
       <div class="col-2">
         <p class="h6">Recipient Type<span class="float-right">:</span></p>
       </div>
-      <div class="col-2">
+      <div class="col-10">
         <div class="btn-group" role="group" aria-label="Basic example">
           <button type="button" class="btn btn-outline-primary shadow-none"
             [ngClass]="{'active':searchType == 'Individual'}" id="Individual"
             (click)="searchType = 'Individual';">Individual</button>
           <button type="button" class="btn btn-outline-primary shadow-none" [ngClass]="{'active':searchType == 'Group'}"
             id="GroupSms" (click)="searchType = 'Group';">Group</button>
-        </div>
-      </div>
-      <div class="col-8">
-        <div class="row ">
-          <div class="col-3">
-            <p class="h6">Selected Template<span class="float-right">:</span></p>
-          </div>
-          <div class="col-9 ">
-            <div class="row">
-              <div class="col-8">
-                <p class="h6 text-info ">{{templateTitle}}</p>
-              </div>
-              <div class="col-4">
-                <button type="button" class="btn btn-primary float-left " (click)="getTempletes()" data-toggle="modal"
-                  data-target="#exampleModal">Choose&nbsp;Template</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -42,7 +24,7 @@
       <div class="col-10">
         <tag-input *ngIf="searchType == 'Individual'" [placeholder]="'Add a new Individual'" (onAdd)="onSelect($event)"
           [onTextChangeDebounce]="500" [theme]="'dark'" [secondaryPlaceholder]="'Search Individual'"
-          [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals">
+          [onlyFromAutocomplete]="true" [(ngModel)]="selectedIndividuals" [identifyBy]="'userId'">
           <ng-template let-item="item">
             {{ item.name}}&lt;{{item.phoneNumber}}&gt;
             <span aria-hidden="true" (click)="removeIndividual(item);" class="font-weight-bold">X</span>
@@ -56,7 +38,7 @@
         </tag-input>
         <tag-input *ngIf="searchType == 'Group'" [placeholder]="'Add a new Group'" (onAdd)="onSelect($event)"
           [onTextChangeDebounce]="500" [theme]="'dark'" [secondaryPlaceholder]="'Search Group'"
-          [onlyFromAutocomplete]="true" [(ngModel)]="selectedGroups">
+          [onlyFromAutocomplete]="true" [(ngModel)]="selectedGroups" [identifyBy]="'groupId'">
           <ng-template let-item="item">
             {{ item.groupName}}&nbsp;<i class="fa fa-users" aria-hidden="true"></i>&nbsp;{{item.users.length}}
             <span aria-hidden="true" (click)="removeGroup(item);" class="font-weight-bold">X</span>
@@ -72,6 +54,22 @@
     </div>
     <div class="row mt-3">
       <div class="col-2">
+        <p class="h6">Selected Template<span class="float-right">:</span></p>
+      </div>
+      <div class="col-10">
+        <div class="row">
+          <div class="col-2">
+            <button type="button" class="btn btn-primary" (click)="getTempletes()" data-toggle="modal"
+              data-target="#exampleModal">Choose&nbsp;Template</button>
+          </div>
+          <div class="col-10">
+            <p class="h6 text-info ">{{templateTitle}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-2">
         <p class="h6">Message<span class="float-right">:</span></p>
       </div>
       <div class="col-10">
@@ -79,15 +77,16 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div class="offset-2 col-6">
-        <button type="button" class="btn btn-info float-left" (click)="reset();">Reset</button>
+      <div class="offset-2 col-10 ">
         <button type="button" class="btn btn-primary float-right" (click)="sendSMS();">Send</button>
+        <button type="button" class="btn btn-info float-right mr-2 " (click)="reset();">Reset</button>
+
       </div>
     </div>
   </div>
 </div>
 
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="small" color="#597917" type="square-jelly-box"></ngx-spinner>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#597917" type="square-jelly-box"></ngx-spinner>
 
 
 

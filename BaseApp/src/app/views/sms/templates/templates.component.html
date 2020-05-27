@@ -11,6 +11,9 @@
           </div>
           <div class="listContainer">
             <ul class="list-group">
+              <li class="p-2 bg-light">
+                <input class="form-control" type="text" placeholder="Search Templete" (keyup)="searchTempletes($event.target.value)">
+              </li>
               <li class="d-flex p-1 border-bottom align-items-center" *ngFor="let templates of templateData;">
 
                 <span class="mr-auto pl-2">{{templates.title}}</span>
@@ -47,11 +50,10 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="offset-3 col-8 d-flex">
-            <button type="button" class="btn btn-primary  ml-auto"
+          <div class="offset-3 col-9">
+            <button type="button" class="btn btn-primary float-right"
               (click)="templateButtonText == 'Add' ? addTemplates():updateTemplate()">{{templateButtonText}}</button>
-            <button type="button" class="btn btn-dark  mx-auto" (click)="reset()">Reset</button>
-            <!-- <button type="button" class="btn btn-primary mr-auto">Save</button> -->
+            <button type="button" class="btn btn-dark float-right mr-2" (click)="reset()">Reset</button>
           </div>
         </div>
       </div>
@@ -76,7 +78,7 @@
         <p>Are you sure you want to delete the template?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="deleteTemplete()">delete</button>
+        <button type="button" class="btn btn-danger" (click)="deleteTemplete()">Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

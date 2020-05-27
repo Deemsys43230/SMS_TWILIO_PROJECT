@@ -37,8 +37,8 @@ export class SendSmsComponent implements OnInit {
     }
     else
     {
-      this.dataSharingService.sharedData.subscribe((data)=>{
-        this.searchType=data.recipientType;
+      this.dataSharingService.sharedData.subscribe((data)=>{        
+        this.searchType=(data.recipientType == null) ? 'Individual' : data.recipientType;
         data.recipientType=='Individual'?this.selectedIndividuals=data.recipients:this.selectedGroups=data.recipients;
       })
     }

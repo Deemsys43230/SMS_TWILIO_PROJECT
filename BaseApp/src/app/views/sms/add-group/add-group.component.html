@@ -1,7 +1,8 @@
 <div class="card">
   <div class="card-header">
-    <span class="h5">Add Group</span>
-    <button class="float-right btn-sm btn btn-info" routerLink="/user/contacts"><i class="fa fa-arrow-left"></i>&nbsp;Back</button>
+    <span class="h5">{{headerText}} Group</span>
+    <button class="float-right btn-sm btn btn-info" routerLink="/user/contacts"><i
+        class="fa fa-arrow-left"></i>&nbsp;Back</button>
   </div>
   <div class="card-body col-8 mx-auto">
     <div class="row">
@@ -9,10 +10,9 @@
         <span for="Name" class="h6">Group Name<span class="float-right">:</span></span>
       </div>
       <div class="col-9">
-        <input type="text" [(ngModel)]="groupDetails.groupName"  class="form-control">
+        <input type="text" [(ngModel)]="groupDetails.groupName" class="form-control">
         <div class="error-msg-area">
-          <div *ngIf=""
-            class="error-msg">
+          <div *ngIf="" class="error-msg">
           </div>
         </div>
       </div>
@@ -22,9 +22,9 @@
         <span for="Name" class="h6">Contacts <span class="float-right">:</span></span>
       </div>
       <div class="col-9">
-        <tag-input  [placeholder]="'Add a new Individual'"
-          (onAdd)="onSelect($event)" [onTextChangeDebounce]="500" [theme]="'dark'"
-          [secondaryPlaceholder]="'Search Individual'" [onlyFromAutocomplete]="true" [(ngModel)]="groupDetails.selectedIndividuals">
+        <tag-input [placeholder]="'Add a new Individual'" (onAdd)="onSelect($event)" [onTextChangeDebounce]="500"
+          [theme]="'dark'" [identifyBy]="'userId'" [secondaryPlaceholder]="'Search Individual'"
+          [onlyFromAutocomplete]="true" [(ngModel)]="groupDetails.selectedIndividuals">
           <ng-template let-item="item">
             {{ item.name}}&lt;{{item.phoneNumber}}&gt;
             <span aria-hidden="true" (click)="removeIndividual(item);" class="font-weight-bold">X</span>
@@ -37,21 +37,21 @@
           </tag-input-dropdown>
         </tag-input>
         <div class="error-msg-area">
-          <div *ngIf=""
-            class="error-msg">
+          <div *ngIf="" class="error-msg">
           </div>
         </div>
       </div>
     </div>
-      <!-- <div class="error-msg-area">
+    <!-- <div class="error-msg-area">
         <div *ngIf=""
           class="error-msg">
           <div [hidden]="">Please Enter Group Name.</div>
         </div>
       </div> -->
     <div class="float-right">
-      <button class="btn btn-sm btn-primary">Add Group</button>&nbsp;
-      <button class="btn btn-sm btn-info">Reset</button>
+      <button class="btn btn-sm btn-primary" *ngIf="headerText == 'Add'" (click)=" addGroup()">Add Group</button>&nbsp;
+      <button class="btn btn-sm btn-primary" *ngIf="headerText != 'Add'" (click)="updateGroup()">Update Group</button>&nbsp;
+      <button class="btn btn-sm btn-info" (click)="reset()">Reset</button>
     </div>
   </div>
 </div>
