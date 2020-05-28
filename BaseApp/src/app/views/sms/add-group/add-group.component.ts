@@ -49,8 +49,14 @@ export class AddGroupComponent implements OnInit {
   }
 
   public requestAutoCompleteIndividual = (text: string): Observable<any> => {
+    var self = this;
     return this.contactsService.searchIndividualContact({ "searchText": text })
-      .map((res: any) => res.data);
+    .map((res: any) => {
+      if (res.data.length == 0) {
+        self.toastr.error('No Records Found','Select Contacts');
+      }
+      return res.data;
+    })
   };
 
   onSelect(event: any) {
@@ -62,7 +68,7 @@ export class AddGroupComponent implements OnInit {
   }
 
   addGroup() {
-    if (this.groupDetails.groupName.trim() != "" && this.groupDetails.selectedIndividuals.length != 0) {
+    if (this.groupDetails.groupName.trim() != "") {
       this.groupDetails['users'] = this.groupDetails.selectedIndividuals.map(indv => indv.userId);
       var self = this;
       this.groupsService.addGroup(this.groupDetails).then(function (res) {
@@ -73,14 +79,14 @@ export class AddGroupComponent implements OnInit {
         }
       })
     } else {
-      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + ' Group')
+      this.toastr.error('Please make sure to add Group Name', this.headerText + ' Group')
     }
 
   }
 
 
   updateGroup() {
-    if (this.groupDetails.groupName.trim() != "" && this.groupDetails.selectedIndividuals.length != 0) {
+    if (this.groupDetails.groupName.trim() != "") {
       this.groupDetails['users'] = this.groupDetails.selectedIndividuals.map(indv => indv.userId);
       var self = this;
       this.groupsService.updateGroupById(this.groupDetails,this.groupId).then(function (res) {
@@ -91,7 +97,7 @@ export class AddGroupComponent implements OnInit {
         }
       })
     } else {
-      this.toastr.error('Please make sure to add groupname and contacts', this.headerText + ' Group')
+      this.toastr.error('Please make sure to add Group Name', this.headerText + ' Group')
     }
 
   }

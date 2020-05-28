@@ -124,7 +124,7 @@
           </div>
           <div class="form-group">
             <label for="phoneNumber">Phone Number&nbsp;<small class="text-muted">(Without Country Code)</small></label>
-            <input type="text" formControlName="phoneNumber" class="form-control">
+            <input type="text" formControlName="phoneNumber" maxlength="10" class="form-control">
             <div class="error-msg-area">
               <div *ngIf="contactForm.controls['phoneNumber'].errors && (!contactForm.controls['phoneNumber'].pristine|| isContactFormSubmitted)"
                 class="error-msg">

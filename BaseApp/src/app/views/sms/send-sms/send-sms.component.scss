@@ -2,3 +2,14 @@
 max-height: 90px;
 overflow: auto;
 }
+
+.seleced-templatename {
+    background: #343a40;
+    color: #ffffff;
+    float: left;
+    font-size: 13px;
+  }
+  .seleced-templatename a {
+      cursor: pointer;
+      font-weight: bold;
+  }

@@ -15,7 +15,6 @@ export class ContactsService {
         res.data.forEach(element => {
           element['nameAndPhoneNumber'] = element.name+''+element.phoneNumber
         });
-        console.log(res);
         return res;
       }, function (err) {
         return err;

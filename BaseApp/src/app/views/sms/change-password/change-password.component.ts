@@ -41,6 +41,7 @@ export class ChangePasswordComponent implements OnInit {
         let self=this;
         self.userService.changePassword(self.changePasswordForm.value).then(function(res){
           if(res.status == true){
+            self.resetForm();
             self.toastr.success("Password Changed Successfully!");      
           }else{
              self.toastr.error("Incorrect Current Password!");      

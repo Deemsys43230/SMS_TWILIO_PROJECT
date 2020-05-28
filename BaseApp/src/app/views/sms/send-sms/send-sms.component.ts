@@ -45,26 +45,38 @@ export class SendSmsComponent implements OnInit, OnDestroy {
           this.templateTitle = data.template.title;
         }
       })
-     }
+    }
 
   }
 
   ngOnInit() {
   }
 
-  ngOnDestroy(){
-    if(this.routingType!=1)
-    this.sharedData.unsubscribe()
+  ngOnDestroy() {
+    if (this.routingType != 1)
+      this.sharedData.unsubscribe()
   }
 
   public requestAutoCompleteGroup = (text: string): Observable<any> => {
+    var self = this;
     return this.groupsService.searchGroups({ "name": text })
-      .map((res: any) => res.data);
+      .map((res: any) => {
+        if (res.data.length == 0) {
+          self.toastr.error('No Records Found','Select Group');
+        }
+        return res.data;
+      })
   };
 
   public requestAutoCompleteIndividual = (text: string): Observable<any> => {
+    var self = this;
     return this.contactsService.searchIndividualContact({ "searchText": text })
-      .map((res: any) => res.data);
+      .map((res: any) => {
+        if (res.data.length == 0) {
+          self.toastr.error('No Records Found','Select Individual');
+        }
+        return res.data;
+      });
   };
 
   onSelect(event: any) {
@@ -110,6 +122,8 @@ export class SendSmsComponent implements OnInit, OnDestroy {
         if (res.status) {
           self.toastr.success(res.message, 'Send SMS');
           self.reset();
+        } else {
+          self.toastr.error('Please try again later', 'Send SMS');
         }
       })
     }
@@ -152,6 +166,11 @@ export class SendSmsComponent implements OnInit, OnDestroy {
         self.templateData = res.data;
       }
     })
+  }
+
+  removeTemplete() {
+    this.templateTitle = '';
+    this.message = '';
   }
 
 }

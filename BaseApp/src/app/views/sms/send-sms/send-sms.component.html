@@ -63,7 +63,10 @@
               data-target="#exampleModal">Choose&nbsp;Template</button>
           </div>
           <div class="col-10">
-            <p class="h6 text-info ">{{templateTitle}}</p>
+            <div *ngIf="templateTitle != ''" class="seleced-templatename p-1 badge-pill">{{templateTitle}}&nbsp;
+              <a (click)="removeTemplete()">&times;</a>
+            </div>
+            <!-- <p class="h5">{{templateTitle}}</p> -->
           </div>
         </div>
       </div>

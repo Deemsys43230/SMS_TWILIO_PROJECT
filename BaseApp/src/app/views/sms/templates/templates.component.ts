@@ -124,7 +124,7 @@ export class TemplatesComponent implements OnInit {
 
   useTemplate(selectedTemplate) {
     this.dataSharingService.nextData({  recipientType: 'Individual', recipients: [], template: selectedTemplate });
-    this.router.navigate(['/user/send-sms']);
+    this.router.navigate(['/user/send-sms/',2]);
   }
 
 }

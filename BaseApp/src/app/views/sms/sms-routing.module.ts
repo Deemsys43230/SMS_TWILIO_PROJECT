@@ -27,7 +27,7 @@ export const routes: Routes = [
     component:AddGroupComponent,
   },
   {
-    path:'send-sms',
+    path:'send-sms/:routeType',
     component:SendSmsComponent,
   },
   {
