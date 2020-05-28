@@ -265,11 +265,16 @@ export class ContactsComponent implements OnInit {
       if (!Array.isArray(recipients))
         recipients = [recipients];
       this.dataSharingService.nextData({ recipientType: 'Individual', recipients: recipients })
+      this.router.navigate(['/user/send-sms',2]);
     }
-    else {
-      recipients = [recipients];
-      this.dataSharingService.nextData({ recipientType: 'Group', recipients: recipients })
+    else { /*Recipient is group*/ 
+      if(recipients.users.length==0)
+      this.ngxToaster.error('Selected Group has No Contacts!','SMS Error');
+      else{
+        recipients = [recipients];
+        this.dataSharingService.nextData({ recipientType: 'Group', recipients: recipients });
+        this.router.navigate(['/user/send-sms',2]);
+      }
     }
-    this.router.navigate(['/user/send-sms/',2]);
   }
 }
