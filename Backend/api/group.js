@@ -301,7 +301,7 @@ var search = function (searchData, cb) {
           {
             $unwind: {
                 path: "$users",
-                preserveNullAndEmptyArrays: true
+                preserveNullAndEmptyArrays: false
             }
         },
         { $sort: { "users.name": 1} },
