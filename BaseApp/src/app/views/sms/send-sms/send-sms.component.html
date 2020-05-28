@@ -62,10 +62,8 @@
             <button type="button" class="btn btn-primary" (click)="getTempletes()" data-toggle="modal"
               data-target="#exampleModal">Choose&nbsp;Template</button>
           </div>
-          <div class="col-10">
-            <div *ngIf="templateTitle != ''" class="seleced-templatename p-1 badge-pill">{{templateTitle}}&nbsp;
-              <a (click)="removeTemplete()">&times;</a>
-            </div>
+          <div class="col-10 p-2">
+            <div *ngIf="templateTitle != ''" class="text-info font-weight-bold"><i class="fa fa-sticky-note mr-2" aria-hidden="true"></i>{{templateTitle}}</div>
             <!-- <p class="h5">{{templateTitle}}</p> -->
           </div>
         </div>
