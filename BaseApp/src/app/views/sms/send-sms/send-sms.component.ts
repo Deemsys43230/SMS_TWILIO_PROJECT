@@ -29,14 +29,14 @@ export class SendSmsComponent implements OnInit, OnDestroy {
     , private router: Router, private ActivatedRoute: ActivatedRoute, private dataSharingService: DataSharingService
     , private spinner: NgxSpinnerService, private templeteService: TemplateService, private groupsService: GroupsService) {
 
-    // this.ActivatedRoute.params.subscribe(params => {
-    //   this.routingType = params['routeType'];
-    // });
+    this.ActivatedRoute.params.subscribe(params => {
+      this.routingType = params['routeType'];
+    });
 
-    // if (this.routingType == 1) {
-    //   this.selectedIndividuals = []; this.selectedGroups = [];
-    // }
-    // else {
+    if (this.routingType == 1) {
+      this.selectedIndividuals = []; this.selectedGroups = [];
+    }
+    else {
       this.sharedData = this.dataSharingService.sharedData.subscribe((data) => {
         this.searchType = (data.recipientType == null) ? 'Individual' : data.recipientType;
         data.recipientType == 'Individual' ? this.selectedIndividuals = data.recipients : this.selectedGroups = data.recipients;
@@ -45,7 +45,7 @@ export class SendSmsComponent implements OnInit, OnDestroy {
           this.templateTitle = data.template.title;
         }
       })
-    // }
+     }
 
   }
 
@@ -53,6 +53,7 @@ export class SendSmsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    if(this.routingType!=1)
     this.sharedData.unsubscribe()
   }
 

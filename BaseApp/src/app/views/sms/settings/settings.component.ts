@@ -51,12 +51,12 @@ export class SettingsComponent implements OnInit {
       self.userService.validateUserForSettings(this.validateUserFrom.value)
       .then(status => {
         if(status) {
-          self.toastr.success("Successfully Authenticated to Access Page!");
+          self.toastr.success("Successfully Authenticated to Access Settings!");
           self.showSuperPasswordFrom = false;
           self.initializeTwilioConfigForm(this.fb);
           self.getTwilioConfigSettings()
         } else {
-          self.toastr.error("User Not Allowed to Access this Page!");
+          self.toastr.error("Invalid Super Password!");
         }
       }).catch(err => {
         self.toastr.error(err.message);  
@@ -92,7 +92,7 @@ export class SettingsComponent implements OnInit {
         let self=this;
         self.userService.changeSettings(this.settingsForm.value).then(function(status){
           if(status == true){
-            self.toastr.success("Settings have been updated Successfully!"); 
+            self.toastr.success("Settings has been updated Successfully!"); 
             self.router.navigate(['/user/contacts']);
           }else{
              self.toastr.error("Sorry! Settings cannot be saved.");      
