@@ -40,11 +40,11 @@ app.use(expressSession({
 // app.use(compression());//enable it for certain paths only e.g. compressed /transactions might take longer
 
 // routes
-app.use('/user',require('./routes/user'));
-app.use('/common',require('./routes/siteinfo'));
-app.use('/user/contacts',require('./routes/contacts'));
-app.use('/user/groups',require('./routes/group'));
-app.use('/user/templates',require('./routes/template'));
+app.use("/v1/user",require('./routes/user'));
+app.use("/v1/common",require('./routes/siteinfo'));
+app.use("/v1/user/contacts",require('./routes/contacts'));
+app.use("/v1/user/groups",require('./routes/group'));
+app.use("/v1/user/templates",require('./routes/template'));
 
 //app.use(errorHandler);
 
