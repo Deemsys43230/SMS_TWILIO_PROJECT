@@ -18,29 +18,32 @@ var authToken;
 var twilioPrefix;
 var notifyServiceId;
 
-const log = require('../util/logger').log(component, ___filename);
-const opts = {};
-var query = {};
-log.debug(component, 'Get All Twilio Config', { attach: query });
-log.close();
+// var findTwilioSetting = function(opts, cb) {
+//     const log = require('../util/logger').log(component, ___filename);
+//     const opts = {};
+//     var query = {};
+//     log.debug(component, 'Get All Twilio Config', { attach: query });
+//     log.close();
 
-twilioModel.find(query)
-.then(twilio => {
-    if (!twilio) log.debug(component, `no twilio found ${id}`);
-    else {  
-        log.debug(component, `${twilio} twilio found`);
-        log.close();
-        accountSid = twilio[0].accountSid;
-        authToken = twilio[0].authToken;
-        twilioPrefix = twilio[0].cellPhonePrefix;
-        notifyServiceId = twilio[0].notifyServiceId;
-    }
-})
-.catch(err => {
-    log.error(component, 'find all twilio error', { attach: err });
-    log.close();
-    return err;
-})
+//     twilioModel.find(query)
+//     .then(twilio => {
+//         if (!twilio) log.debug(component, `no twilio found ${id}`);
+//         else {  
+//             log.debug(component, `${twilio} twilio found`);
+//             log.close();
+//             accountSid = twilio[0].accountSid;
+//             authToken = twilio[0].authToken;
+//             twilioPrefix = twilio[0].cellPhonePrefix;
+//             notifyServiceId = twilio[0].notifyServiceId;
+//         }
+//     })
+
+//     .catch(err => {
+//         log.error(component, 'find all twilio error', { attach: err });
+//         log.close();
+//         return err;
+//     })
+// }
 
 var create = function (data, cb) {
     // setup
@@ -231,54 +234,68 @@ async function sendSMS(smsSendData, cb) {
     const log = require('../util/logger').log(component, ___filename);
     log.debug(component, 'searching restaurant', { attach: smsSendData });
     log.close();
-    const client = require('twilio')(accountSid, authToken);
 
     var query = [
         {
             $match: { 
-                     userId : { $in : smsSendData.smsSendIds}
+                userId : { $in : smsSendData.smsSendIds}
             }
         }
     ];
     
     log.debug(component, 'Query is', { attach: query});
     log.close();
-    model.aggregate(query).collation({locale: "en", strength: 2})
-    .then(users => {
-        log.debug(component, `retrieved ${users.length} Search related Users`);
-        log.close();
-        var notifyUsers = [];
-        _.map(users, function(contact, index) {
-            notifyUsers.push(JSON.stringify({
-                identity:contact.userId,
-                binding_type: 'sms',
-                address: twilioPrefix+contact.phoneNumber
-            }))
-        });
-    
-        const notificationOpts = { 
-            toBinding: notifyUsers, 
-            body: smsSendData.messageBody, 
-        }; 
-        new Promise(resolve => {
-            client.notify.services(notifyServiceId)
-            .notifications.create(notificationOpts).then(notification => {
-                cb(null, users);
-                resolve()
-            })
-            .catch(err => {
-                log.error(component, 'Error Found in SMS Notification');
-                log.close()
-                return cb(err, null)
-            })
+        twilioModel.find({})
+        .then(twilio => {
+            if (!twilio) log.debug(component, `no twilio found ${id}`);
+            else {  
+                log.debug(component, `${twilio} twilio found`);
+                log.close();
+                accountSid = twilio[0].accountSid;
+                authToken = twilio[0].authToken;
+                twilioPrefix = twilio[0].cellPhonePrefix;
+                notifyServiceId = twilio[0].notifyServiceId;
+                model.aggregate(query).collation({locale: "en", strength: 2})
+                .then(users => {
+                    log.debug(component, `retrieved ${users.length} Search related Users`);
+                    log.close();
+                    var notifyUsers = [];
+                    _.map(users, function(contact, index) {
+                        notifyUsers.push(JSON.stringify({
+                            identity:contact.userId,
+                            binding_type: 'sms',
+                            address: twilioPrefix+contact.phoneNumber
+                        }));                    
+                    });
+                
+                    const notificationOpts = { 
+                        toBinding: notifyUsers, 
+                        body: smsSendData.messageBody, 
+                    };
+                    new Promise(resolve => {
+                        const client = require('twilio')(accountSid, authToken);
+
+                        client.notify.services(notifyServiceId)
+                        .notifications.create(notificationOpts).then(notification => {
+                            cb(null, users);
+                            resolve()
+                        })
+                        .catch(err => {
+                            log.error(component, 'Error Found in SMS Notification');
+                            log.close()
+                            return cb(err, null)
+                        })
+                    })
+                    
+                })
+                .catch(err => {
+                    log.error(component, 'find all search users error', { attach: err });
+                    log.close();
+                    return cb(err);
+                })
+            }
         })
-        
-    })
-    .catch(err => {
-        log.error(component, 'find all search users error', { attach: err });
-        log.close();
-        return cb(err);
-    })
+    
 };
 
 //Importing Contact
