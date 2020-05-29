@@ -23,7 +23,7 @@ export class UserApiService{
     }
 
     public getProfile():Promise<any>{
-        return this.httpClient.get("users/user/getProfile").toPromise()
+        return this.httpClient.get("/users/user/getProfile").toPromise()
         .then(function(res){
             return res;
         },function(err){

@@ -24,6 +24,7 @@ export class SendSmsComponent implements OnInit, OnDestroy {
   templateData: any = [];
   templateTitle: string = '';
   sharedData: any;
+  public hideLoader = true;
 
   constructor(private contactsService: ContactsService, private smsService: SmsService, private toastr: ToastrService
     , private router: Router, private ActivatedRoute: ActivatedRoute, private dataSharingService: DataSharingService
@@ -59,10 +60,12 @@ export class SendSmsComponent implements OnInit, OnDestroy {
 
   public requestAutoCompleteGroup = (text: string): Observable<any> => {
     var self = this;
+     this.hideLoader = false;
     return this.groupsService.searchGroups({ "name": text })
       .map((res: any) => {
+        self.hideLoader=true;
         if (res.data.length == 0) {
-          self.toastr.error('No Records Found','Select Group');
+          self.toastr.error('No Groups Found','Select Group');
         }
         return res.data;
       })
@@ -70,10 +73,12 @@ export class SendSmsComponent implements OnInit, OnDestroy {
 
   public requestAutoCompleteIndividual = (text: string): Observable<any> => {
     var self = this;
+    this.hideLoader=false;
     return this.contactsService.searchIndividualContact({ "searchText": text })
       .map((res: any) => {
+        self.hideLoader=true;
         if (res.data.length == 0) {
-          self.toastr.error('No Records Found','Select Individual');
+          self.toastr.error('No Contacts Found','Select Contact');
         }
         return res.data;
       });

@@ -28,9 +28,12 @@
                 <i class="fa fa-chevron-down"></i></span>
               </div>
               <div id="collapse{{i}}" class="w-100 collapse">
-                <div class="row border-bottom bg-light no-gutters" *ngFor="let children of contact.children">
+                <div class="row border-bottom bg-light no-gutters" *ngFor="let children of contact.children;let index=index">
                   <div class="col-1 p-2">
-                    <input type="checkbox" [(ngModel)]="children.checked" class="option-input checkbox" (change)="selectContact(children)">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" (change)="selectContact(children)" class="custom-control-input" [(ngModel)]="children.checked" id="checkBox_{{i}}_{{index}}">
+                      <label class="custom-control-label" for="checkBox_{{i}}_{{index}}">&nbsp;</label>
+                    </div>
                   </div>
                   <div class="col-10 p-1">
                     <span>

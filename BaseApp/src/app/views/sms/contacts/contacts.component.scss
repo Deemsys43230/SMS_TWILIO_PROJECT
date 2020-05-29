@@ -9,55 +9,6 @@ span[aria-expanded=true] .fa-chevron-right {
     height: 400px; 
     overflow-y: scroll;
  }
- .option-input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    position: relative;
-    top: 13.33333px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 16px;
-    width: 16px;
-    transition: all 0.15s ease-out 0s;
-    background: #b9bec4;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 0.5rem;
-    outline: none;
-    position: relative;
-    z-index: 1000;
-  }
-  .option-input:hover {
-    background: #9faab7;
-  }
-  .option-input:checked {
-    background: #455268;
-  }
-  .option-input:checked::before {
-    height: 15px;
-    width: 15px;
-    position: absolute;
-    content: '✔';
-    display: inline-block;
-    font-size: 12.66667px;
-    text-align: center;
-    line-height: 15px;
-  }
-  .option-input.checkbox {
-    border-radius: 20%;
-  }
-  .option-input.checkbox::after {
-    border-radius: 20%;
-  }
-  .border-danger .option-input{
-    cursor: not-allowed !important;
-  }
 
   .modal-body::-webkit-scrollbar, .listDiv::-webkit-scrollbar {
     width: 0.3em;

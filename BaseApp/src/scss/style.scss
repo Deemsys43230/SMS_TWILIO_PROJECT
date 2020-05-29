@@ -60,3 +60,23 @@
 .app-header .navbar-brand {
    width: 225px !important;
 }
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+   background-color:#455268;
+   border: none;
+ }
+
+ .custom-control-input:focus ~ .custom-control-label::before
+{
+   box-shadow: none !important;
+   border-color: #455268 !important;
+}
+.custom-control-input:active~.custom-control-label::before{
+   background-color:#9ba6b9 !important;
+   border: none !important;
+   box-shadow: none !important;
+}
+.custom-control-label::after
+{
+cursor: pointer;
+}

@@ -14,6 +14,7 @@ export class AddGroupComponent implements OnInit {
 
   public groupId;
   headerText: string = 'Add';
+  public hideLoader = true;
 
   constructor(private contactsService: ContactsService, private route: ActivatedRoute, private groupsService: GroupsService, private toastr: ToastrService, private router: Router) {
     this.route.params.subscribe((params) => {
@@ -50,10 +51,12 @@ export class AddGroupComponent implements OnInit {
 
   public requestAutoCompleteIndividual = (text: string): Observable<any> => {
     var self = this;
+    this.hideLoader=false;
     return this.contactsService.searchIndividualContact({ "searchText": text })
     .map((res: any) => {
+      self.hideLoader=true;
       if (res.data.length == 0) {
-        self.toastr.error('No Records Found','Select Contacts');
+        self.toastr.error('No Contacts Found','Select Contacts');
       }
       return res.data;
     })
